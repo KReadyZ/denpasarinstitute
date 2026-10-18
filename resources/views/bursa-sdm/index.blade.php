@@ -19,11 +19,24 @@
       grid-template-columns: 1fr !important;
       gap: 16px;
     }
+  .bursa-header-section {
+    padding: 150px 0 70px;
+    background: linear-gradient(180deg,#f7f9fc,#fff);
+  }
+  @media (max-width: 991px) and (min-width: 769px) {
+    .bursa-header-section {
+      padding: 100px 0 50px;
+    }
+  }
+  @media (max-width: 768px) {
+    .bursa-header-section {
+      padding: 40px 0 50px;
+    }
   }
 @endsection
 
 @section('content')
-<section style="padding:70px 0; background:linear-gradient(180deg,#f7f9fc,#fff);">
+<section class="bursa-header-section">
   <div class="container" style="text-align:center;">
 
     <h1 style="font-size:2.4rem; font-weight:800; color:var(--dark); margin-bottom:10px;">Bursa SDM</h1>

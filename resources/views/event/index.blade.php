@@ -458,12 +458,24 @@
         .modal-content {
             max-width: 100%;
         }
+    .page-content-wrapper {
+        padding: 150px 0 60px;
+    }
+    @media (max-width: 991px) and (min-width: 769px) {
+        .page-content-wrapper {
+            padding: 100px 0 50px;
+        }
+    }
+    @media (max-width: 768px) {
+        .page-content-wrapper {
+            padding: 40px 0 50px;
+        }
     }
 </style>
 @endpush
 
 @section('content')
-<div style="background:var(--gray);padding:50px 0;">
+<div class="page-content-wrapper" style="background:var(--gray);">
   <div class="container">
 
     <div class="section-header" style="margin-bottom:32px;">

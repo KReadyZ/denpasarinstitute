@@ -7,7 +7,7 @@
     .article-wrapper {
         max-width: 1200px !important;
         margin: 0 auto !important;
-        padding: 30px 20px 60px !important;
+        padding: 185px 20px 60px !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
         overflow: visible !important;
         display: block !important;
@@ -269,7 +269,16 @@
         transform: scale(0.98);
     }
 
+    @media (max-width: 991px) and (min-width: 769px) {
+        .article-wrapper {
+            padding-top: 110px !important;
+        }
+    }
+
     @media (max-width: 768px) {
+        .article-wrapper {
+            padding-top: 24px !important;
+        }
         .article-grid { 
             grid-template-columns: 1fr !important;
         }

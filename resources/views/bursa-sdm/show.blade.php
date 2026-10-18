@@ -3,22 +3,22 @@
 
 @section('extra-style')
   .bursa-detail-section {
-    padding: 150px 0 60px;
+    padding: 185px 0 60px;
   }
   @media (max-width: 991px) and (min-width: 769px) {
     .bursa-detail-section {
-      padding: 100px 0 50px;
+      padding: 110px 0 50px !important;
     }
   }
   @media (max-width: 768px) {
     .bursa-detail-section {
-      padding: 36px 0 50px;
+      padding: 36px 0 50px !important;
     }
   }
 @endsection
 
 @section('content')
-<section class="bursa-detail-section">
+<section class="bursa-detail-section" style="padding: 185px 0 60px;">
   <div class="container" style="max-width:750px;">
     <img src="{{ $item->foto ? asset('storage/'.$item->foto) : 'https://via.placeholder.com/750x350' }}"
          style="width:100%; border-radius:8px; margin-bottom:20px;">

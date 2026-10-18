@@ -22,22 +22,23 @@
     background: #f8f9fa !important;
     border-bottom: 1px solid #e5e7eb !important;
     padding: 6px 10px !important;
+  }
   .bursa-create-section {
-    padding: 150px 0 60px;
+    padding: 190px 0 60px;
   }
   @media (max-width: 991px) and (min-width: 769px) {
     .bursa-create-section {
-      padding: 100px 0 50px;
+      padding: 120px 0 50px !important;
     }
   }
   @media (max-width: 768px) {
     .bursa-create-section {
-      padding: 36px 0 50px;
+      padding: 36px 0 50px !important;
     }
   }
 </style>
 
-<section class="bursa-create-section">
+<section class="bursa-create-section" style="padding: 190px 0 60px;">
   <div class="container" style="max-width:650px;">
     <h2 style="font-weight:800; margin-bottom:6px;">
       Tambah {{ $tipe === 'perusahaan' ? 'Perusahaan' : 'Individu' }}

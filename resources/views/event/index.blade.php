@@ -459,23 +459,23 @@
             max-width: 100%;
         }
     .page-content-wrapper {
-        padding: 150px 0 60px;
+        padding: 180px 0 60px;
     }
     @media (max-width: 991px) and (min-width: 769px) {
         .page-content-wrapper {
-            padding: 100px 0 50px;
+            padding: 110px 0 50px !important;
         }
     }
     @media (max-width: 768px) {
         .page-content-wrapper {
-            padding: 40px 0 50px;
+            padding: 40px 0 50px !important;
         }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="page-content-wrapper" style="background:var(--gray);">
+<div class="page-content-wrapper" style="padding: 180px 0 60px; background:var(--gray);">
   <div class="container">
 
     <div class="section-header" style="margin-bottom:32px;">

@@ -512,17 +512,68 @@
     .grcs-section { background: #1a1a1a; padding: 60px 0; }
     .grcs-section .section-header h2 { color: #fff; }
     .grcs-section .section-line { background: var(--yellow); }
+    .grcs-action-link {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px;
+      border-radius: 50px; font-size: 0.82rem; font-weight: 700; color: var(--yellow);
+      background: rgba(245,196,0,0.1); border: 1.5px solid rgba(245,196,0,0.3);
+      text-decoration: none; transition: all 0.25s ease;
+    }
+    .grcs-action-link:hover {
+      background: var(--yellow); color: #1a1a1a; transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(245,196,0,0.22);
+    }
     .grcs-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
-    .grcs-card { background: #2a2a2a; border-radius: 6px; padding: 20px; border: 1px solid #3a3a3a; border-top: 3px solid var(--yellow); transition: transform 0.25s, box-shadow 0.25s; }
-    .grcs-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-    .grcs-avatar { width: 62px; height: 62px; border-radius: 50%; overflow: hidden; border: 3px solid var(--yellow); margin-bottom: 12px; background: #333; }
+    .grcs-card {
+      background: #2a2a2a; border-radius: 10px; padding: 22px 18px 16px;
+      border: 1px solid #3a3a3a; border-top: 3px solid var(--yellow);
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; flex-direction: column; text-decoration: none;
+      color: inherit; cursor: pointer; position: relative;
+    }
+    .grcs-card:hover {
+      background: #323232; transform: translateY(-6px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.5);
+      border-color: rgba(245,196,0,0.4);
+      border-top-color: var(--yellow);
+    }
+    .grcs-avatar {
+      width: 66px; height: 66px; border-radius: 50%; overflow: hidden;
+      border: 3px solid var(--yellow); margin-bottom: 12px; background: #333; flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s ease;
+    }
+    .grcs-card:hover .grcs-avatar { transform: scale(1.05); }
     .grcs-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .grcs-name { font-size: 0.86rem; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.35; }
-    .grcs-role { font-size: 0.73rem; color: var(--yellow); margin-bottom: 8px; font-weight: 500; }
-    .grcs-desc { font-size: 0.77rem; color: #aaa; line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .grcs-name {
+      font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 3px;
+      line-height: 1.35; transition: color 0.2s ease;
+    }
+    .grcs-card:hover .grcs-name { color: var(--yellow); }
+    .grcs-role {
+      font-size: 0.74rem; color: var(--yellow); margin-bottom: 8px; font-weight: 600;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .grcs-desc {
+      font-size: 0.77rem; color: #94a3b8; line-height: 1.6; margin-bottom: 14px;
+      flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .grcs-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; margin-top: auto;
+    }
     .grcs-social { display: flex; gap: 8px; }
-    .grcs-social a { color: var(--yellow); font-size: 0.88rem; opacity: 0.8; transition: 0.2s; }
-    .grcs-social a:hover { opacity: 1; transform: translateY(-2px); display: inline-block; }
+    .grcs-social a, .grcs-social span {
+      color: var(--yellow); font-size: 0.85rem; width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center;
+      justify-content: center; transition: all 0.2s ease; text-decoration: none; cursor: pointer;
+    }
+    .grcs-social a:hover, .grcs-social span:hover {
+      color: #1a1a1a; background: var(--yellow); border-color: var(--yellow); transform: translateY(-2px);
+    }
+    .grcs-view-badge {
+      font-size: 0.72rem; font-weight: 700; color: var(--yellow); display: inline-flex;
+      align-items: center; gap: 5px; transition: transform 0.2s ease;
+    }
+    .grcs-card:hover .grcs-view-badge { transform: translateX(3px); }
     .grcs-controls button { border-color: var(--yellow); color: var(--yellow); background: transparent; }
     .grcs-controls button:hover { background: var(--yellow); color: #1a1a1a; }
     .grcs-dots .carousel-dot { background: #555; }
@@ -1046,25 +1097,40 @@
 
 <section class="grcs-section" id="grcs">
   <div class="container">
-    <div class="section-header"><span class="section-tag" style="background:var(--yellow);color:var(--dark);">Komunitas</span><h2>GRCS Club</h2><div class="section-line"></div></div>
+    <div class="section-header-flex">
+      <div class="section-header">
+        <span class="section-tag" style="background:var(--yellow);color:var(--dark);">Komunitas</span>
+        <h2>GRCS Club</h2>
+        <div class="section-line"></div>
+      </div>
+      <a href="{{ route('grcs.index') }}" class="grcs-action-link">
+        Lihat Semua Anggota <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
     <div class="carousel" id="grcsCarousel">
       <div class="carousel-inner-wrap" id="grcsInner">
         @forelse(($grcsMembers ?? collect())->chunk(4) as $chunk)
           <div class="carousel-slide"><div class="grcs-grid">
             @foreach($chunk as $g)
-              <div class="grcs-card">
+              <a href="{{ route('grcs.show', $g->id) }}" class="grcs-card" title="Lihat profil lengkap {{ $g->name }}">
                 <div class="grcs-avatar">
-                  <img src="{{ $g->foto ? asset('storage/'.$g->foto) : ($g->avatar ? asset('storage/'.$g->avatar) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop') }}" alt="{{ $g->name }}">
+                  <img src="{{ $g->foto ? asset('storage/'.$g->foto) : ($g->avatar ? asset('storage/'.$g->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($g->name).'&background=F5C400&color=1a1a1a&size=200') }}" alt="{{ $g->name }}">
                 </div>
                 <div class="grcs-name">{{ $g->name }}</div>
-                <div class="grcs-role">{{ $g->position ?? '-' }}</div>
-                <p class="grcs-desc">{{ \Illuminate\Support\Str::limit($g->bio, 110) }}</p>
-                <div class="grcs-social">
-                  @if($g->linkedin)
-                    <a href="{{ $g->linkedin }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-                  @endif
+                <div class="grcs-role">{{ $g->position ?: ($g->institution ?: ($g->nama_instansi ?: ($g->provinsi ? 'Anggota — '.$g->provinsi : 'Anggota GRCS Club'))) }}</div>
+                <p class="grcs-desc">{{ \Illuminate\Support\Str::limit($g->bio ?: ($g->profil ?: ($g->keahlian_utama ?: 'Anggota komunitas riset, tata kelola, dan kepatuhan GRCS Club di Denpasar Institute.')), 110) }}</p>
+                <div class="grcs-footer">
+                  <div class="grcs-social">
+                    @if($g->linkedin)
+                      <span onclick="event.preventDefault(); event.stopPropagation(); window.open('{{ $g->linkedin }}', '_blank');" title="LinkedIn"><i class="fab fa-linkedin-in"></i></span>
+                    @endif
+                    @if($g->website)
+                      <span onclick="event.preventDefault(); event.stopPropagation(); window.open('{{ $g->website }}', '_blank');" title="Website"><i class="fas fa-globe"></i></span>
+                    @endif
+                  </div>
+                  <span class="grcs-view-badge">Lihat Profil <i class="fas fa-arrow-right"></i></span>
                 </div>
-              </div>
+              </a>
             @endforeach
           </div></div>
         @empty

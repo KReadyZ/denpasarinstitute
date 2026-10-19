@@ -876,9 +876,6 @@
   </div>
 </section>
 
-{{-- PANDUAN CARA DAFTAR --}}
-@include('partials.alur-pendaftaran', ['theme' => 'light'])
-
 <section class="stats-section" id="stats">
   <div class="stats-container">
     <div class="stats-header">

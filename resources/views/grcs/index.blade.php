@@ -121,22 +121,22 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #CC0000;
-    color: #fff !important;
+    background: #F5C400;
+    color: #1a1a1a !important;
     padding: 11px 22px;
     border-radius: 8px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     transition: all 0.25s ease;
     white-space: nowrap;
-    box-shadow: 0 4px 14px rgba(204, 0, 0, 0.35);
+    box-shadow: 0 4px 14px rgba(245, 196, 0, 0.25);
 }
 .btn-daftar-grcs:hover {
-    background: #a80000;
-    color: #fff !important;
+    background: #e0b000;
+    color: #1a1a1a !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(204, 0, 0, 0.5);
+    box-shadow: 0 6px 20px rgba(245, 196, 0, 0.4);
 }
 .grcs-count {
     font-size: 0.83rem;

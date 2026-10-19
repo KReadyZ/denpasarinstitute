@@ -361,7 +361,7 @@
             <a href="{{ route('event.index') }}" class="sidebar-cta">Selengkapnya</a>
 
             <div class="sidebar-ads" onclick="window.open('https://www.brin.go.id/', '_blank')">
-                <img src="{{ asset('image/banner-brin.png') }}" alt="Kerjasama Riset BRIN" style="pointer-events: none;">
+                <img src="{{ asset('image/banner-brin.png') }}" alt="Divisi Riset dan Inovasi BRIN" style="pointer-events: none;">
             </div>
         </aside>
 

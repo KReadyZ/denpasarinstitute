@@ -76,11 +76,20 @@
     gap: 16px;
     flex-wrap: wrap;
 }
+.grcs-search-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    max-width: 820px;
+    flex-wrap: wrap;
+}
 .grcs-search-form {
     display: flex;
     gap: 0;
     flex: 1;
-    max-width: 480px;
+    min-width: 280px;
+    max-width: 460px;
     border: 1.5px solid #444;
     border-radius: 8px;
     overflow: hidden;
@@ -108,6 +117,27 @@
     transition: background 0.2s;
 }
 .grcs-search-form button:hover { background: #d4a800; }
+.btn-daftar-grcs {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #CC0000;
+    color: #fff !important;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(204, 0, 0, 0.35);
+}
+.btn-daftar-grcs:hover {
+    background: #a80000;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(204, 0, 0, 0.5);
+}
 .grcs-count {
     font-size: 0.83rem;
     color: #aaa;
@@ -342,8 +372,10 @@
     .grcs-pub-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .grcs-hero { padding: 100px 0 60px; }
     .grcs-hero h1 { font-size: 2rem; }
-    .grcs-search-inner { flex-direction: column; align-items: stretch; }
+    .grcs-search-inner { flex-direction: column; align-items: stretch; gap: 14px; }
+    .grcs-search-left { flex-direction: column; align-items: stretch; max-width: 100%; gap: 12px; }
     .grcs-search-form { max-width: 100%; }
+    .btn-daftar-grcs { justify-content: center; }
 }
 @media (max-width: 480px) {
     .grcs-pub-grid { grid-template-columns: 1fr; }
@@ -362,15 +394,20 @@
 
 <div class="grcs-search-wrap">
     <div class="grcs-search-inner">
-        <form class="grcs-search-form" method="GET" action="{{ route('grcs.index') }}">
-            <input
-                type="text"
-                name="q"
-                value="{{ request('q') }}"
-                placeholder="Cari anggota, institusi, atau divisi..."
-            >
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </form>
+        <div class="grcs-search-left">
+            <form class="grcs-search-form" method="GET" action="{{ route('grcs.index') }}">
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="Cari anggota, institusi, atau divisi..."
+                >
+                <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
+            </form>
+            <a href="{{ route('backoffice.register') }}?role=grcs" class="btn-daftar-grcs">
+                <i class="fas fa-user-plus"></i> Daftar Anggota GRCS Club
+            </a>
+        </div>
         <div class="grcs-count">
             Menampilkan <strong>{{ $members->total() }}</strong> anggota aktif
         </div>

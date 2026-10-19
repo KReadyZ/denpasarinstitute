@@ -89,11 +89,20 @@
     gap: 16px;
     flex-wrap: wrap;
 }
+.konsultan-search-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    max-width: 820px;
+    flex-wrap: wrap;
+}
 .konsultan-search-form {
     display: flex;
     gap: 0;
     flex: 1;
-    max-width: 480px;
+    min-width: 280px;
+    max-width: 460px;
     border: 1.5px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
@@ -122,6 +131,27 @@
     transition: background 0.2s;
 }
 .konsultan-search-form button:hover { background: #a80000; }
+.btn-daftar-konsultan {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #CC0000;
+    color: #fff !important;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(204, 0, 0, 0.2);
+}
+.btn-daftar-konsultan:hover {
+    background: #a80000;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(204, 0, 0, 0.32);
+}
 .konsultan-count {
     font-size: 0.83rem;
     color: #888;
@@ -348,8 +378,10 @@
     .konsultan-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .konsultan-hero { padding: 100px 0 60px; }
     .konsultan-hero h1 { font-size: 2rem; }
-    .konsultan-search-inner { flex-direction: column; align-items: stretch; }
+    .konsultan-search-inner { flex-direction: column; align-items: stretch; gap: 14px; }
+    .konsultan-search-left { flex-direction: column; align-items: stretch; max-width: 100%; gap: 12px; }
     .konsultan-search-form { max-width: 100%; }
+    .btn-daftar-konsultan { justify-content: center; }
 }
 @media (max-width: 480px) {
     .konsultan-grid { grid-template-columns: 1fr; }
@@ -370,15 +402,20 @@
 {{-- SEARCH --}}
 <div class="konsultan-search-wrap">
     <div class="konsultan-search-inner">
-        <form class="konsultan-search-form" method="GET" action="{{ route('konsultan.index') }}">
-            <input
-                type="text"
-                name="q"
-                value="{{ request('q') }}"
-                placeholder="Cari konsultan, institusi, atau bidang keahlian..."
-            >
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </form>
+        <div class="konsultan-search-left">
+            <form class="konsultan-search-form" method="GET" action="{{ route('konsultan.index') }}">
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="Cari konsultan, institusi, atau bidang keahlian..."
+                >
+                <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
+            </form>
+            <a href="{{ route('backoffice.register') }}?role=konsultan" class="btn-daftar-konsultan">
+                <i class="fas fa-user-plus"></i> Daftar Anggota Konsultan
+            </a>
+        </div>
         <div class="konsultan-count">
             Menampilkan <strong>{{ $konsultans->total() }}</strong> konsultan aktif
         </div>

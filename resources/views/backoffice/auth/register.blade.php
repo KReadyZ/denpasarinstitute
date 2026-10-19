@@ -84,8 +84,8 @@
         <label>Daftar Sebagai *</label>
         <select name="role" required>
           <option value="">-- Pilih role --</option>
-          <option value="konsultan" {{ old('role') === 'konsultan' ? 'selected' : '' }}>Konsultan</option>
-          <option value="grcs" {{ old('role') === 'grcs' ? 'selected' : '' }}>GRCS Club</option>
+          <option value="konsultan" {{ old('role', request('role')) === 'konsultan' ? 'selected' : '' }}>Konsultan</option>
+          <option value="grcs" {{ old('role', request('role')) === 'grcs' ? 'selected' : '' }}>GRCS Club</option>
         </select>
         <p class="role-info">Role superadmin hanya dibuat langsung oleh pengelola sistem.</p>
       </div>

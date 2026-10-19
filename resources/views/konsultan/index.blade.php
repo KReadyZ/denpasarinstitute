@@ -412,7 +412,7 @@
                 >
                 <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
             </form>
-            <a href="{{ route('backoffice.register') }}?role=konsultan" class="btn-daftar-konsultan">
+            <a href="#alur-pendaftaran" class="btn-daftar-konsultan">
                 <i class="fas fa-user-plus"></i> Daftar Anggota Konsultan
             </a>
         </div>
@@ -421,6 +421,9 @@
         </div>
     </div>
 </div>
+
+{{-- ALUR PENDAFTARAN --}}
+@include('partials.alur-pendaftaran', ['theme' => 'light'])
 
 {{-- GRID --}}
 <section class="konsultan-section">

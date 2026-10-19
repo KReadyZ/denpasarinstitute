@@ -361,6 +361,14 @@
     .hero-btns { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
     .btn-yellow { background: var(--yellow); color: var(--dark); padding: 11px 24px; border-radius: 4px; font-weight: 800; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; display: inline-block; }
     .btn-yellow:hover { background: #e0b000; transform: translateY(-1px); }
+    .hero-portal-card { margin-top: 20px; background: #fbfbfc; border: 1px solid #e9ecef; border-left: 4px solid var(--red); border-radius: 8px; padding: 14px 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.04); }
+    .portal-badge-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--red); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .portal-card-desc { font-size: 0.78rem; color: #666; margin-bottom: 12px; line-height: 1.45; }
+    .portal-btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-portal-main { background: var(--red); color: #fff !important; font-size: 0.8rem; font-weight: 700; padding: 8px 18px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 3px 8px rgba(204,0,0,0.25); }
+    .btn-portal-main:hover { background: #a80000; transform: translateY(-1px); }
+    .btn-portal-secondary { background: var(--yellow); color: #1a1a1a !important; font-size: 0.8rem; font-weight: 700; padding: 8px 18px; border-radius: 5px; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 3px 8px rgba(245,196,0,0.25); }
+    .btn-portal-secondary:hover { background: #e0b000; transform: translateY(-1px); }
     .col-header { background: var(--red); color: #fff; padding: 10px 16px; font-weight: 700; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; }
     .col-header a { color: rgba(255,255,255,0.85); font-size: 0.75rem; font-weight: 500; }
     .event-list { border: 1px solid var(--border); border-top: none; }
@@ -793,6 +801,32 @@
       <h1 class="hero-title">Selamat Datang<br>di Denpasar<br>Institute</h1>
       <p class="hero-desc"><strong>Denpasar Institute</strong> adalah Lembaga Riset &amp; Pengembangan SDM. Kami menyediakan kerja sama Riset, Pengembangan SDM, kolaborasi kegiatan abdimas <em>(CSR Program)</em> dan Layanan Informasi Objektif. Prioritas kami bertumpu pada moto <strong><em>"Transforming Ideas into Action"</em></strong>, yakni menerjemahkan ide dan kebutuhan <em>partners</em> menjadi tindakan nyata. Kami <a href="#" class="hero-selengkapnya">selengkapnya...</a></p>
       <div class="hero-btns"><a href="#heroSlider" class="btn-yellow">Lihat Divisi</a><a href="#contact" class="btn-yellow" style="background:#fff;border:2px solid var(--yellow);color:var(--dark);">Hubungi Kami</a></div>
+      <div class="hero-portal-card">
+        <div class="portal-badge-label">
+          <i class="fas fa-id-card-alt"></i> Portal Anggota &amp; Konsultan
+        </div>
+        <div class="portal-card-desc">
+          Akses dashboard, administrasi kartu anggota, dan jejaring riset.
+        </div>
+        <div class="portal-btn-group">
+          @auth
+            <a href="{{ route('backoffice.dashboard') }}" class="btn-portal-main">
+              <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <form action="{{ route('backoffice.logout') }}" method="POST" style="display:inline;">
+              @csrf
+              <button type="submit" class="btn-portal-secondary" title="Keluar"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            </form>
+          @else
+            <a href="{{ route('backoffice.login') }}" class="btn-portal-main">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a href="{{ route('panduan-pendaftaran') }}" class="btn-portal-secondary">
+              <i class="fas fa-user-plus"></i> Daftar Anggota
+            </a>
+          @endauth
+        </div>
+      </div>
     </div>
     <div class="hero-center">
       <div class="col-header"><span>Event Terbaru</span><a href="{{ route('event.index') }}">Lihat Semua</a></div>
@@ -841,6 +875,9 @@
     </div>
   </div>
 </section>
+
+{{-- PANDUAN CARA DAFTAR --}}
+@include('partials.alur-pendaftaran', ['theme' => 'light'])
 
 <section class="stats-section" id="stats">
   <div class="stats-container">

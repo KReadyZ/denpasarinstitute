@@ -52,7 +52,7 @@
       pointer-events: none !important;
       border: 0 !important;
     }
-    html { top: 0px !important; margin-top: 0px !important; }
+    html { top: 0px !important; margin-top: 0px !important; scroll-behavior: smooth; scroll-padding-top: 110px; }
     body { top: 0px !important; position: static !important; margin-top: 0px !important; }
     .goog-text-highlight { background: none !important; background-color: transparent !important; border: none !important; box-shadow: none !important; }
     .goog-tooltip, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; visibility: hidden !important; }
@@ -64,6 +64,8 @@
     .topbar a { color: #fff; opacity: 0.9; }
     .topbar a:hover { opacity: 1; text-decoration: underline; }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-portal-link { background: rgba(255, 255, 255, 0.2); padding: 3px 10px; border-radius: 4px; font-weight: 600; font-size: 0.72rem; color: #fff !important; text-decoration: none !important; display: inline-flex; align-items: center; gap: 5px; transition: background 0.2s; }
+    .topbar-portal-link:hover { background: rgba(255, 255, 255, 0.35); text-decoration: none !important; }
     .topbar-social a { color: #fff; font-size: 0.85rem; margin-left: 8px; opacity: 0.9; transition: 0.2s; }
     .topbar-social a:hover { opacity: 1; }
 
@@ -362,6 +364,7 @@
   <div class="topbar-inner">
     <span class="topbar-left">Denpasar, Bali Indonesia &nbsp;|&nbsp; <a href="mailto:info@denpasarinstitute.id">info@denpasarinstitute.id</a></span>
     <div class="topbar-right">
+      <a href="{{ route('backoffice.login') }}" class="topbar-portal-link"><i class="fas fa-user-lock"></i> Portal Anggota</a>
       <div class="topbar-social">
         <a href="#"><i class="fab fa-facebook-f"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -518,6 +521,11 @@
       <a href="{{ route('berita.index') }}"
          class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
         Berita
+      </a>
+    </li>
+    <li style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;">
+      <a href="{{ route('backoffice.login') }}" style="color:var(--red);font-weight:700;">
+        <i class="fas fa-user-shield"></i> Portal Anggota &amp; Login
       </a>
     </li>
     <li class="mobile-lang-wrap">

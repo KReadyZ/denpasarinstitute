@@ -46,6 +46,11 @@
     <p class="sub">Akun baru perlu diaktivasi oleh Super Admin sebelum bisa login.</p>
 
     <div class="notice"><i class="fas fa-info-circle"></i> Registrasi hanya untuk <strong>Konsultan</strong> dan <strong>GRCS Club</strong>.</div>
+    <div style="margin-bottom:16px;text-align:center;">
+      <a href="{{ route('panduan-pendaftaran') }}" style="color:#d97706;font-size:0.75rem;font-weight:600;text-decoration:none;">
+        <i class="fas fa-book-reader"></i> Belum membaca panduan? Lihat alur pendaftaran di sini &rarr;
+      </a>
+    </div>
 
     @if($errors->any())
       <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}</div>

@@ -404,7 +404,7 @@
                 >
                 <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
             </form>
-            <a href="{{ route('backoffice.register') }}?role=grcs" class="btn-daftar-grcs">
+            <a href="#alur-pendaftaran" class="btn-daftar-grcs">
                 <i class="fas fa-user-plus"></i> Daftar Anggota GRCS Club
             </a>
         </div>
@@ -413,6 +413,9 @@
         </div>
     </div>
 </div>
+
+{{-- ALUR PENDAFTARAN --}}
+@include('partials.alur-pendaftaran', ['theme' => 'dark'])
 
 {{-- GRID ANGGOTA --}}
 <section class="grcs-pub-section">

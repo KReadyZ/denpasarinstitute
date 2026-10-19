@@ -263,3 +263,6 @@ Route::prefix('admission')->name('admission.')->group(function () {
     Route::get('/',  [AdmissionController::class, 'create'])->name('create');
     Route::post('/', [AdmissionController::class, 'store'])->name('store');
 });
+
+Route::view('/panduan-pendaftaran', 'panduan-pendaftaran')->name('panduan-pendaftaran');
+Route::view('/cara-daftar', 'panduan-pendaftaran')->name('cara-daftar');

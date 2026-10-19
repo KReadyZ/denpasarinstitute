@@ -629,6 +629,22 @@
 <button id="backToTop"><i class="fas fa-arrow-up"></i></button>
 
 <script type="text/javascript">
+// Immediate cleanup if current language is Indonesian
+(function() {
+  var saved = localStorage.getItem('google_translate_lang');
+  if (!saved || saved === 'id') {
+    var host = window.location.hostname;
+    var domains = ['', host, '.' + host];
+    var paths = ['/', window.location.pathname];
+    for (var i = 0; i < domains.length; i++) {
+      for (var j = 0; j < paths.length; j++) {
+        var d = domains[i] ? '; domain=' + domains[i] : '';
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + paths[j] + d;
+      }
+    }
+  }
+})();
+
 // Google Translate Configuration
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
@@ -636,7 +652,7 @@ function googleTranslateElementInit() {
     includedLanguages: 'id,en,de,it,hi,ja,ko,zh-CN,ar,fr,es,ru,nl,th,vi,ms,pt',
     layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
     autoDisplay: false,
-    multilanguagePage: true
+    multilanguagePage: false
   }, 'google_translate_element');
 }
 
@@ -654,12 +670,13 @@ function setGoogTransCookie(lang) {
 function clearGoogTransCookie() {
   const host = window.location.hostname;
   const domains = ['', host, '.' + host];
+  const paths = ['/', window.location.pathname];
   domains.forEach(d => {
-    const domainStr = d ? '; domain=' + d : '';
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/' + domainStr;
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + window.location.pathname + domainStr;
+    paths.forEach(p => {
+      const domainStr = d ? '; domain=' + d : '';
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + domainStr;
+    });
   });
-  document.cookie = 'googtrans=/id/id; path=/; max-age=31536000';
 }
 
 // Change Language Function
@@ -667,12 +684,19 @@ function changeLanguage(langCode) {
   const desktopSelect = document.getElementById('langSelectDesktop');
   const mobileSelect = document.getElementById('langSelectMobile');
 
-  // If empty or Indonesian ('id'), reset to original
+  // If empty or Indonesian ('id'), reset to original Indonesian without translating
   if (!langCode || langCode === '' || langCode === 'id') {
     localStorage.removeItem('google_translate_lang');
     clearGoogTransCookie();
     if (desktopSelect) desktopSelect.value = 'id';
     if (mobileSelect) mobileSelect.value = 'id';
+    
+    // Clear Google combo
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.value = '';
+      combo.dispatchEvent(new Event('change', { bubbles: true }));
+    }
     window.location.reload();
     return;
   }
@@ -691,7 +715,6 @@ function changeLanguage(langCode) {
     combo.value = langCode;
     combo.dispatchEvent(new Event('change', { bubbles: true }));
   } else {
-    // If combo is not ready yet, wait up to 3 seconds
     let attempts = 0;
     const interval = setInterval(function() {
       attempts++;
@@ -702,7 +725,6 @@ function changeLanguage(langCode) {
         c.dispatchEvent(new Event('change', { bubbles: true }));
       } else if (attempts >= 20) {
         clearInterval(interval);
-        // Fallback: reload page, Google Translate will translate automatically using googtrans cookie
         window.location.reload();
       }
     }, 150);
@@ -736,6 +758,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 150);
   } else {
+    clearGoogTransCookie();
     if (desktopSelect) desktopSelect.value = 'id';
     if (mobileSelect) mobileSelect.value = 'id';
   }

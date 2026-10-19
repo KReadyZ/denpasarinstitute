@@ -806,13 +806,23 @@
           <i class="fas fa-id-card-alt"></i> Portal Anggota &amp; Konsultan
         </div>
         <div class="portal-card-desc">
-          Akses dashboard, administrasi kartu anggota, dan jejaring riset.
+          Akses akun konsultan, administrasi kartu anggota, dan jejaring riset.
         </div>
         <div class="portal-btn-group">
           @auth
-            <a href="{{ route('backoffice.dashboard') }}" class="btn-portal-main">
-              <i class="fas fa-th-large"></i> Dashboard
-            </a>
+            @if(auth()->user()->role === 'konsultan')
+              <a href="{{ route('backoffice.konsultan.show', auth()->user()->id) }}" class="btn-portal-main">
+                <i class="fas fa-user-tie"></i> Akun Konsultan
+              </a>
+            @elseif(auth()->user()->role === 'grcs')
+              <a href="{{ route('backoffice.grcs.show', auth()->user()->id) }}" class="btn-portal-main">
+                <i class="fas fa-users"></i> Akun GRCS
+              </a>
+            @else
+              <a href="{{ route('backoffice.dashboard') }}" class="btn-portal-main">
+                <i class="fas fa-th-large"></i> Dashboard
+              </a>
+            @endif
             <form action="{{ route('backoffice.logout') }}" method="POST" style="display:inline;">
               @csrf
               <button type="submit" class="btn-portal-secondary" title="Keluar"><i class="fas fa-sign-out-alt"></i> Keluar</button>

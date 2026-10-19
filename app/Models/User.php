@@ -68,6 +68,8 @@ class User extends Authenticatable
         'garuda_id',
         'researcher_id',
         'foto',
+        'cv_path',
+        'bukti_kontribusi',
         'background',
         'kartu_path',
 

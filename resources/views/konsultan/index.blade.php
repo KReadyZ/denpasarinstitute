@@ -412,7 +412,7 @@
                 >
                 <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
             </form>
-            <a href="{{ route('panduan-pendaftaran') }}" class="btn-daftar-konsultan">
+            <a href="{{ route('panduan-pendaftaran') }}?role=konsultan" class="btn-daftar-konsultan">
                 <i class="fas fa-user-plus"></i> Daftar Anggota Konsultan
             </a>
         </div>

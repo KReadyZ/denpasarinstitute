@@ -404,7 +404,7 @@
                 >
                 <button type="submit" title="Cari"><i class="fas fa-search"></i></button>
             </form>
-            <a href="{{ route('panduan-pendaftaran') }}" class="btn-daftar-grcs">
+            <a href="{{ route('panduan-pendaftaran') }}?role=grcs" class="btn-daftar-grcs">
                 <i class="fas fa-user-plus"></i> Daftar Anggota GRCS Club
             </a>
         </div>

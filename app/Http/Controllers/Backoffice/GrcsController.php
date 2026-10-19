@@ -17,8 +17,22 @@ class GrcsController extends Controller
         $query = User::where('role', 'grcs');
 
         if ($request->filled('status')) {
-            $query->where('is_active', $request->status == 'active');
+            if ($request->status === 'active') {
+                $query->where('is_active', true);
+            } elseif ($request->status === 'pending') {
+                $query->where(function($q) {
+                    $q->where('verification_status', 'pending')
+                      ->orWhere(function($sub) {
+                          $sub->where('is_active', false)->whereNull('verification_status');
+                      });
+                });
+            } elseif ($request->status === 'rejected') {
+                $query->where('verification_status', 'rejected');
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_active', false);
+            }
         }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -34,10 +48,16 @@ class GrcsController extends Controller
 
         $totalActive = User::where('role', 'grcs')->where('is_active', true)->count();
         $totalInactive = User::where('role', 'grcs')->where('is_active', false)->count();
+        $totalPending = User::where('role', 'grcs')->where(function($q) {
+            $q->where('verification_status', 'pending')
+              ->orWhere(function($sub) {
+                  $sub->where('is_active', false)->whereNull('verification_status');
+              });
+        })->count();
         $totalPremium = User::where('role', 'grcs')->where('membership_type', 'premium')->count();
         $totalVip = User::where('role', 'grcs')->where('membership_type', 'vip')->count();
 
-        return view('backoffice.grcs.index', compact('grcsMembers', 'totalActive', 'totalInactive', 'totalPremium', 'totalVip'));
+        return view('backoffice.grcs.index', compact('grcsMembers', 'totalActive', 'totalInactive', 'totalPending', 'totalPremium', 'totalVip'));
     }
 
     public function create()
@@ -221,5 +241,72 @@ class GrcsController extends Controller
         $status = $grcsMember->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return redirect()->back()
             ->with('success', "Akun {$grcsMember->name} berhasil {$status}");
+    }
+
+    public function verifikasiIndex()
+    {
+        $pendingMembers = User::where('role', 'grcs')
+            ->where(function($q) {
+                $q->where('verification_status', 'pending')
+                  ->orWhere(function($sub) {
+                      $sub->where('is_active', false)->whereNull('verification_status');
+                  });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('backoffice.grcs.verifikasi', compact('pendingMembers'));
+    }
+
+    public function verifikasiShow($id)
+    {
+        $grcsMember = User::where('role', 'grcs')->findOrFail($id);
+
+        return view('backoffice.grcs.verifikasi-show', compact('grcsMember'));
+    }
+
+    public function approve(Request $request, $id)
+    {
+        $grcsMember = User::where('role', 'grcs')->findOrFail($id);
+
+        if (empty($grcsMember->no_anggota)) {
+            $grcsMember->no_anggota = User::generateNoAnggota(
+                'grcs',
+                $grcsMember->tanggal_lahir,
+                $grcsMember->kode_provinsi ?? '51'
+            );
+        }
+
+        if (empty($grcsMember->berlaku_sd)) {
+            $grcsMember->berlaku_sd = now()->addYear();
+        }
+
+        $grcsMember->is_active = true;
+        $grcsMember->verification_status = 'approved';
+        $grcsMember->verified_at = now();
+        $grcsMember->verified_by = \Illuminate\Support\Facades\Auth::id();
+        $grcsMember->rejection_reason = null;
+        $grcsMember->save();
+
+        return redirect()->route('backoffice.grcs.index')
+            ->with('success', "Akun Anggota GRCS Club {$grcsMember->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$grcsMember->no_anggota}");
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500',
+        ]);
+
+        $grcsMember = User::where('role', 'grcs')->findOrFail($id);
+        $grcsMember->is_active = false;
+        $grcsMember->verification_status = 'rejected';
+        $grcsMember->verified_at = now();
+        $grcsMember->verified_by = \Illuminate\Support\Facades\Auth::id();
+        $grcsMember->rejection_reason = $request->rejection_reason;
+        $grcsMember->save();
+
+        return redirect()->route('backoffice.grcs.index')
+            ->with('success', "Pendaftaran Anggota GRCS Club {$grcsMember->name} telah ditolak.");
     }
 }

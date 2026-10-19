@@ -17,8 +17,22 @@ class KonsultanController extends Controller
         $query = User::where('role', 'konsultan');
 
         if ($request->filled('status')) {
-            $query->where('is_active', $request->status == 'active');
+            if ($request->status === 'active') {
+                $query->where('is_active', true);
+            } elseif ($request->status === 'pending') {
+                $query->where(function($q) {
+                    $q->where('verification_status', 'pending')
+                      ->orWhere(function($sub) {
+                          $sub->where('is_active', false)->whereNull('verification_status');
+                      });
+                });
+            } elseif ($request->status === 'rejected') {
+                $query->where('verification_status', 'rejected');
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_active', false);
+            }
         }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -34,10 +48,16 @@ class KonsultanController extends Controller
 
         $totalActive = User::where('role', 'konsultan')->where('is_active', true)->count();
         $totalInactive = User::where('role', 'konsultan')->where('is_active', false)->count();
+        $totalPending = User::where('role', 'konsultan')->where(function($q) {
+            $q->where('verification_status', 'pending')
+              ->orWhere(function($sub) {
+                  $sub->where('is_active', false)->whereNull('verification_status');
+              });
+        })->count();
         $totalPremium = User::where('role', 'konsultan')->where('membership_type', 'premium')->count();
         $totalVip = User::where('role', 'konsultan')->where('membership_type', 'vip')->count();
 
-        return view('backoffice.konsultan.index', compact('konsultans', 'totalActive', 'totalInactive', 'totalPremium', 'totalVip'));
+        return view('backoffice.konsultan.index', compact('konsultans', 'totalActive', 'totalInactive', 'totalPending', 'totalPremium', 'totalVip'));
     }
 
     public function create()
@@ -281,5 +301,84 @@ class KonsultanController extends Controller
         $status = $konsultan->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return redirect()->back()
             ->with('success', "Akun {$konsultan->name} berhasil {$status}");
+    }
+
+    public function verifikasiIndex()
+    {
+        $pendingKonsultans = User::where('role', 'konsultan')
+            ->where(function($q) {
+                $q->where('verification_status', 'pending')
+                  ->orWhere(function($sub) {
+                      $sub->where('is_active', false)->whereNull('verification_status');
+                  });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('backoffice.konsultan.verifikasi', compact('pendingKonsultans'));
+    }
+
+    public function verifikasiShow($id)
+    {
+        $konsultan = User::where('role', 'konsultan')->findOrFail($id);
+
+        $arrayFields = ['expertise', 'education', 'certifications', 'publications'];
+        foreach ($arrayFields as $field) {
+            if ($konsultan->$field && is_string($konsultan->$field)) {
+                $decoded = json_decode($konsultan->$field, true);
+                $konsultan->{$field . '_display'} = is_array($decoded) ? implode(', ', $decoded) : '';
+            } elseif ($konsultan->$field && is_array($konsultan->$field)) {
+                $konsultan->{$field . '_display'} = implode(', ', $konsultan->$field);
+            } else {
+                $konsultan->{$field . '_display'} = '';
+            }
+        }
+
+        return view('backoffice.konsultan.verifikasi-show', compact('konsultan'));
+    }
+
+    public function approve(Request $request, $id)
+    {
+        $konsultan = User::where('role', 'konsultan')->findOrFail($id);
+
+        if (empty($konsultan->no_anggota)) {
+            $konsultan->no_anggota = User::generateNoAnggota(
+                'konsultan',
+                $konsultan->tanggal_lahir,
+                $konsultan->kode_provinsi ?? '51'
+            );
+        }
+
+        if (empty($konsultan->berlaku_sd)) {
+            $konsultan->berlaku_sd = now()->addYear();
+        }
+
+        $konsultan->is_active = true;
+        $konsultan->verification_status = 'approved';
+        $konsultan->verified_at = now();
+        $konsultan->verified_by = \Illuminate\Support\Facades\Auth::id();
+        $konsultan->rejection_reason = null;
+        $konsultan->save();
+
+        return redirect()->route('backoffice.konsultan.index')
+            ->with('success', "Akun Konsultan {$konsultan->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$konsultan->no_anggota}");
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500',
+        ]);
+
+        $konsultan = User::where('role', 'konsultan')->findOrFail($id);
+        $konsultan->is_active = false;
+        $konsultan->verification_status = 'rejected';
+        $konsultan->verified_at = now();
+        $konsultan->verified_by = \Illuminate\Support\Facades\Auth::id();
+        $konsultan->rejection_reason = $request->rejection_reason;
+        $konsultan->save();
+
+        return redirect()->route('backoffice.konsultan.index')
+            ->with('success', "Pendaftaran Konsultan {$konsultan->name} telah ditolak.");
     }
 }

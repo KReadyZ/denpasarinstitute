@@ -18,12 +18,17 @@ class BackofficeMiddleware
         $user = Auth::user();
 
         if (!$user->is_active) {
+            $msg = $user->verification_status === 'pending'
+                ? 'Akun Anda sedang dalam proses verifikasi oleh Super Admin. Mohon menunggu.'
+                : ($user->verification_status === 'rejected'
+                    ? 'Pendaftaran akun Anda ditolak. Silakan hubungi administrator.'
+                    : 'Akun Anda belum aktif. Hubungi administrator.');
+
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
             
-            return redirect()->route('backoffice.login')
-                ->with('error', 'Akun Anda tidak aktif. Hubungi administrator.');
+            return redirect()->route('backoffice.login')->with('error', $msg);
         }
 
         if (!empty($roles) && !in_array($user->role, $roles)) {

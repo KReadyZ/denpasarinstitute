@@ -59,25 +59,33 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
         Route::get('kartu/{id}/belakang', [KartuController::class, 'belakang'])->name('kartu.belakang');
 
         Route::prefix('konsultan')->name('konsultan.')->group(function () {
-            Route::get('/',                     [KonsultanController::class, 'index'])->name('index');
-            Route::get('/create',               [KonsultanController::class, 'create'])->name('create');
-            Route::post('/',                    [KonsultanController::class, 'store'])->name('store');
-            Route::get('/{id}/edit',            [KonsultanController::class, 'edit'])->name('edit');
-            Route::put('/{id}',                 [KonsultanController::class, 'update'])->name('update');
-            Route::delete('/{id}',              [KonsultanController::class, 'destroy'])->name('destroy');
-            Route::patch('/{id}/toggle-active', [KonsultanController::class, 'toggleActive'])->name('toggle-active');
-            Route::get('/{id}',                 [KonsultanController::class, 'show'])->name('show');
+            Route::get('/',                          [KonsultanController::class, 'index'])->name('index');
+            Route::get('/verifikasi',                [KonsultanController::class, 'verifikasiIndex'])->name('verifikasi');
+            Route::get('/verifikasi/{id}',           [KonsultanController::class, 'verifikasiShow'])->name('verifikasi.show');
+            Route::patch('/verifikasi/{id}/approve', [KonsultanController::class, 'approve'])->name('approve');
+            Route::post('/verifikasi/{id}/reject',   [KonsultanController::class, 'reject'])->name('reject');
+            Route::get('/create',                    [KonsultanController::class, 'create'])->name('create');
+            Route::post('/',                         [KonsultanController::class, 'store'])->name('store');
+            Route::get('/{id}/edit',                 [KonsultanController::class, 'edit'])->name('edit');
+            Route::put('/{id}',                      [KonsultanController::class, 'update'])->name('update');
+            Route::delete('/{id}',                   [KonsultanController::class, 'destroy'])->name('destroy');
+            Route::patch('/{id}/toggle-active',      [KonsultanController::class, 'toggleActive'])->name('toggle-active');
+            Route::get('/{id}',                      [KonsultanController::class, 'show'])->name('show');
         });
 
         Route::prefix('grcs')->name('grcs.')->group(function () {
-            Route::get('/',                     [GrcsController::class, 'index'])->name('index');
-            Route::get('/create',               [GrcsController::class, 'create'])->name('create');
-            Route::post('/',                    [GrcsController::class, 'store'])->name('store');
-            Route::get('/{id}/edit',            [GrcsController::class, 'edit'])->name('edit');
-            Route::put('/{id}',                 [GrcsController::class, 'update'])->name('update');
-            Route::delete('/{id}',              [GrcsController::class, 'destroy'])->name('destroy');
-            Route::patch('/{id}/toggle-active', [GrcsController::class, 'toggleActive'])->name('toggle-active');
-            Route::get('/{id}',                 [GrcsController::class, 'show'])->name('show');
+            Route::get('/',                          [GrcsController::class, 'index'])->name('index');
+            Route::get('/verifikasi',                [GrcsController::class, 'verifikasiIndex'])->name('verifikasi');
+            Route::get('/verifikasi/{id}',           [GrcsController::class, 'verifikasiShow'])->name('verifikasi.show');
+            Route::patch('/verifikasi/{id}/approve', [GrcsController::class, 'approve'])->name('approve');
+            Route::post('/verifikasi/{id}/reject',   [GrcsController::class, 'reject'])->name('reject');
+            Route::get('/create',                    [GrcsController::class, 'create'])->name('create');
+            Route::post('/',                         [GrcsController::class, 'store'])->name('store');
+            Route::get('/{id}/edit',                 [GrcsController::class, 'edit'])->name('edit');
+            Route::put('/{id}',                      [GrcsController::class, 'update'])->name('update');
+            Route::delete('/{id}',                   [GrcsController::class, 'destroy'])->name('destroy');
+            Route::patch('/{id}/toggle-active',      [GrcsController::class, 'toggleActive'])->name('toggle-active');
+            Route::get('/{id}',                      [GrcsController::class, 'show'])->name('show');
         });
 
         Route::prefix('berita')->name('berita.')->group(function () {

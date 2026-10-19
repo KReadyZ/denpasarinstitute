@@ -208,13 +208,19 @@
       <i class="fas fa-tachometer-alt"></i> Dashboard
     </a>
 
-    @if(auth()->user()->role === 'superadmin')
+    @if(auth()->check() && auth()->user()->role === 'superadmin')
     <div class="nav-section">Manajemen Anggota</div>
-    <a href="{{ route('backoffice.konsultan.index') }}" class="{{ request()->routeIs('backoffice.konsultan.*') ? 'active' : '' }}">
-      <i class="fas fa-user-tie"></i> Anggota Konsultan
+    <a href="{{ route('backoffice.konsultan.index') }}" class="{{ request()->routeIs('backoffice.konsultan.*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
+      <span><i class="fas fa-user-tie"></i> Anggota Konsultan</span>
+      @if(($pendingKonsultanCount ?? 0) > 0)
+        <span class="badge" style="background:#CC0000; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingKonsultanCount }}</span>
+      @endif
     </a>
-    <a href="{{ route('backoffice.grcs.index') }}" class="{{ request()->routeIs('backoffice.grcs.*') ? 'active' : '' }}">
-      <i class="fas fa-users"></i> GRCS Club
+    <a href="{{ route('backoffice.grcs.index') }}" class="{{ request()->routeIs('backoffice.grcs.*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
+      <span><i class="fas fa-users"></i> GRCS Club</span>
+      @if(($pendingGrcsCount ?? 0) > 0)
+        <span class="badge" style="background:#16a34a; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingGrcsCount }}</span>
+      @endif
     </a>
     <a href="{{ route('backoffice.bursa-sdm.index') }}" class="{{ request()->routeIs('backoffice.bursa-sdm.*') ? 'active' : '' }}">
       <i class="fas fa-briefcase"></i> Bursa SDM
@@ -260,7 +266,7 @@
       <i class="fas fa-comment-dots"></i> Testimoni
     </a>
 
-    @elseif(auth()->user()->role === 'konsultan')
+    @elseif(auth()->check() && auth()->user()->role === 'konsultan')
     <div class="nav-section">Profil</div>
     <a href="{{ route('backoffice.konsultan.show', auth()->user()->id) }}" class="{{ request()->routeIs('backoffice.konsultan.show') ? 'active' : '' }}">
       <i class="fas fa-user-tie"></i> Profil Saya
@@ -270,7 +276,7 @@
       <i class="fas fa-newspaper"></i> Manajemen Berita
     </a>
 
-    @elseif(auth()->user()->role === 'grcs')
+    @elseif(auth()->check() && auth()->user()->role === 'grcs')
     <div class="nav-section">Profil</div>
     <a href="{{ route('backoffice.grcs.show', auth()->user()->id) }}" class="{{ request()->routeIs('backoffice.grcs.show') ? 'active' : '' }}">
       <i class="fas fa-users"></i> Profil Saya
@@ -284,10 +290,10 @@
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-user">
-      <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+      <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}</div>
       <div class="sidebar-user-info">
-        <span>{{ auth()->user()->name }}</span>
-        <small>{{ ucfirst(auth()->user()->role) }}</small>
+        <span>{{ auth()->user()->name ?? 'User' }}</span>
+        <small>{{ ucfirst(auth()->user()->role ?? 'Admin') }}</small>
       </div>
     </div>
     <form method="POST" action="{{ route('backoffice.logout') }}">

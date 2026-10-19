@@ -32,5 +32,36 @@ class AppServiceProvider extends ServiceProvider
             
             $view->with('allDivisi', $allDivisi);
         });
+
+        // Share pending counts ke backoffice.layouts.app
+        View::composer('backoffice.layouts.app', function ($view) {
+            try {
+                $pendingKonsultanCount = \App\Models\User::where('role', 'konsultan')
+                    ->where(function($q) {
+                        $q->where('verification_status', 'pending')
+                          ->orWhere(function($sub) {
+                              $sub->where('is_active', false)->whereNull('verification_status');
+                          });
+                    })->count();
+
+                $pendingGrcsCount = \App\Models\User::where('role', 'grcs')
+                    ->where(function($q) {
+                        $q->where('verification_status', 'pending')
+                          ->orWhere(function($sub) {
+                              $sub->where('is_active', false)->whereNull('verification_status');
+                          });
+                    })->count();
+
+                $view->with([
+                    'pendingKonsultanCount' => $pendingKonsultanCount,
+                    'pendingGrcsCount'      => $pendingGrcsCount,
+                ]);
+            } catch (\Throwable $e) {
+                $view->with([
+                    'pendingKonsultanCount' => 0,
+                    'pendingGrcsCount'      => 0,
+                ]);
+            }
+        });
     }
 }

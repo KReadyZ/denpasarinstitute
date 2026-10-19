@@ -120,6 +120,10 @@ class User extends Authenticatable
             if ($user->role === 'mitra' && empty($user->verification_status)) {
                 $user->verification_status = 'pending';
             }
+
+            if (in_array($user->role, ['konsultan', 'grcs']) && empty($user->verification_status) && !$user->is_active) {
+                $user->verification_status = 'pending';
+            }
         });
     }
 
@@ -165,6 +169,16 @@ class User extends Authenticatable
         return $this->avatar_url;
     }
 
+    public function getCvUrlAttribute()
+    {
+        return $this->cv_path ? Storage::url($this->cv_path) : null;
+    }
+
+    public function getBuktiKontribusiUrlAttribute()
+    {
+        return $this->bukti_kontribusi ? Storage::url($this->bukti_kontribusi) : null;
+    }
+
     public function getBackgroundUrlAttribute()
     {
         return $this->background ? Storage::url($this->background) : null;
@@ -173,6 +187,11 @@ class User extends Authenticatable
     public function getKartuUrlAttribute()
     {
         return $this->kartu_path ? Storage::url($this->kartu_path) : null;
+    }
+
+    public function verifier()
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 
     public function getProfileCompletionAttribute()
@@ -234,8 +253,20 @@ class User extends Authenticatable
         return $query->where('is_active', true);
     }
 
-    public function scopePendingVerification($query)
+    public function scopePendingVerification($query, $role = null)
     {
-        return $query->where('role', 'mitra')->where('verification_status', 'pending');
+        $q = $query->where(function($sub) {
+            $sub->where('verification_status', 'pending')
+                ->orWhere(function($inner) {
+                    $inner->where('is_active', false)
+                          ->whereNull('verification_status');
+                });
+        });
+
+        if ($role) {
+            $q->where('role', $role);
+        }
+
+        return $q;
     }
 }

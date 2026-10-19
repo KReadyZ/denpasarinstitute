@@ -24,6 +24,28 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $user = Auth::user();
+            if (!$user->is_active) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                if ($user->verification_status === 'pending') {
+                    return back()->withErrors([
+                        'email' => 'Akun Anda sedang dalam proses verifikasi berkas oleh Super Admin. Mohon menunggu proses verifikasi.',
+                    ])->onlyInput('email');
+                } elseif ($user->verification_status === 'rejected') {
+                    $reason = $user->rejection_reason ? ": {$user->rejection_reason}" : '.';
+                    return back()->withErrors([
+                        'email' => "Pendaftaran akun Anda ditolak{$reason} Silakan hubungi admin.",
+                    ])->onlyInput('email');
+                } else {
+                    return back()->withErrors([
+                        'email' => 'Akun Anda belum aktif. Hubungi administrator.',
+                    ])->onlyInput('email');
+                }
+            }
+
             $request->session()->regenerate();
             return redirect()->route('backoffice.dashboard');
         }
@@ -74,22 +96,23 @@ class AuthController extends Controller
             : Hash::make(\Illuminate\Support\Str::random(12));
 
         User::create([
-            'name'             => $validated['name'],
-            'email'            => $validated['email'],
-            'password'         => $password,
-            'role'             => $validated['role'],
-            'phone'            => $validated['phone'] ?? null,
-            'tanggal_lahir'    => $validated['tanggal_lahir'] ?? null,
-            'address'          => $validated['address'] ?? null,
-            'provinsi'         => $validated['provinsi'] ?? null,
-            'institution'      => $validated['institution'] ?? null,
-            'position'         => $validated['position'] ?? null,
-            'foto'             => $fotoPath,
-            'cv_path'          => $cvPath,
-            'bukti_kontribusi' => $buktiPath,
-            'is_active'        => false, // Perlu aktivasi admin
-            'member_since'     => now(),
-            'membership_type'  => 'regular',
+            'name'                => $validated['name'],
+            'email'               => $validated['email'],
+            'password'            => $password,
+            'role'                => $validated['role'],
+            'phone'               => $validated['phone'] ?? null,
+            'tanggal_lahir'       => $validated['tanggal_lahir'] ?? null,
+            'address'             => $validated['address'] ?? null,
+            'provinsi'            => $validated['provinsi'] ?? null,
+            'institution'         => $validated['institution'] ?? null,
+            'position'            => $validated['position'] ?? null,
+            'foto'                => $fotoPath,
+            'cv_path'             => $cvPath,
+            'bukti_kontribusi'    => $buktiPath,
+            'is_active'           => false, // Perlu verifikasi admin
+            'verification_status' => 'pending',
+            'member_since'        => now(),
+            'membership_type'     => 'regular',
         ]);
 
         return redirect()->back()

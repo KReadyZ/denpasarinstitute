@@ -259,6 +259,53 @@
                 </div>
                 <div class="profile-item"><strong>Provinsi:</strong> <span>{{ $konsultan->provinsi ?? '-' }}</span></div>
                 <div class="profile-item"><strong>Motto Hidup:</strong> <span>{{ $konsultan->motto_hidup ?? '-' }}</span></div>
+
+                <div class="divider-red"></div>
+                <span class="section-title-red">Dokumen Pendaftaran & Verifikasi</span>
+
+                <div class="profile-item">
+                    <strong>Status Verifikasi:</strong>
+                    @if($konsultan->verification_status === 'approved' || ($konsultan->is_active && empty($konsultan->verification_status)))
+                        <span class="badge" style="background:#dcfce7; color:#166534; font-size:0.75rem;">
+                            <i class="fas fa-check-circle"></i> Terverifikasi (Disetujui)
+                        </span>
+                    @elseif($konsultan->verification_status === 'rejected')
+                        <span class="badge" style="background:#fee2e2; color:#991b1b; font-size:0.75rem;">
+                            <i class="fas fa-times-circle"></i> Ditolak: {{ $konsultan->rejection_reason }}
+                        </span>
+                    @else
+                        <span class="badge" style="background:#fef3c7; color:#92400e; font-size:0.75rem;">
+                            <i class="fas fa-clock"></i> Menunggu Verifikasi
+                        </span>
+                        @if(Auth::user()->role === 'superadmin')
+                            <a href="{{ route('backoffice.konsultan.verifikasi.show', $konsultan->id) }}" class="btn btn-sm btn-primary" style="margin-left:8px; padding:3px 10px; font-size:0.72rem;">
+                                <i class="fas fa-tasks"></i> Buka Ceklist Verifikasi
+                            </a>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="profile-item">
+                    <strong>Berkas CV:</strong>
+                    @if($konsultan->cv_path)
+                        <a href="{{ asset('storage/' . $konsultan->cv_path) }}" target="_blank" class="btn btn-sm btn-info" style="padding:3px 10px; font-size:0.75rem;">
+                            <i class="fas fa-file-pdf"></i> Lihat / Unduh CV
+                        </a>
+                    @else
+                        <span style="color:#888;">Tidak ada file CV</span>
+                    @endif
+                </div>
+
+                <div class="profile-item">
+                    <strong>Bukti Kontribusi:</strong>
+                    @if($konsultan->bukti_kontribusi)
+                        <a href="{{ asset('storage/' . $konsultan->bukti_kontribusi) }}" target="_blank" class="btn btn-sm btn-success" style="padding:3px 10px; font-size:0.75rem;">
+                            <i class="fas fa-receipt"></i> Lihat Bukti Kontribusi
+                        </a>
+                    @else
+                        <span style="color:#888;">Tidak ada bukti kontribusi</span>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

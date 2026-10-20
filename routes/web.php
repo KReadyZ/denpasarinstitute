@@ -276,14 +276,59 @@ Route::view('/panduan-pendaftaran', 'panduan-pendaftaran')->name('panduan-pendaf
 Route::view('/cara-daftar', 'panduan-pendaftaran')->name('cara-daftar');
 
 Route::get('/pendaftaran/konsultan', function () {
-    return view('pendaftaran', ['role' => 'konsultan']);
+    $beritaTerkini = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('published_at', 'desc')
+        ->take(5)
+        ->get();
+    $beritaTerpopuler = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('views', 'desc')
+        ->take(5)
+        ->get();
+
+    return view('pendaftaran', [
+        'role' => 'konsultan',
+        'beritaTerkini' => $beritaTerkini,
+        'beritaTerpopuler' => $beritaTerpopuler,
+    ]);
 })->name('pendaftaran.konsultan');
 
 Route::get('/pendaftaran/grcs', function () {
-    return view('pendaftaran', ['role' => 'grcs']);
+    $beritaTerkini = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('published_at', 'desc')
+        ->take(5)
+        ->get();
+    $beritaTerpopuler = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('views', 'desc')
+        ->take(5)
+        ->get();
+
+    return view('pendaftaran', [
+        'role' => 'grcs',
+        'beritaTerkini' => $beritaTerkini,
+        'beritaTerpopuler' => $beritaTerpopuler,
+    ]);
 })->name('pendaftaran.grcs');
 
 Route::get('/pendaftaran', function (\Illuminate\Http\Request $request) {
     $role = $request->get('role', 'konsultan');
-    return view('pendaftaran', ['role' => $role]);
+    $beritaTerkini = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('published_at', 'desc')
+        ->take(5)
+        ->get();
+    $beritaTerpopuler = \App\Models\Berita::where('is_active', true)
+        ->where('status', 'approved')
+        ->orderBy('views', 'desc')
+        ->take(5)
+        ->get();
+
+    return view('pendaftaran', [
+        'role' => $role,
+        'beritaTerkini' => $beritaTerkini,
+        'beritaTerpopuler' => $beritaTerpopuler,
+    ]);
 })->name('pendaftaran');

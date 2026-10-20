@@ -7,8 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Mail\PendaftaranVerifiedMail;
+use App\Mail\PendaftaranRejectedMail;
 
 class KonsultanController extends Controller
 {
@@ -360,8 +364,24 @@ class KonsultanController extends Controller
         $konsultan->rejection_reason = null;
         $konsultan->save();
 
+        // Kirim email konfirmasi verifikasi ke konsultan
+        $emailSent = false;
+        try {
+            if (!empty($konsultan->email)) {
+                Mail::to($konsultan->email)->send(new PendaftaranVerifiedMail($konsultan));
+                $emailSent = true;
+            }
+        } catch (\Throwable $e) {
+            Log::error("Gagal mengirim email verifikasi konsultan ID {$konsultan->id}: " . $e->getMessage());
+        }
+
+        $msg = "Akun Konsultan {$konsultan->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$konsultan->no_anggota}.";
+        if ($emailSent) {
+            $msg .= " Email konfirmasi resmi telah dikirim ke {$konsultan->email}.";
+        }
+
         return redirect()->route('backoffice.konsultan.index')
-            ->with('success', "Akun Konsultan {$konsultan->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$konsultan->no_anggota}");
+            ->with('success', $msg);
     }
 
     public function reject(Request $request, $id)
@@ -378,7 +398,23 @@ class KonsultanController extends Controller
         $konsultan->rejection_reason = $request->rejection_reason;
         $konsultan->save();
 
+        // Kirim email pemberitahuan penolakan ke konsultan
+        $emailSent = false;
+        try {
+            if (!empty($konsultan->email)) {
+                Mail::to($konsultan->email)->send(new PendaftaranRejectedMail($konsultan, $request->rejection_reason));
+                $emailSent = true;
+            }
+        } catch (\Throwable $e) {
+            Log::error("Gagal mengirim email penolakan konsultan ID {$konsultan->id}: " . $e->getMessage());
+        }
+
+        $msg = "Pendaftaran Konsultan {$konsultan->name} telah ditolak.";
+        if ($emailSent) {
+            $msg .= " Pemberitahuan telah dikirim ke {$konsultan->email}.";
+        }
+
         return redirect()->route('backoffice.konsultan.index')
-            ->with('success', "Pendaftaran Konsultan {$konsultan->name} telah ditolak.");
+            ->with('success', $msg);
     }
 }

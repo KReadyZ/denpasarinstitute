@@ -280,8 +280,9 @@
     .footer-links a { color: rgba(255,255,255,0.6); font-size: 0.81rem; transition: 0.2s; }
     .footer-links a:hover { color: var(--yellow); padding-left: 4px; }
     .footer-contact-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
-    .footer-contact-item i { color: var(--yellow); font-size: 0.84rem; margin-top: 2px; flex-shrink: 0; }
-    .footer-contact-item span { font-size: 0.81rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .footer-contact-item i { color: var(--yellow); font-size: 0.84rem; margin-top: 3px; flex-shrink: 0; }
+    .footer-contact-item span, .footer-contact-item a { font-size: 0.81rem; color: rgba(255,255,255,0.6); line-height: 1.5; text-decoration: none; transition: color 0.2s; }
+    .footer-contact-item a:hover { color: var(--yellow); }
     .footer-bottom-bar { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 40px; padding: 16px 20px; max-width: 1200px; margin-left: auto; margin-right: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
     .footer-bottom-bar p { font-size: 0.76rem; color: rgba(255,255,255,0.4); margin: 0; }
     .footer-bottom-bar a { font-size: 0.76rem; color: rgba(255,255,255,0.4); }
@@ -590,7 +591,13 @@
       <h4>Kontak</h4>
       <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Denpasar, Bali - Indonesia</span></div>
       <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@denpasarinstitute.id</span></div>
-      <div class="footer-contact-item"><i class="fab fa-whatsapp"></i><span>+62 878-653-9966</span></div>
+      <div class="footer-contact-item">
+        <i class="fab fa-whatsapp"></i>
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <a href="https://wa.me/6282144814593" target="_blank" rel="noopener noreferrer" style="white-space: nowrap;">+62 821-4481-4593</a>
+          <a href="https://wa.me/6282318666547" target="_blank" rel="noopener noreferrer" style="white-space: nowrap;">+62 823-1866-6547</a>
+        </div>
+      </div>
     </div>
   </div>
   <div class="footer-bottom-bar">
@@ -604,7 +611,7 @@
 
 <div class="contact-widget" id="contactWidget">
   <div class="cw-menu" id="cwMenu">
-    <a href="https://wa.me/6287865309966" class="cw-item" target="_blank" rel="noopener noreferrer">
+    <a href="https://wa.me/6282144814593" class="cw-item" target="_blank" rel="noopener noreferrer">
       <span class="cw-item-icon cw-wa-color"><i class="fab fa-whatsapp"></i></span>
       <span class="cw-item-label">Admin Sekretariat</span>
     </a>
@@ -612,7 +619,7 @@
       <span class="cw-item-icon cw-email-color"><i class="fas fa-envelope"></i></span>
       <span class="cw-item-label">Email</span>
     </a>
-    <a href="https://wa.me/6281337644463" class="cw-item" target="_blank" rel="noopener noreferrer">
+    <a href="https://wa.me/6282318666547" class="cw-item" target="_blank" rel="noopener noreferrer">
       <span class="cw-item-icon cw-wa-color"><i class="fab fa-whatsapp"></i></span>
       <span class="cw-item-label">Lead Consultant</span>
     </a>
@@ -995,6 +1002,23 @@ if (btt) {
   window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
   updateHeaderOnScroll();
 })();
+</script>
+
+<style>
+  input[type="date"] { cursor: pointer; }
+  input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+</style>
+<script>
+  // Otomatis buka picker kalender saat kolom tanggal diklik
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.matches('input[type="date"]')) {
+      if (typeof e.target.showPicker === 'function') {
+        try {
+          e.target.showPicker();
+        } catch (err) {}
+      }
+    }
+  });
 </script>
 
 @stack('scripts')

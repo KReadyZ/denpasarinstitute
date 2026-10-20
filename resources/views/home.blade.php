@@ -1010,7 +1010,7 @@
                   </p>
                   <div class="div-card-footer">
                     <div class="div-socials">
-                      <a href="@if($i === 0)#contact @elseif($i === 1)#heroSlider @else https://wa.me/6287865309966 @endif" style="color: rgba(255,255,255,0.55); font-size: 0.9rem; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; text-decoration: none; cursor: pointer;">
+                      <a href="@if($i === 0)#contact @elseif($i === 1)#heroSlider @else https://wa.me/6282144814593 @endif" style="color: rgba(255,255,255,0.55); font-size: 0.9rem; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; text-decoration: none; cursor: pointer;">
                         @if($i === 0)
                           <i class="fas fa-envelope"></i>
                         @elseif($i === 1)
@@ -1070,7 +1070,7 @@
                   <p class="div-card-desc">Siap berdiskusi tentang kebutuhan riset & pengembangan Anda.</p>
                   <div class="div-card-footer">
                     <div class="div-socials">
-                      <a href="https://wa.me/6287865309966" style="color: rgba(255,255,255,0.55); font-size: 0.9rem; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; text-decoration: none; cursor: pointer;">
+                      <a href="https://wa.me/6282144814593" style="color: rgba(255,255,255,0.55); font-size: 0.9rem; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; text-decoration: none; cursor: pointer;">
                         <i class="fab fa-whatsapp"></i>
                       </a>
                     </div>
@@ -1546,7 +1546,13 @@
       <p>Kami percaya kemajuan terbaik lahir dari kolaborasi. Bersama Denpasar Institute, kita wujudkan inovasi yang memberi dampak nyata bagi masyarakat dan bangsa.</p>
       <p class="highlight">"Transforming Ideas into Action"</p>
       <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;"><i class="fab fa-whatsapp" style="color:#25d366;font-size:1.1rem;"></i>+62 812-4617-9959</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;">
+          <i class="fab fa-whatsapp" style="color:#25d366;font-size:1.1rem;margin-top:2px;"></i>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <a href="https://wa.me/6282144814593" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">+62 821-4481-4593</a>
+            <a href="https://wa.me/6282318666547" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">+62 823-1866-6547</a>
+          </div>
+        </div>
         <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;"><i class="fas fa-envelope" style="color:var(--yellow);"></i>info@denpasarinstitute.id</div>
       </div>
     </div>
@@ -1799,7 +1805,7 @@
     var m = document.getElementById('message').value || '';
     if (!n || !e || !i || !s || !m) { alert('Harap isi semua kolom yang wajib diisi!'); return; }
     var msg = 'Pesan Baru dari Denpasar Institute Website\n\nNama: ' + n + '\nEmail: ' + e + '\nInstitusi: ' + i + '\nSubjek: ' + s + '\n\nPesan:\n' + m;
-    window.open('https://wa.me/6281246179959?text=' + encodeURIComponent(msg), '_blank');
+    window.open('https://wa.me/6282144814593?text=' + encodeURIComponent(msg), '_blank');
   }
   window.sendWA = sendWA;
 </script>

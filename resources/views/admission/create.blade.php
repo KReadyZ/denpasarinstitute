@@ -620,8 +620,12 @@
   <div style="margin-top: 48px; text-align: center; color: #666; font-size: 0.9rem;">
     <p>Ada pertanyaan? Hubungi kami melalui:</p>
     <p>
-      <a href="https://wa.me/6287865309966" target="_blank" style="color: #25d366; font-weight: 600; text-decoration: none;">
-        <i class="fab fa-whatsapp"></i> WhatsApp Admin
+      <a href="https://wa.me/6282144814593" target="_blank" style="color: #25d366; font-weight: 600; text-decoration: none;">
+        <i class="fab fa-whatsapp"></i> WhatsApp Admin (0821-4481-4593)
+      </a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="https://wa.me/6282318666547" target="_blank" style="color: #25d366; font-weight: 600; text-decoration: none;">
+        <i class="fab fa-whatsapp"></i> WhatsApp Layanan (0823-1866-6547)
       </a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
       <a href="mailto:info@denpasarinstitute.id" style="color: #f5811f; font-weight: 600; text-decoration: none;">

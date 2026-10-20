@@ -151,10 +151,17 @@
                         </div>
                         <div style="text-align:center; padding:10px 0;">
                             @if($konsultan->cv_path)
-                                <div style="height:130px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f9fafb; border-radius:8px; border:1px solid #eee;">
-                                    <i class="fas fa-file-pdf" style="font-size:3rem; color:#CC0000; margin-bottom:6px;"></i>
-                                    <span style="font-size:0.75rem; color:#444; font-weight:600;">File CV Pendaftar</span>
-                                </div>
+                                @php
+                                    $isCvImg = in_array(strtolower(pathinfo($konsultan->cv_path, PATHINFO_EXTENSION)), ['jpg','jpeg','png','webp','gif']);
+                                @endphp
+                                @if($isCvImg)
+                                    <img src="{{ asset('storage/' . $konsultan->cv_path) }}" alt="CV Pendaftar" style="width:130px; height:130px; object-fit:cover; border-radius:8px; border:2px solid #2563eb; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                                @else
+                                    <div style="height:130px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f9fafb; border-radius:8px; border:1px solid #eee;">
+                                        <i class="fas fa-file-pdf" style="font-size:3rem; color:#CC0000; margin-bottom:6px;"></i>
+                                        <span style="font-size:0.75rem; color:#444; font-weight:600;">File Dokumen CV</span>
+                                    </div>
+                                @endif
                                 <div style="margin-top:12px;">
                                     <a href="{{ asset('storage/' . $konsultan->cv_path) }}" target="_blank" class="btn btn-sm btn-info" style="font-size:0.74rem;">
                                         <i class="fas fa-external-link-alt"></i> Buka & Periksa CV

@@ -154,14 +154,25 @@
         <p>Siap berdiskusi tentang kebutuhan riset dan pengembangan Anda. Tim kami akan merespons dengan cepat dan profesional.</p>
 
         <div class="contact-card-info">
-          <div class="cc-item"><i class="fab fa-whatsapp"></i><span>+62 878-6530-9966</span></div>
+          <div class="cc-item" style="align-items: flex-start;">
+            <i class="fab fa-whatsapp" style="margin-top: 3px;"></i>
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <span style="white-space: nowrap;">+62 821-4481-4593</span>
+              <span style="white-space: nowrap;">+62 823-1866-6547</span>
+            </div>
+          </div>
           <div class="cc-item"><i class="fas fa-envelope"></i><span>info@denpasarinstitute.id</span></div>
           <div class="cc-item"><i class="fas fa-map-marker-alt"></i><span>Denpasar, Bali — Indonesia</span></div>
         </div>
 
-        <a href="https://wa.me/6287865309966" target="_blank" rel="noopener noreferrer" class="btn-wa-card">
-          <i class="fab fa-whatsapp"></i> Kirim Pesan WhatsApp
-        </a>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="https://wa.me/6282144814593" target="_blank" rel="noopener noreferrer" class="btn-wa-card">
+            <i class="fab fa-whatsapp"></i> WhatsApp Admin 1 (0821-4481-4593)
+          </a>
+          <a href="https://wa.me/6282318666547" target="_blank" rel="noopener noreferrer" class="btn-wa-card" style="background:#059669;">
+            <i class="fab fa-whatsapp"></i> WhatsApp Admin 2 (0823-1866-6547)
+          </a>
+        </div>
       </div>
     </div>
   </div>

@@ -331,6 +331,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.9.1/summernote-bs5.min.js"></script>
 
+<style>
+  input[type="date"] { cursor: pointer; }
+  input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+</style>
+<script>
+  // Otomatis buka picker kalender saat kolom tanggal diklik
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.matches('input[type="date"]')) {
+      if (typeof e.target.showPicker === 'function') {
+        try {
+          e.target.showPicker();
+        } catch (err) {}
+      }
+    }
+  });
+</script>
+
 @stack('scripts')
 </body>
 </html>

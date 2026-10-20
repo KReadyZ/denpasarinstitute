@@ -7,8 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Mail\PendaftaranVerifiedMail;
+use App\Mail\PendaftaranRejectedMail;
 
 class GrcsController extends Controller
 {
@@ -288,8 +292,24 @@ class GrcsController extends Controller
         $grcsMember->rejection_reason = null;
         $grcsMember->save();
 
+        // Kirim email konfirmasi verifikasi ke anggota GRCS
+        $emailSent = false;
+        try {
+            if (!empty($grcsMember->email)) {
+                Mail::to($grcsMember->email)->send(new PendaftaranVerifiedMail($grcsMember));
+                $emailSent = true;
+            }
+        } catch (\Throwable $e) {
+            Log::error("Gagal mengirim email verifikasi GRCS ID {$grcsMember->id}: " . $e->getMessage());
+        }
+
+        $msg = "Akun Anggota GRCS Club {$grcsMember->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$grcsMember->no_anggota}.";
+        if ($emailSent) {
+            $msg .= " Email konfirmasi resmi telah dikirim ke {$grcsMember->email}.";
+        }
+
         return redirect()->route('backoffice.grcs.index')
-            ->with('success', "Akun Anggota GRCS Club {$grcsMember->name} berhasil diverifikasi & diaktifkan! Nomor Anggota: {$grcsMember->no_anggota}");
+            ->with('success', $msg);
     }
 
     public function reject(Request $request, $id)
@@ -306,7 +326,23 @@ class GrcsController extends Controller
         $grcsMember->rejection_reason = $request->rejection_reason;
         $grcsMember->save();
 
+        // Kirim email pemberitahuan penolakan ke anggota GRCS
+        $emailSent = false;
+        try {
+            if (!empty($grcsMember->email)) {
+                Mail::to($grcsMember->email)->send(new PendaftaranRejectedMail($grcsMember, $request->rejection_reason));
+                $emailSent = true;
+            }
+        } catch (\Throwable $e) {
+            Log::error("Gagal mengirim email penolakan GRCS ID {$grcsMember->id}: " . $e->getMessage());
+        }
+
+        $msg = "Pendaftaran Anggota GRCS Club {$grcsMember->name} telah ditolak.";
+        if ($emailSent) {
+            $msg .= " Pemberitahuan telah dikirim ke {$grcsMember->email}.";
+        }
+
         return redirect()->route('backoffice.grcs.index')
-            ->with('success', "Pendaftaran Anggota GRCS Club {$grcsMember->name} telah ditolak.");
+            ->with('success', $msg);
     }
 }

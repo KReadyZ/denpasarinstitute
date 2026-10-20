@@ -90,7 +90,15 @@
                     <div class="alur-card-content">
                         <h3 class="alur-step-title">ISI FORMULIR</h3>
                         <p class="alur-step-desc">
-                            Isi formulir, unggah foto dan CV (khusus bagi tim konsultan) pada <a href="javascript:void(0)" onclick="bukaFormPendaftaran('{{ $currentRole ?? 'konsultan' }}')" class="alur-highlight-link">tombol pendaftaran</a>. Pastikan Bapak/Ibu/Saudara mengisi data dengan benar dan mengunggah CV bagi pendaftar tim Konsultan DI.
+                            Isi formulir, unggah foto dan CV (khusus bagi tim konsultan) pada 
+                            @if($currentRole === 'grcs')
+                                <a href="{{ route('pendaftaran.grcs') }}" class="alur-highlight-link">tombol pendaftaran</a>.
+                            @elseif($currentRole === 'konsultan')
+                                <a href="{{ route('pendaftaran.konsultan') }}" class="alur-highlight-link">tombol pendaftaran</a>.
+                            @else
+                                <a href="#alurActionButtons" class="alur-highlight-link">tombol pendaftaran</a>.
+                            @endif
+                            Pastikan Bapak/Ibu/Saudara mengisi data dengan benar dan mengunggah CV bagi pendaftar tim Konsultan DI.
                         </p>
                     </div>
                 </div>
@@ -162,199 +170,22 @@
 
         </div>
 
-        {{-- ACTION BUTTONS (Disesuaikan berdasarkan parameter role yang diklik) --}}
+        {{-- ACTION BUTTONS (Mengarahkan ke halaman formulir khusus) --}}
         <div class="alur-actions" id="alurActionButtons">
             @if(!$currentRole || $currentRole === 'konsultan')
-                <button type="button" class="btn-alur-cta btn-alur-konsultan" onclick="bukaFormPendaftaran('konsultan')" id="btnTriggerKonsultan">
+                <a href="{{ route('pendaftaran.konsultan') }}" class="btn-alur-cta btn-alur-konsultan" id="btnTriggerKonsultan">
                     <i class="fas fa-user-tie"></i> DAFTAR ANGGOTA KONSULTAN
-                </button>
+                </a>
             @endif
             @if(!$currentRole || $currentRole === 'grcs')
-                <button type="button" class="btn-alur-cta btn-alur-grcs" onclick="bukaFormPendaftaran('grcs')" id="btnTriggerGrcs">
+                <a href="{{ route('pendaftaran.grcs') }}" class="btn-alur-cta btn-alur-grcs" id="btnTriggerGrcs">
                     <i class="fas fa-users"></i> DAFTAR ANGGOTA GRCS CLUB
-                </button>
+                </a>
             @endif
-        </div>
-
-        {{-- FORM PENDAFTARAN DARI GAMBAR 2 --}}
-        <div class="alur-form-wrapper" id="alurFormWrapper" style="{{ (session('register_success') || $errors->any() || request('open') === 'form') ? 'display:block;' : 'display:none;' }}">
-            
-            @if(session('register_success'))
-                <div class="alur-alert alur-alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    <div>
-                        <strong>Pendaftaran Berhasil Dikirim!</strong>
-                        <p style="margin:4px 0 0;">{{ session('register_success') }}</p>
-                    </div>
-                </div>
-            @endif
-
-            @if($errors->any())
-                <div class="alur-alert alur-alert-error">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Mohon Periksa Kembali Isian Anda:</strong>
-                        <ul style="margin:4px 0 0; padding-left:18px;">
-                            @foreach($errors->all() as $err)
-                                <li>{{ $err }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            @endif
-
-            <div class="reg-form-card">
-                {{-- Form Header Red Banner --}}
-                <div class="reg-form-header" id="regFormHeader">
-                    {{ ($currentRole === 'grcs') ? 'IDENTITAS ANGGOTA GRCS CLUB' : 'IDENTITAS KONSULTAN' }}
-                </div>
-
-                <form method="POST" action="{{ route('backoffice.register.submit') }}" enctype="multipart/form-data" class="reg-form-body" id="formPendaftaranReal">
-                    @csrf
-                    <input type="hidden" name="role" id="formRoleInput" value="{{ old('role', $currentRole ?? 'konsultan') }}">
-
-                    {{-- Row 1: Nama Lengkap & Tanggal Lahir --}}
-                    <div class="form-row-2">
-                        <div class="form-group-item">
-                            <label for="reg_name">Nama Lengkap</label>
-                            <input type="text" id="reg_name" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap..." required>
-                        </div>
-                        <div class="form-group-item">
-                            <label for="reg_tgl">Tanggal Lahir</label>
-                            <input type="date" id="reg_tgl" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" placeholder="Tanggal Lahir...">
-                        </div>
-                    </div>
-
-                    {{-- Row 2: No.Hp/WA & Email --}}
-                    <div class="form-row-2">
-                        <div class="form-group-item">
-                            <label for="reg_phone">No.Hp/WA</label>
-                            <input type="text" id="reg_phone" name="phone" value="{{ old('phone') }}" placeholder="Nomer Hp/WA..." required>
-                        </div>
-                        <div class="form-group-item">
-                            <label for="reg_email">Email</label>
-                            <input type="email" id="reg_email" name="email" value="{{ old('email') }}" placeholder="Email..." required>
-                        </div>
-                    </div>
-
-                    {{-- Row 3: Alamat Domisili & Provinsi --}}
-                    <div class="form-row-2">
-                        <div class="form-group-item">
-                            <label for="reg_address">Alamat Domisili</label>
-                            <textarea id="reg_address" name="address" rows="3" placeholder="Alamat Domisili...">{{ old('address') }}</textarea>
-                        </div>
-                        <div class="form-group-item">
-                            <label for="reg_provinsi">Provinsi</label>
-                            <select id="reg_provinsi" name="provinsi">
-                                <option value="">Pilih Provinsi</option>
-                                @foreach($provinces as $prov)
-                                    <option value="{{ $prov }}" {{ old('provinsi') == $prov ? 'selected' : '' }}>{{ $prov }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    {{-- Row 4: Foto Setengah Badan --}}
-                    <div class="form-group-item upload-box-wrap">
-                        <label>Foto Setengah Badan untuk Kartu Tanda Anggota (KTA)</label>
-                        <div class="drag-drop-zone" onclick="document.getElementById('input_foto').click()">
-                            <svg class="cloud-upload-svg" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                                <polyline points="12 12 12 16"/>
-                                <polyline points="9 13 12 10 15 13"/>
-                            </svg>
-                            <span class="drag-text" id="text_foto">Drag atau drop untuk memilih gambar</span>
-                            <input type="file" id="input_foto" name="foto" accept="image/*" style="display:none;" onchange="updateUploadLabel(this, 'text_foto')">
-                        </div>
-                        <div class="upload-note">note: ukuran gambar 600x350 pixel. (recommended)</div>
-                    </div>
-
-                    {{-- Row 5: Unggah CV --}}
-                    <div class="form-group-item upload-box-wrap">
-                        <label>Unggah CV</label>
-                        <div class="drag-drop-zone" onclick="document.getElementById('input_cv').click()">
-                            <svg class="cloud-upload-svg" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                                <polyline points="12 12 12 16"/>
-                                <polyline points="9 13 12 10 15 13"/>
-                            </svg>
-                            <span class="drag-text" id="text_cv">Drag atau drop untuk memilih gambar</span>
-                            <input type="file" id="input_cv" name="cv_file" accept=".pdf,.doc,.docx,image/*" style="display:none;" onchange="updateUploadLabel(this, 'text_cv')">
-                        </div>
-                        <div class="upload-note">note: ukuran file maksimal 2MB</div>
-                    </div>
-
-                    {{-- Row 6: Unggah Bukti Kontribusi KTA --}}
-                    <div class="form-group-item upload-box-wrap">
-                        <label>Unggah Bukti Kontribusi KTA</label>
-                        <div class="drag-drop-zone" onclick="document.getElementById('input_bukti').click()">
-                            <svg class="cloud-upload-svg" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                                <polyline points="12 12 12 16"/>
-                                <polyline points="9 13 12 10 15 13"/>
-                            </svg>
-                            <span class="drag-text" id="text_bukti">Drag atau drop untuk memilih gambar</span>
-                            <input type="file" id="input_bukti" name="bukti_kontribusi" accept="image/*,.pdf" style="display:none;" onchange="updateUploadLabel(this, 'text_bukti')">
-                        </div>
-                    </div>
-
-                    {{-- Buttons: Reset & Submit --}}
-                    <div class="reg-form-actions">
-                        <button type="reset" class="btn-form-reset" onclick="resetFormCustom()">Reset</button>
-                        <button type="submit" class="btn-form-submit">Submit</button>
-                    </div>
-
-                </form>
-            </div>
         </div>
 
     </div>
 </section>
-
-<script>
-function bukaFormPendaftaran(role) {
-    const wrap = document.getElementById('alurFormWrapper');
-    const roleInput = document.getElementById('formRoleInput');
-    const header = document.getElementById('regFormHeader');
-    
-    if (role === 'grcs') {
-        roleInput.value = 'grcs';
-        header.textContent = 'IDENTITAS ANGGOTA GRCS CLUB';
-    } else {
-        roleInput.value = 'konsultan';
-        header.textContent = 'IDENTITAS KONSULTAN';
-    }
-    
-    wrap.style.display = 'block';
-    
-    setTimeout(() => {
-        wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-}
-
-function updateUploadLabel(input, labelId) {
-    const label = document.getElementById(labelId);
-    if (input.files && input.files[0]) {
-        label.textContent = '✓ ' + input.files[0].name;
-        label.style.color = '#27ae60';
-        label.style.fontWeight = '700';
-    }
-}
-
-function resetFormCustom() {
-    setTimeout(() => {
-        document.getElementById('text_foto').textContent = 'Drag atau drop untuk memilih gambar';
-        document.getElementById('text_foto').style.color = '';
-        document.getElementById('text_foto').style.fontWeight = 'normal';
-        document.getElementById('text_cv').textContent = 'Drag atau drop untuk memilih gambar';
-        document.getElementById('text_cv').style.color = '';
-        document.getElementById('text_cv').style.fontWeight = 'normal';
-        document.getElementById('text_bukti').textContent = 'Drag atau drop untuk memilih gambar';
-        document.getElementById('text_bukti').style.color = '';
-        document.getElementById('text_bukti').style.fontWeight = 'normal';
-    }, 50);
-}
-</script>
 
 <style>
 /* ===== ALUR PENDAFTARAN STYLES ===== */

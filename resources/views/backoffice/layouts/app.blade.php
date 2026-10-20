@@ -209,18 +209,32 @@
     </a>
 
     @if(auth()->check() && auth()->user()->role === 'superadmin')
-    <div class="nav-section">Manajemen Anggota</div>
-    <a href="{{ route('backoffice.konsultan.index') }}" class="{{ request()->routeIs('backoffice.konsultan.*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
-      <span><i class="fas fa-user-tie"></i> Anggota Konsultan</span>
+    <div class="nav-section">Pendaftaran &amp; Verifikasi</div>
+    <a href="{{ route('backoffice.konsultan.verifikasi') }}" class="{{ request()->routeIs('backoffice.konsultan.verifikasi*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
+      <span><i class="fas fa-user-check"></i> Verifikasi Konsultan</span>
       @if(($pendingKonsultanCount ?? 0) > 0)
         <span class="badge" style="background:#CC0000; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingKonsultanCount }}</span>
       @endif
     </a>
-    <a href="{{ route('backoffice.grcs.index') }}" class="{{ request()->routeIs('backoffice.grcs.*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
-      <span><i class="fas fa-users"></i> GRCS Club</span>
+    <a href="{{ route('backoffice.grcs.verifikasi') }}" class="{{ request()->routeIs('backoffice.grcs.verifikasi*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
+      <span><i class="fas fa-users-cog"></i> Verifikasi GRCS Club</span>
       @if(($pendingGrcsCount ?? 0) > 0)
         <span class="badge" style="background:#16a34a; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingGrcsCount }}</span>
       @endif
+    </a>
+    <a href="{{ route('backoffice.admission.index') }}" class="{{ request()->routeIs('backoffice.admission.*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
+      <span><i class="fas fa-graduation-cap"></i> Peserta Program (Admission)</span>
+      @if(($pendingAdmissionCount ?? 0) > 0)
+        <span class="badge" style="background:#2563eb; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingAdmissionCount }}</span>
+      @endif
+    </a>
+
+    <div class="nav-section">Data Anggota</div>
+    <a href="{{ route('backoffice.konsultan.index') }}" class="{{ (request()->routeIs('backoffice.konsultan.*') && !request()->routeIs('backoffice.konsultan.verifikasi*')) ? 'active' : '' }}">
+      <i class="fas fa-user-tie"></i> Data Konsultan
+    </a>
+    <a href="{{ route('backoffice.grcs.index') }}" class="{{ (request()->routeIs('backoffice.grcs.*') && !request()->routeIs('backoffice.grcs.verifikasi*')) ? 'active' : '' }}">
+      <i class="fas fa-users"></i> Data GRCS Club
     </a>
     <a href="{{ route('backoffice.bursa-sdm.index') }}" class="{{ request()->routeIs('backoffice.bursa-sdm.*') ? 'active' : '' }}">
       <i class="fas fa-briefcase"></i> Bursa SDM
@@ -254,11 +268,6 @@
     </a>
     <a href="{{ route('backoffice.statistic.index') }}" class="{{ request()->routeIs('backoffice.statistic.*') ? 'active' : '' }}">
       <i class="fas fa-chart-line"></i> Statistik (Angka)
-    </a>
-
-    <div class="nav-section">Pendaftaran</div>
-    <a href="{{ route('backoffice.admission.index') }}" class="{{ request()->routeIs('backoffice.admission.*') ? 'active' : '' }}">
-      <i class="fas fa-file-signature"></i> Admission
     </a>
 
     <div class="nav-section">Testimonial</div>

@@ -1,13 +1,16 @@
 @extends('backoffice.layouts.app')
 
-@section('title', 'Tambah Admission')
-@section('page-title', 'Tambah Data Pendaftaran')
+@section('title', 'Tambah Peserta Program (Admission)')
+@section('page-title', 'Tambah Peserta Program')
 
 @section('content')
 
 <div class="card">
   <div class="card-header">
-    <h3>Form Pendaftaran</h3>
+    <div>
+      <h3 style="margin:0;"><i class="fas fa-graduation-cap"></i> Form Pendaftaran Peserta Program (Admission)</h3>
+      <p style="color:#666; font-size:0.82rem; margin:4px 0 0;">Input manual calon peserta yang mendaftar program kursus/pelatihan di Denpasar Institute.</p>
+    </div>
   </div>
   <div class="card-body">
     <form action="{{ route('backoffice.admission.store') }}" method="POST" enctype="multipart/form-data">

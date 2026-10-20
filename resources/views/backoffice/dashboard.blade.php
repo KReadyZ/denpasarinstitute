@@ -38,14 +38,18 @@
     <div class="num">{{ $totalEventPending }}</div>
     <div class="lbl">Event Pending</div>
   </div>
-  <div class="stat-mini">
-    <div class="num">{{ $totalAdmission }}</div>
-    <div class="lbl">Total Pendaftaran</div>
-  </div>
-  <div class="stat-mini">
-    <div class="num">{{ $totalAdmissionPending }}</div>
-    <div class="lbl">Pendaftaran Pending</div>
-  </div>
+  <a href="{{ route('backoffice.konsultan.verifikasi') }}" class="stat-mini" style="text-decoration:none; border-left: 3.5px solid #CC0000;">
+    <div class="num" style="color:#CC0000;">{{ $pendingKonsultanCount ?? 0 }}</div>
+    <div class="lbl" style="font-weight:600; color:#333;">Konsultan Perlu Verifikasi</div>
+  </a>
+  <a href="{{ route('backoffice.grcs.verifikasi') }}" class="stat-mini" style="text-decoration:none; border-left: 3.5px solid #16a34a;">
+    <div class="num" style="color:#16a34a;">{{ $pendingGrcsCount ?? 0 }}</div>
+    <div class="lbl" style="font-weight:600; color:#333;">GRCS Perlu Verifikasi</div>
+  </a>
+  <a href="{{ route('backoffice.admission.index') }}" class="stat-mini" style="text-decoration:none; border-left: 3.5px solid #2563eb;">
+    <div class="num" style="color:#2563eb;">{{ $totalAdmissionPending }}</div>
+    <div class="lbl" style="font-weight:600; color:#333;">Peserta Program Pending</div>
+  </a>
   <div class="stat-mini">
     <div class="num">{{ $totalDivisi }}</div>
     <div class="lbl">Divisi Aktif</div>
@@ -56,7 +60,66 @@
   </div>
 </div>
 
-<div class="card">
+@if(($pendingKonsultanCount ?? 0) > 0 || ($pendingGrcsCount ?? 0) > 0)
+<div class="card" style="margin-top:20px; border: 1.5px solid #fca5a5; background: #fffdfd;">
+  <div class="card-header" style="background:#fee2e2; border-bottom:1px solid #fca5a5; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <h3 style="color:#991b1b; margin:0; font-size:0.95rem;">
+      <i class="fas fa-bell"></i> Antrean Verifikasi Anggota Baru Menunggu Tindakan
+    </h3>
+    <div style="display:flex; gap:8px;">
+      @if(($pendingKonsultanCount ?? 0) > 0)
+        <a href="{{ route('backoffice.konsultan.verifikasi') }}" class="btn btn-sm btn-danger" style="background:#CC0000; color:#fff; padding:6px 14px; border-radius:4px; font-weight:600; font-size:0.8rem; text-decoration:none;">
+          <i class="fas fa-user-check"></i> Verifikasi Konsultan ({{ $pendingKonsultanCount }})
+        </a>
+      @endif
+      @if(($pendingGrcsCount ?? 0) > 0)
+        <a href="{{ route('backoffice.grcs.verifikasi') }}" class="btn btn-sm btn-success" style="background:#16a34a; color:#fff; padding:6px 14px; border-radius:4px; font-weight:600; font-size:0.8rem; text-decoration:none;">
+          <i class="fas fa-users-cog"></i> Verifikasi GRCS ({{ $pendingGrcsCount }})
+        </a>
+      @endif
+    </div>
+  </div>
+  @if(isset($recentPendingKonsultan) && count($recentPendingKonsultan) > 0)
+  <div class="card-body table-wrap" style="padding:14px 20px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama Calon Konsultan</th>
+          <th>Kontak / Email</th>
+          <th>Tgl Mendaftar</th>
+          <th>Dokumen Lampiran</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($recentPendingKonsultan as $pk)
+        <tr>
+          <td><strong>{{ $pk->name }}</strong></td>
+          <td>
+            {{ $pk->email }}<br>
+            <small style="color:#16a34a;"><i class="fab fa-whatsapp"></i> {{ $pk->phone ?? '-' }}</small>
+          </td>
+          <td>{{ $pk->created_at->format('d M Y H:i') }}</td>
+          <td>
+            <span class="badge" style="background:#fef3c7; color:#92400e;">
+              {{ $pk->foto ? 'Foto ✓' : 'Tanpa Foto' }} | {{ $pk->cv_path ? 'CV ✓' : 'Tanpa CV' }}
+            </span>
+          </td>
+          <td>
+            <a href="{{ route('backoffice.konsultan.verifikasi.show', $pk->id) }}" class="btn btn-sm btn-danger" style="background:#CC0000; color:#fff; font-size:0.75rem; padding:5px 12px; border-radius:4px; text-decoration:none; font-weight:600;">
+              <i class="fas fa-check-circle"></i> Tinjau &amp; Verifikasi
+            </a>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+  @endif
+</div>
+@endif
+
+<div class="card" style="margin-top:20px;">
   <div class="card-header">
     <h3><i class="fas fa-tachometer-alt"></i> Selamat Datang, {{ $user->name }}</h3>
   </div>
@@ -135,8 +198,9 @@
 </div>
 
 <div class="card" style="margin-top:20px;">
-  <div class="card-header">
-    <h3><i class="fas fa-file-signature"></i> Pendaftaran Terbaru</h3>
+  <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+    <h3><i class="fas fa-graduation-cap"></i> Pendaftaran Peserta Program Terbaru (Admission)</h3>
+    <a href="{{ route('backoffice.admission.index') }}" class="btn btn-sm btn-secondary" style="font-size:0.75rem;">Lihat Semua</a>
   </div>
   <div class="card-body">
     <div class="table-wrap">

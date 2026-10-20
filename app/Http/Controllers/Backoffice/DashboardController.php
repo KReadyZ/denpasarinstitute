@@ -38,6 +38,30 @@ class DashboardController extends Controller
             $data['totalEventPending'] = Event::where('status', 'pending')->count();
             $data['totalAdmission'] = Admission::count();
             $data['totalAdmissionPending'] = Admission::where('status', 'pending')->count();
+            $data['pendingKonsultanCount'] = User::where('role', 'konsultan')
+                ->where(function($q) {
+                    $q->where('verification_status', 'pending')
+                      ->orWhere(function($sub) {
+                          $sub->where('is_active', false)->whereNull('verification_status');
+                      });
+                })->count();
+            $data['pendingGrcsCount'] = User::where('role', 'grcs')
+                ->where(function($q) {
+                    $q->where('verification_status', 'pending')
+                      ->orWhere(function($sub) {
+                          $sub->where('is_active', false)->whereNull('verification_status');
+                      });
+                })->count();
+            $data['recentPendingKonsultan'] = User::where('role', 'konsultan')
+                ->where(function($q) {
+                    $q->where('verification_status', 'pending')
+                      ->orWhere(function($sub) {
+                          $sub->where('is_active', false)->whereNull('verification_status');
+                      });
+                })
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get();
             $data['totalDivisi'] = Divisi::where('is_active', true)->count();
             $data['totalTestimonial'] = Testimonial::where('is_approved', true)->count();
             $data['totalTestimonialPending'] = Testimonial::where('is_approved', false)->count();

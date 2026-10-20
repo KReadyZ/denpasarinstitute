@@ -52,14 +52,18 @@ class AppServiceProvider extends ServiceProvider
                           });
                     })->count();
 
+                $pendingAdmissionCount = \App\Models\Admission::where('status', 'pending')->count();
+
                 $view->with([
                     'pendingKonsultanCount' => $pendingKonsultanCount,
                     'pendingGrcsCount'      => $pendingGrcsCount,
+                    'pendingAdmissionCount' => $pendingAdmissionCount,
                 ]);
             } catch (\Throwable $e) {
                 $view->with([
                     'pendingKonsultanCount' => 0,
                     'pendingGrcsCount'      => 0,
+                    'pendingAdmissionCount' => 0,
                 ]);
             }
         });

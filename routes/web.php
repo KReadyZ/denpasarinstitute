@@ -274,3 +274,16 @@ Route::prefix('admission')->name('admission.')->group(function () {
 
 Route::view('/panduan-pendaftaran', 'panduan-pendaftaran')->name('panduan-pendaftaran');
 Route::view('/cara-daftar', 'panduan-pendaftaran')->name('cara-daftar');
+
+Route::get('/pendaftaran/konsultan', function () {
+    return view('pendaftaran', ['role' => 'konsultan']);
+})->name('pendaftaran.konsultan');
+
+Route::get('/pendaftaran/grcs', function () {
+    return view('pendaftaran', ['role' => 'grcs']);
+})->name('pendaftaran.grcs');
+
+Route::get('/pendaftaran', function (\Illuminate\Http\Request $request) {
+    $role = $request->get('role', 'konsultan');
+    return view('pendaftaran', ['role' => $role]);
+})->name('pendaftaran');

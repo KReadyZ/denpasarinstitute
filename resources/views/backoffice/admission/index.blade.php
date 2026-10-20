@@ -1,15 +1,26 @@
 @extends('backoffice.layouts.app')
 
-@section('title', 'Admission')
-@section('page-title', 'Data Pendaftaran')
+@section('title', 'Pendaftaran Peserta Program (Admission)')
+@section('page-title', 'Pendaftaran Peserta Program')
 
 @section('content')
 
+<div class="alert alert-info" style="margin-bottom: 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; padding:12px 18px; border-radius:6px; font-size:0.85rem;">
+  <div>
+    <i class="fas fa-info-circle" style="color:#2563eb; margin-right:6px;"></i>
+    <strong>Catatan:</strong> Halaman ini khusus untuk data calon peserta yang mendaftar <strong>Program Kursus/Pelatihan</strong>.
+  </div>
+  <div>
+    Verifikasi calon konsultan baru? 
+    <a href="{{ route('backoffice.konsultan.verifikasi') }}" style="color:#CC0000; font-weight:700; text-decoration:underline;">Ke Verifikasi Konsultan &rarr;</a>
+  </div>
+</div>
+
 <div class="card">
   <div class="card-header">
-    <h3>Data Pendaftaran (Admission)</h3>
+    <h3><i class="fas fa-graduation-cap"></i> Data Pendaftaran Peserta Program (Admission)</h3>
     <a href="{{ route('backoffice.admission.create') }}" class="btn btn-primary">
-      <i class="fas fa-plus"></i> Tambah Data
+      <i class="fas fa-plus"></i> Tambah Peserta Program
     </a>
   </div>
   <div class="card-body table-wrap">

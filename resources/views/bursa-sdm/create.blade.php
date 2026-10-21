@@ -41,7 +41,7 @@
 <section class="bursa-create-section" style="padding: 190px 0 60px;">
   <div class="container" style="max-width:650px;">
     <h2 style="font-weight:800; margin-bottom:6px;">
-      Tambah {{ $tipe === 'perusahaan' ? 'Perusahaan' : 'Individu' }}
+      Tambah {{ $tipe === 'perusahaan' ? 'Job Provider' : 'Job Seeker' }}
     </h2>
     <p style="color:#666; font-size:0.85rem; margin-bottom:24px;">
       Data Anda akan diverifikasi oleh admin sebelum tampil di halaman publik.

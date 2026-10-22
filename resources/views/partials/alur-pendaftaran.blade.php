@@ -20,8 +20,24 @@
         {{-- Heading --}}
         <div class="alur-header">
             <span class="alur-pill">Panduan Pendaftaran</span>
-            <h2 class="alur-title">Bagaimana cara mendaftar menjadi tim konsultan Denpasar Institute dan GRCS Club ?</h2>
-            <p class="alur-subtitle">Ikuti 4 langkah terarah di bawah ini untuk bergabung menjadi tim profesional &amp; komunitas riset kami.</p>
+            <h2 class="alur-title">
+                @if($currentRole === 'konsultan')
+                    Bagaimana cara mendaftar menjadi tim konsultan Denpasar Institute?
+                @elseif($currentRole === 'grcs')
+                    Bagaimana cara mendaftar menjadi anggota GRCS Club Denpasar Institute?
+                @else
+                    Bagaimana cara mendaftar menjadi tim konsultan Denpasar Institute dan GRCS Club ?
+                @endif
+            </h2>
+            <p class="alur-subtitle">
+                @if($currentRole === 'konsultan')
+                    Ikuti 4 langkah terarah di bawah ini untuk bergabung menjadi tim konsultan profesional kami.
+                @elseif($currentRole === 'grcs')
+                    Ikuti 4 langkah terarah di bawah ini untuk bergabung menjadi anggota komunitas GRCS Club kami.
+                @else
+                    Ikuti 4 langkah terarah di bawah ini untuk bergabung menjadi tim profesional &amp; komunitas riset kami.
+                @endif
+            </p>
         </div>
 
         {{-- Flowchart Container --}}
@@ -44,7 +60,13 @@
                     <div class="alur-card-content">
                         <h3 class="alur-step-title">DAFTAR</h3>
                         <p class="alur-step-desc">
-                            Daftar anggota GRCS Club dan/atau anggota Konsultan Denpasar Institute. Apabila memenuhi persyaratan, dibolehkan mendaftar keduanya. Silahkan, gunakan berbagai manfaatnya.
+                            @if($currentRole === 'konsultan')
+                                Daftar anggota Konsultan Denpasar Institute.  Silahkan, gunakan berbagai manfaatnya.
+                            @elseif($currentRole === 'grcs')
+                                Daftar anggota GRCS Club Denpasar Institute. Silahkan, gunakan berbagai manfaatnya.
+                            @else
+                                Daftar anggota GRCS Club dan/atau anggota Konsultan Denpasar Institute. Apabila memenuhi persyaratan, dibolehkan mendaftar keduanya. Silahkan, gunakan berbagai manfaatnya.
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -90,15 +112,19 @@
                     <div class="alur-card-content">
                         <h3 class="alur-step-title">ISI FORMULIR</h3>
                         <p class="alur-step-desc">
-                            Isi formulir, unggah foto dan CV (khusus bagi tim konsultan) pada 
-                            @if($currentRole === 'grcs')
-                                <a href="{{ route('pendaftaran.grcs') }}" class="alur-highlight-link">tombol pendaftaran</a>.
-                            @elseif($currentRole === 'konsultan')
-                                <a href="{{ route('pendaftaran.konsultan') }}" class="alur-highlight-link">tombol pendaftaran</a>.
+                            @if($currentRole === 'konsultan')
+                                Isi formulir, unggah foto dan CV (khusus bagi anggota konsultan) pada 
+                                <a href="{{ route('pendaftaran.konsultan') }}" class="alur-highlight-link">tombol pendaftaran</a>. 
+                                Pastikan Bapak/Ibu/Saudara mengisi data dengan benar dan mengunggah CV bagi pendaftar anggota Konsultan DI.
+                            @elseif($currentRole === 'grcs')
+                                Isi formulir dan unggah foto (khusus bagi anggota GRCS Club) pada 
+                                <a href="{{ route('pendaftaran.grcs') }}" class="alur-highlight-link">tombol pendaftaran</a>. 
+                                Pastikan Bapak/Ibu/Saudara mengisi data dengan benar bagi pendaftar anggota GRCS Club DI.
                             @else
-                                <a href="#alurActionButtons" class="alur-highlight-link">tombol pendaftaran</a>.
+                                Isi formulir, unggah foto dan CV (khusus bagi tim konsultan) pada 
+                                <a href="#alurActionButtons" class="alur-highlight-link">tombol pendaftaran</a>. 
+                                Pastikan Bapak/Ibu/Saudara mengisi data dengan benar dan mengunggah CV bagi pendaftar tim Konsultan DI.
                             @endif
-                            Pastikan Bapak/Ibu/Saudara mengisi data dengan benar dan mengunggah CV bagi pendaftar tim Konsultan DI.
                         </p>
                     </div>
                 </div>
@@ -162,7 +188,13 @@
                     <div class="alur-card-content">
                         <h3 class="alur-step-title">BENEFIT</h3>
                         <p class="alur-step-desc">
-                            Anggota GRCS Club dapat memanfaatkan wadah ini untuk membangun dan meningkatkan networking bidang riset, pengabdian masyarakat dan pengembangan SDM. Konsultan juga dapat memanfaatkan kesempatan ini untuk menambah pekerjaan sampingan.
+                            @if($currentRole === 'konsultan')
+                                Konsultan dapat memanfaatkan wadah ini untuk membangun dan meningkatkan networking bidang riset, pengabdian masyarakat, dan menambah pekerjaan sampingan.
+                            @elseif($currentRole === 'grcs')
+                                Anggota GRCS Club dapat memanfaatkan wadah ini untuk membangun dan meningkatkan networking bidang riset, pengabdian masyarakat dan pengembangan SDM.
+                            @else
+                                Anggota GRCS Club dapat memanfaatkan wadah ini untuk membangun dan meningkatkan networking bidang riset, pengabdian masyarakat dan pengembangan SDM. Konsultan juga dapat memanfaatkan kesempatan ini untuk menambah pekerjaan sampingan.
+                            @endif
                         </p>
                     </div>
                 </div>

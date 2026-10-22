@@ -739,7 +739,7 @@
 
         {{-- Top Navigation & Breadcrumbs --}}
         <div class="pendaftaran-topbar">
-            <a href="{{ route('panduan-pendaftaran') }}" class="btn-back-panduan">
+            <a href="{{ route('panduan-pendaftaran', ['role' => $role]) }}" class="btn-back-panduan">
                 <i class="fas fa-arrow-left"></i> Kembali ke Panduan Pendaftaran
             </a>
             <span class="step-indicator">
@@ -765,7 +765,7 @@
                                     <a href="{{ route('home') }}" class="btn-back-panduan" style="background:#065f46; color:#fff; border-color:#065f46;">
                                         <i class="fas fa-home"></i> Kembali ke Beranda
                                     </a>
-                                    <a href="{{ route('panduan-pendaftaran') }}" class="btn-back-panduan">
+                                    <a href="{{ route('panduan-pendaftaran', ['role' => $role]) }}" class="btn-back-panduan">
                                         <i class="fas fa-book"></i> Lihat Panduan
                                     </a>
                                 </div>
@@ -1026,10 +1026,7 @@
                     </p>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <a href="https://wa.me/6282144814593?text=Halo%20Admin%20Denpasar%20Institute,%20saya%20butuh%20bantuan%20terkait%20pendaftaran." target="_blank" rel="noopener noreferrer" class="btn-sidebar-wa">
-                            <i class="fab fa-whatsapp"></i> Admin 1 (0821-4481-4593)
-                        </a>
-                        <a href="https://wa.me/6282318666547?text=Halo%20Admin%20Denpasar%20Institute,%20saya%20butuh%20bantuan%20terkait%20pendaftaran." target="_blank" rel="noopener noreferrer" class="btn-sidebar-wa" style="background:#059669;">
-                            <i class="fab fa-whatsapp"></i> Admin 2 (0823-1866-6547)
+                            <i class="fab fa-whatsapp"></i> Admin (0821-4481-4593)
                         </a>
                     </div>
                 </div>

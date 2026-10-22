@@ -361,7 +361,7 @@
     .hero-btns { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
     .btn-yellow { background: var(--yellow); color: var(--dark); padding: 11px 24px; border-radius: 4px; font-weight: 800; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; display: inline-block; }
     .btn-yellow:hover { background: #e0b000; transform: translateY(-1px); }
-    .hero-portal-card { grid-column: 1 / -1; margin-top: 10px; background: #fbfbfc; border: 1px solid #e9ecef; border-left: 5px solid var(--red); border-radius: 10px; padding: 22px 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); text-align: center; }
+    .hero-portal-card { grid-column: 1 / -1; margin-top: 10px; background: #fbfbfc; border: 1px solid #e9ecef; border-left: 5px solid var(--red); border-right: 5px solid var(--red); border-radius: 10px; padding: 22px 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); text-align: center; }
     .portal-badge-label { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--red); letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 6px; }
     .portal-card-desc { font-size: 0.82rem; color: #666; margin-bottom: 16px; line-height: 1.5; }
     .portal-btn-top { display: flex; justify-content: center; margin-bottom: 12px; }

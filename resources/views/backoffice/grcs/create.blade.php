@@ -75,7 +75,7 @@
 
             <div class="form-group">
                 <label for="bio">Bio / Deskripsi Singkat</label>
-                <textarea name="bio" id="bio" rows="3" class="form-control" placeholder="Tuliskan deskripsi singkat tentang anggota GRCS...">{{ old('bio') }}</textarea>
+                <textarea name="bio" id="bio" rows="3" class="form-control summernote" placeholder="Tuliskan deskripsi singkat tentang anggota GRCS...">{{ old('bio') }}</textarea>
             </div>
 
             <!-- Data Pribadi untuk Kartu Anggota -->

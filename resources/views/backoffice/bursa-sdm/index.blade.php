@@ -150,7 +150,7 @@
                   <button class="btn btn-warning btn-icon" title="Toggle Tampil"><i class="fas fa-eye"></i></button>
                 </form>
               @endif
-              <form method="POST" action="{{ route('backoffice.bursa-sdm.destroy',$item->id) }}" onsubmit="return confirm('Hapus data ini?')">
+              <form method="POST" action="{{ route('backoffice.bursa-sdm.destroy',$item->id) }}" onsubmit="return confirmDelete(event, this, 'Hapus data ini?')">
                 @csrf @method('DELETE')
                 <button class="btn btn-danger btn-icon" title="Hapus"><i class="fas fa-trash"></i></button>
               </form>

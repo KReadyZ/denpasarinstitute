@@ -33,6 +33,11 @@
     .auth-link a { color:var(--red); font-weight:600; }
     .error-msg { background:#fee2e2; color:#991b1b; padding:10px 14px; border-radius:5px; font-size:0.78rem; margin-bottom:14px; border-left:3px solid #dc2626; }
     .notice { background:#fef9c3; color:#854d0e; padding:12px 14px; border-radius:5px; font-size:0.75rem; margin-bottom:16px; border-left:3px solid var(--yellow); }
+    @media (max-width: 480px) {
+      body { padding: 14px; }
+      .auth-card { padding: 26px 18px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
   </style>
 </head>
 <body>

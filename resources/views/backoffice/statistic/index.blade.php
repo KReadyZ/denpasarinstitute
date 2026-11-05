@@ -53,7 +53,7 @@
                             <a href="{{ route('backoffice.statistic.edit', $stat->id) }}" class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('backoffice.statistic.destroy', $stat->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus data ini?');">
+                            <form action="{{ route('backoffice.statistic.destroy', $stat->id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete(event, this, 'Yakin hapus data statistik ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">

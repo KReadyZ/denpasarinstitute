@@ -113,7 +113,7 @@
                                 </button>
                             </form>
                             <form action="{{ route('backoffice.testimonial.destroy', $t->id) }}" method="POST"
-                                  onsubmit="return confirm('Hapus testimoni ini?');">
+                                  onsubmit="return confirmDelete(event, this, 'Yakin hapus testimoni ini?');">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-ghost danger">
                                     <i class="fas fa-trash"></i>

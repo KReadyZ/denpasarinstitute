@@ -82,7 +82,7 @@
                                 <a href="{{ route('backoffice.berita.edit', $berita->id) }}" class="btn btn-warning btn-icon" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('backoffice.berita.destroy', $berita->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus berita ini?')" style="display: inline;">
+                                <form action="{{ route('backoffice.berita.destroy', $berita->id) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Yakin ingin menghapus berita ini?')" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-icon" title="Hapus">

@@ -127,7 +127,7 @@
         </small>
       </div>
 
-      <button type="submit" class="btn-more" style="width:100%; border:none; cursor:pointer;">Kirim Data</button>
+      <button type="submit" class="btn-more" style="width:100%; border:none; cursor:pointer;">Submit</button>
     </form>
   </div>
 </section>

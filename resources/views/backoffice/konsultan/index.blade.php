@@ -129,7 +129,7 @@
                             @endif
                             <a href="{{ route('backoffice.konsultan.show', $konsultan->id) }}" class="btn btn-sm btn-info" title="Lihat Profil"><i class="fas fa-eye"></i></a>
                             <a href="{{ route('backoffice.konsultan.edit', $konsultan->id) }}" class="btn btn-sm btn-warning" title="Edit Data"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('backoffice.konsultan.destroy', $konsultan->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus konsultan ini?')">
+                            <form action="{{ route('backoffice.konsultan.destroy', $konsultan->id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete(event, this, 'Yakin hapus konsultan ini?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-trash"></i></button>
                             </form>

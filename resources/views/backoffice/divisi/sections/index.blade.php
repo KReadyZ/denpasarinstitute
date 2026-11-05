@@ -71,7 +71,7 @@
                                     <a href="{{ route('backoffice.sections.edit', [$divisi->id, $section->id]) }}" class="btn btn-warning btn-icon" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('backoffice.sections.destroy', [$divisi->id, $section->id]) }}" method="POST" onsubmit="return confirm('Yakin hapus section ini?')" style="display: inline;">
+                                    <form action="{{ route('backoffice.sections.destroy', [$divisi->id, $section->id]) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Yakin hapus section ini?')" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-icon" title="Hapus">

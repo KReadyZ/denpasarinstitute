@@ -59,7 +59,7 @@
             </div>
             <div class="form-group">
                 <label>Bio</label>
-                <textarea name="bio" rows="3" class="form-control">{{ old('bio', $user->bio) }}</textarea>
+                <textarea name="bio" rows="3" class="form-control summernote">{{ old('bio', $user->bio) }}</textarea>
             </div>
 
             <h4 style="margin:20px 0 15px; color:var(--red); border-bottom:2px solid var(--red); padding-bottom:5px;"><i class="fas fa-id-badge"></i> Data Pribadi (Kartu Anggota)</h4>
@@ -137,7 +137,7 @@
             </div>
             <div class="form-group">
                 <label>Publikasi (pisah koma)</label>
-                <textarea name="publications" rows="2" class="form-control">{{ old('publications', $user->publications) }}</textarea>
+                <textarea name="publications" rows="2" class="form-control summernote">{{ old('publications', $user->publications) }}</textarea>
             </div>
 
             <h4 style="margin:20px 0 15px; color:var(--red); border-bottom:2px solid var(--red); padding-bottom:5px;"><i class="fas fa-id-card"></i> ID Riset & Abdimas</h4>

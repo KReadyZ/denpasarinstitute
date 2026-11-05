@@ -57,7 +57,7 @@
                 <i class="fas fa-edit"></i> Edit
               </a>
               <form method="POST" action="{{ route('backoffice.slider.destroy', $slider) }}"
-                onsubmit="return confirm('Hapus slide ini?')">
+                onsubmit="return confirmDelete(event, this, 'Hapus slide ini?')">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
               </form>

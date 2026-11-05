@@ -36,7 +36,7 @@
                                 <a href="{{ route('backoffice.program.edit', [$divisi->id, $program->id]) }}" class="btn btn-warning btn-icon">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('backoffice.program.destroy', [$divisi->id, $program->id]) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus program ini?')">
+                                <form action="{{ route('backoffice.program.destroy', [$divisi->id, $program->id]) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Yakin ingin menghapus program ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-icon">

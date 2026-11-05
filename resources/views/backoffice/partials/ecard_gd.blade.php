@@ -176,7 +176,7 @@
 
             @if($isSuperadmin || $isOwner)
                 <form action="{{ route('backoffice.profile.ecard.renew', $u->id) }}" method="POST"
-                      onsubmit="return confirm('Perpanjang masa berlaku kartu 1 tahun dari hari ini?');">
+                      onsubmit="return confirmAction(event, this, 'Perpanjang masa berlaku kartu 1 tahun dari hari ini?', 'Perpanjang E-Card');">
                     @csrf
                     <button type="submit" class="btn btn-warning">
                         <i class="fas fa-redo"></i> Perpanjang Masa Berlaku

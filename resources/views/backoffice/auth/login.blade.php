@@ -34,6 +34,10 @@
       font-size:0.78rem; margin-bottom:14px; border-left:3px solid #dc2626; }
     .success-msg { background:#dcfce7; color:#166534; padding:10px 14px; border-radius:5px;
       font-size:0.78rem; margin-bottom:14px; border-left:3px solid #22c55e; }
+    @media (max-width: 480px) {
+      .auth-wrap { padding: 14px; }
+      .auth-card { padding: 26px 18px; }
+    }
   </style>
 </head>
 <body>

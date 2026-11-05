@@ -115,6 +115,13 @@ class UserController extends Controller
         $userName = $user->name;
         $user->delete();
 
+        if (request()->expectsJson() || request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Anggota {$userName} berhasil dihapus! 🗑️"
+            ]);
+        }
+
         return redirect()->route('backoffice.users.index')
             ->with('success', "Anggota {$userName} berhasil dihapus! 🗑️");
     }
@@ -126,7 +133,15 @@ class UserController extends Controller
         $user->save();
 
         $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
-        
+
+        if (request()->expectsJson() || request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'is_active' => $user->is_active,
+                'message' => "Akun {$user->name} berhasil {$status}!"
+            ]);
+        }
+
         return redirect()->route('backoffice.users.index')
             ->with('success', "Akun {$user->name} berhasil {$status}");
     }

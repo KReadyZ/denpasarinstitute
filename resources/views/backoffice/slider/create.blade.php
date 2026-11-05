@@ -37,7 +37,7 @@
       </div>
       <div class="form-group">
         <label>Subjudul / Deskripsi</label>
-        <textarea name="subtitle" rows="3"
+        <textarea name="subtitle" class="form-control summernote" rows="3"
           placeholder="Teks deskripsi singkat di bawah judul">{{ old('subtitle') }}</textarea>
       </div>
       <div class="form-row">

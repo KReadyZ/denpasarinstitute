@@ -72,7 +72,7 @@
             </div>
             <div class="form-group">
                 <label>Bio</label>
-                <textarea name="bio" rows="3" class="form-control">{{ old('bio', $konsultan->bio) }}</textarea>
+                <textarea name="bio" rows="3" class="form-control summernote">{{ old('bio', $konsultan->bio) }}</textarea>
             </div>
 
             <h4 style="margin: 20px 0 15px; color: var(--red); border-bottom: 2px solid var(--red); padding-bottom: 5px;"><i class="fas fa-id-badge"></i> Data Pribadi (Kartu Anggota)</h4>

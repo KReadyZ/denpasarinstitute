@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,9 @@ use App\Http\Controllers\Backoffice\DivisiController as BackofficeDivisiControll
 use App\Http\Controllers\Backoffice\ProgramController;
 use App\Http\Controllers\Backoffice\KategoriEventController;
 use App\Http\Controllers\Backoffice\StatisticController;
+use App\Http\Controllers\Backoffice\NavigationController;
+use App\Http\Controllers\Backoffice\SiteSettingController;
+use App\Http\Controllers\Backoffice\PartnershipPillarController;
 use App\Http\Controllers\Backoffice\EventController as BackofficeEventController;
 use App\Http\Controllers\Backoffice\BursaSdmController as BackofficeBursaSdmController;
 use App\Http\Controllers\Backoffice\TestimonialController as BackofficeTestimonialController;
@@ -44,6 +48,13 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
     });
 
     Route::middleware(['backoffice'])->group(function () {
+
+        Route::get('/', function () {
+            return redirect()->route('backoffice.dashboard');
+        });
+        Route::get('partnership', function () {
+            return redirect()->route('backoffice.partnership-pillar.index');
+        });
 
         Route::post('logout',   [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -218,6 +229,34 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
                 Route::delete('/{id}',              [StatisticController::class, 'destroy'])->name('destroy');
                 Route::patch('/{id}/toggle-active', [StatisticController::class, 'toggleActive'])->name('toggle-active');
             });
+
+            // Pengaturan Navigasi & Menu
+            Route::prefix('navigation')->name('navigation.')->group(function () {
+                Route::get('/',                     [NavigationController::class, 'index'])->name('index');
+                Route::get('/create',               [NavigationController::class, 'create'])->name('create');
+                Route::post('/',                    [NavigationController::class, 'store'])->name('store');
+                Route::get('/{id}/edit',            [NavigationController::class, 'edit'])->name('edit');
+                Route::put('/{id}',                 [NavigationController::class, 'update'])->name('update');
+                Route::delete('/{id}',              [NavigationController::class, 'destroy'])->name('destroy');
+                Route::patch('/{id}/toggle-active', [NavigationController::class, 'toggleActive'])->name('toggle-active');
+            });
+
+            // Pengaturan Website, Konten & Footer
+            Route::prefix('settings')->name('settings.')->group(function () {
+                Route::get('/', [SiteSettingController::class, 'index'])->name('index');
+                Route::put('/', [SiteSettingController::class, 'update'])->name('update');
+            });
+
+            // Pilar Kemitraan (Partnership Pillars)
+            Route::prefix('partnership-pillar')->name('partnership-pillar.')->group(function () {
+                Route::get('/',                     [PartnershipPillarController::class, 'index'])->name('index');
+                Route::get('/create',               [PartnershipPillarController::class, 'create'])->name('create');
+                Route::post('/',                    [PartnershipPillarController::class, 'store'])->name('store');
+                Route::get('/{id}/edit',            [PartnershipPillarController::class, 'edit'])->name('edit');
+                Route::put('/{id}',                 [PartnershipPillarController::class, 'update'])->name('update');
+                Route::delete('/{id}',              [PartnershipPillarController::class, 'destroy'])->name('destroy');
+                Route::patch('/{id}/toggle-active', [PartnershipPillarController::class, 'toggleActive'])->name('toggle-active');
+            });
         });
     });
 });
@@ -258,6 +297,10 @@ Route::prefix('konsultan')->name('konsultan.')->group(function () {
 Route::prefix('grcs-club')->name('grcs.')->group(function () {
     Route::get('/',     [GrcsPublicController::class, 'index'])->name('index');
     Route::get('/{id}', [GrcsPublicController::class, 'show'])->name('show');
+});
+
+Route::get('/grcs', function () {
+    return redirect()->route('grcs.index');
 });
 
 Route::prefix('bursa-sdm')->name('bursa-sdm.')->group(function () {
@@ -332,3 +375,11 @@ Route::get('/pendaftaran', function (\Illuminate\Http\Request $request) {
         'beritaTerpopuler' => $beritaTerpopuler,
     ]);
 })->name('pendaftaran');
+
+Route::get('/partner-with-di', function () {
+    return view('partner');
+})->name('partners-and-community');
+
+Route::get('/partners-and-collaboration', function () {
+    return view('partner');
+})->name('partners-and-collaboration');

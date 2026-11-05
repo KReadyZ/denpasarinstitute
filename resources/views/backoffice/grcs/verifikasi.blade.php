@@ -47,7 +47,7 @@
     </div>
 
     <div class="card-body" style="padding: 20px;">
-        <div style="display:grid; grid-template-columns: 280px 1fr; gap: 24px;">
+        <div class="verifikasi-grid">
             {{-- Info Data Diri --}}
             <div style="background:#fafafa; border:1px solid #f0f0f0; border-radius:8px; padding:16px;">
                 <h5 style="margin:0 0 12px 0; font-size:0.88rem; font-weight:700; color:#333; border-bottom:2px solid #16a34a; padding-bottom:6px;">

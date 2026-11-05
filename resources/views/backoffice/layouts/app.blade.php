@@ -8,8 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-
   <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.9.1/summernote-bs5.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
   <style>
     :root { --red:#CC0000; --yellow:#F5C400; --dark:#1a1a1a; --sidebar-w:260px; }
@@ -167,6 +167,116 @@
       font-size: 0.82rem;
     }
 
+    /* Sidebar Mobile & Overlay Styles */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    .sidebar-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .sidebar-close-btn {
+      display: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .sidebar-close-btn:hover {
+      background: var(--red);
+    }
+    .sidebar-toggle-btn {
+      display: none;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #1e293b;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .sidebar-toggle-btn:hover {
+      background: #e2e8f0;
+      color: var(--red);
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .topbar-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .btn-topbar-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      color: #4b5563;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-topbar-link:hover {
+      background: #e2e8f0;
+      color: var(--red);
+    }
+    .topbar-user-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(204, 0, 0, 0.25);
+    }
+    .verifikasi-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
     @media (max-width: 1024px) {
       .form-check-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -175,32 +285,237 @@
       .stat-grid-role {
         grid-template-columns: repeat(2, 1fr);
       }
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
     }
+
     @media (max-width: 768px) {
-      .sidebar { transform:translateX(-100%); }
-      .main-wrap { margin-left:0; }
-      .stat-grid { grid-template-columns:1fr 1fr; }
-      .stat-grid-role { grid-template-columns:1fr 1fr; }
-      .filter-form { grid-template-columns:1fr; }
-      .action-group { flex-direction: column; }
+      .verifikasi-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+        z-index: 1050;
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 10px 0 35px rgba(0, 0, 0, 0.45);
+      }
+      .sidebar-logo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .sidebar-close-btn {
+        display: inline-flex;
+      }
+      .sidebar-toggle-btn {
+        display: inline-flex;
+      }
+      .main-wrap {
+        margin-left: 0;
+      }
+      .topbar-back {
+        padding: 0 16px;
+        height: 56px;
+      }
+      .topbar-title {
+        font-size: 0.95rem;
+        max-width: 190px;
+      }
+      .hide-mobile {
+        display: none !important;
+      }
+      .page-content {
+        padding: 16px 14px;
+      }
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .stat-grid-role {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .filter-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .form-row, .form-row-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .action-group {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        gap: 6px !important;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .table-wrap table {
+        min-width: 680px;
+      }
     }
+
     @media (max-width: 576px) {
+      .page-content {
+        padding: 14px 10px;
+      }
+      .topbar-back {
+        padding: 0 12px;
+      }
+      .topbar-title {
+        font-size: 0.88rem;
+        max-width: 140px;
+      }
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+      .stat-mini {
+        padding: 12px 10px;
+      }
+      .stat-mini .num {
+        font-size: 1.45rem;
+      }
+      .stat-mini .lbl {
+        font-size: 0.68rem;
+      }
+      .card-header {
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .card-header .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .card-body {
+        padding: 14px 10px;
+      }
       .form-check-grid {
         grid-template-columns: 1fr;
         gap: 8px;
       }
-      .stat-grid { grid-template-columns:1fr; }
-      .stat-grid-role { grid-template-columns:1fr; }
+      .pagination-wrap {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+      }
+      .pagination-wrap .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+      }
+      .swal2-popup {
+        width: 92% !important;
+        padding: 18px 14px !important;
+        border-radius: 14px !important;
+      }
+      .swal2-title {
+        font-size: 1.15rem !important;
+      }
+      .swal-user-card {
+        padding: 10px 12px !important;
+        gap: 10px !important;
+      }
+      .swal-user-avatar {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 0.85rem !important;
+      }
+      .swal2-actions {
+        flex-direction: column-reverse !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+      .swal2-confirm, .swal2-cancel {
+        width: 100% !important;
+        justify-content: center !important;
+        margin: 0 !important;
+      }
+    }
+
+    /* SweetAlert2 Premium Theme */
+    .swal2-container {
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .swal2-popup {
+      font-family: 'Poppins', sans-serif !important;
+      border-radius: 18px !important;
+      padding: 24px 22px !important;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0,0,0,0.05) !important;
+      border: 1px solid rgba(0,0,0,0.06) !important;
+    }
+    .swal2-title {
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      color: #1a1a1a !important;
+      margin-top: 8px !important;
+      letter-spacing: -0.2px;
+    }
+    .swal2-html-container {
+      font-size: 0.88rem !important;
+      line-height: 1.55 !important;
+      color: #4b5563 !important;
+      margin: 12px 0 18px !important;
+    }
+    .swal2-actions {
+      gap: 10px !important;
+      margin-top: 14px !important;
+    }
+    .swal2-confirm, .swal2-cancel {
+      font-family: 'Poppins', sans-serif !important;
+      font-size: 0.84rem !important;
+      font-weight: 600 !important;
+      border-radius: 8px !important;
+      padding: 9px 20px !important;
+      transition: all 0.2s ease !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      box-shadow: none !important;
+    }
+    .swal2-confirm:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+    .swal2-cancel {
+      background: #f1f5f9 !important;
+      color: #64748b !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    .swal2-cancel:hover {
+      background: #e2e8f0 !important;
+      color: #334155 !important;
     }
   </style>
   @stack('styles')
 </head>
 <body>
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebarNav">
   <div class="sidebar-logo">
-    <span>Denpasar Institute</span>
-    <small>Backoffice Panel</small>
+    <div>
+      <span>Denpasar Institute</span>
+      <small>Backoffice Panel</small>
+    </div>
+    <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup Menu">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Main</div>
@@ -263,6 +578,15 @@
     </a>
 
     <div class="nav-section">Pengaturan Website</div>
+    <a href="{{ route('backoffice.navigation.index') }}" class="{{ request()->routeIs('backoffice.navigation.*') ? 'active' : '' }}">
+      <i class="fas fa-bars"></i> Navigasi &amp; Menu
+    </a>
+    <a href="{{ route('backoffice.partnership-pillar.index') }}" class="{{ request()->routeIs('backoffice.partnership-pillar.*') ? 'active' : '' }}">
+      <i class="fas fa-handshake"></i> Pilar Kemitraan (Partner)
+    </a>
+    <a href="{{ route('backoffice.settings.index') }}" class="{{ request()->routeIs('backoffice.settings.*') ? 'active' : '' }}">
+      <i class="fas fa-sliders-h"></i> Konten, Kontak &amp; Footer
+    </a>
     <a href="{{ route('backoffice.divisi.index') }}" class="{{ request()->routeIs('backoffice.divisi.*') ? 'active' : '' }}">
       <i class="fas fa-sitemap"></i> Manajemen Divisi
     </a>
@@ -311,17 +635,95 @@
     </form>
   </div>
 </aside>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<script>
+(function() {
+  try {
+    var sidebar = document.getElementById('sidebarNav') || document.querySelector('.sidebar');
+    if (!sidebar) return;
+    var saved = sessionStorage.getItem('backoffice_sidebar_scroll');
+    if (saved !== null) {
+      sidebar.scrollTop = parseInt(saved, 10);
+    } else {
+      var active = sidebar.querySelector('a.active');
+      if (active) {
+        active.scrollIntoView({ block: 'center', behavior: 'auto' });
+      }
+    }
+  } catch (err) {}
+})();
+</script>
 
 <div class="main-wrap">
   <div class="topbar-back">
-    <h1>@yield('page-title', 'Dashboard')</h1>
+    <div class="topbar-left">
+      <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Buka Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1 class="topbar-title">@yield('page-title', 'Dashboard')</h1>
+    </div>
+    <div class="topbar-right">
+      <a href="{{ route('home') }}" class="btn-topbar-link" target="_blank" title="Lihat Website">
+        <i class="fas fa-external-link-alt"></i> <span class="hide-mobile">Website</span>
+      </a>
+      <div class="topbar-user-badge" title="{{ auth()->user()->name ?? 'User' }} ({{ ucfirst(auth()->user()->role ?? 'Admin') }})">
+        {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+      </div>
+    </div>
   </div>
   <div class="page-content">
     @if(session('success'))
-      <div class="alert alert-success"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+      <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-left: 4px solid #22c55e; border-radius: 8px; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.12); margin-bottom: 20px;">
+        <i class="fas fa-check-circle text-success me-2"></i> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              iconColor: '#22c55e',
+              title: 'Berhasil!',
+              text: {!! json_encode(session('success')) !!},
+              showConfirmButton: false,
+              timer: 3500,
+              timerProgressBar: true,
+              customClass: {
+                popup: 'swal2-di-toast swal2-di-toast-success'
+              }
+            });
+          }
+        });
+      </script>
     @endif
     @if(session('error'))
-      <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-left: 4px solid #CC0000; border-radius: 8px; box-shadow: 0 4px 14px rgba(204, 0, 0, 0.12); margin-bottom: 20px;">
+        <i class="fas fa-exclamation-circle text-danger me-2"></i> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              iconColor: '#CC0000',
+              title: 'Perhatian!',
+              text: {!! json_encode(session('error')) !!},
+              showConfirmButton: false,
+              timer: 4500,
+              timerProgressBar: true,
+              customClass: {
+                popup: 'swal2-di-toast swal2-di-toast-error'
+              }
+            });
+          }
+        });
+      </script>
     @endif
     @yield('content')
   </div>
@@ -330,6 +732,406 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.9.1/summernote-bs5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  /* SweetAlert2 Denpasar Institute Custom Theme */
+  .swal2-di-popup {
+    border-radius: 16px !important;
+    padding: 26px 22px 24px !important;
+    font-family: 'Poppins', sans-serif !important;
+    border: 1.5px solid #fee2e2 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18) !important;
+    background: #ffffff !important;
+  }
+  .swal2-di-popup .swal2-title {
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+    color: #1e293b !important;
+    margin-bottom: 8px !important;
+  }
+  .swal2-di-popup .swal2-html-container {
+    font-size: 0.95rem !important;
+    color: #475569 !important;
+    margin: 10px 0 18px !important;
+    line-height: 1.6 !important;
+  }
+  .swal2-di-btn-confirm {
+    background: #CC0000 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 14px rgba(204, 0, 0, 0.35) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  .swal2-di-btn-confirm:hover {
+    background: #a80000 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(204, 0, 0, 0.45) !important;
+  }
+  .swal2-di-btn-step1 {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  .swal2-di-btn-step1:hover {
+    background: linear-gradient(135deg, #b45309, #92400e) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(217, 119, 6, 0.45) !important;
+  }
+  .swal2-di-btn-cancel {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 10px 22px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-right: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  .swal2-di-btn-cancel:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+  }
+  .swal2-di-toast {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+    font-family: 'Poppins', sans-serif !important;
+    padding: 12px 16px !important;
+  }
+  .swal2-di-toast-success {
+    border-left: 4px solid #22c55e !important;
+  }
+  .swal2-di-toast-error {
+    border-left: 4px solid #CC0000 !important;
+  }
+  .swal2-di-toast-info {
+    border-left: 4px solid #0284c7 !important;
+  }
+</style>
+
+<script>
+// Toast notification helper
+window.showDiToast = function(type, title, message) {
+  var Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3500,
+    timerProgressBar: true,
+    customClass: {
+      popup: 'swal2-di-toast ' + (type === 'success' ? 'swal2-di-toast-success' : (type === 'info' ? 'swal2-di-toast-info' : 'swal2-di-toast-error'))
+    },
+    didOpen: function(toast) {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
+
+  Toast.fire({
+    icon: type,
+    title: title || (type === 'success' ? 'Berhasil!' : (type === 'info' ? 'Informasi' : 'Pemberitahuan')),
+    text: message || ''
+  });
+};
+
+// Global modern delete confirmation dialog powered by SweetAlert2
+// Double Verification: Ditanyakan 2x ("Tanyakan Lagi Sekali Ingin Menghapus atau Tidak")
+window.confirmDelete = function(event, form, message, title) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  if (form && form.dataset.confirmed === 'true') {
+    delete form.dataset.confirmed;
+    return true;
+  }
+
+  var msgText = message || 'Apakah Anda ingin menghapus data ini?';
+  var titleText = title || 'Konfirmasi Penghapusan';
+
+  // LANGKAH 1: Pertanyaan Awal (Ingin Menghapus atau Tidak)
+  Swal.fire({
+    title: titleText,
+    html: '<div style="margin-bottom:12px;">' +
+            '<span style="display:inline-flex;align-items:center;gap:6px;background:#fef3c7;color:#92400e;font-size:0.78rem;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid #fde68a;">' +
+              '<i class="fas fa-layer-group"></i> Tahap 1 dari 2: Konfirmasi Awal' +
+            '</span>' +
+          '</div>' +
+          '<div style="font-size:1.02rem;color:#1e293b;font-weight:600;margin-bottom:12px;line-height:1.5;">' + msgText + '</div>' +
+          '<div style="font-size:0.83rem;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:left;line-height:1.5;">' +
+            '<div style="font-weight:600;color:#334155;margin-bottom:4px;display:flex;align-items:center;gap:6px;">' +
+              '<i class="fas fa-info-circle" style="color:#0284c7;"></i> Sistem Perlindungan Data' +
+            '</div>' +
+            'Untuk mencegah data terhapus secara tidak sengaja, sistem akan <strong>menanyakan sekali lagi</strong> pada tahap berikutnya. Apakah Anda ingin melanjutkan proses ini?' +
+          '</div>',
+    icon: 'warning',
+    iconColor: '#f59e0b',
+    showCancelButton: true,
+    confirmButtonText: 'Lanjutkan <i class="fas fa-arrow-right ms-1"></i>',
+    cancelButtonText: '<i class="fas fa-times me-1"></i> Batal, Jangan Hapus',
+    reverseButtons: true,
+    focusCancel: true,
+    customClass: {
+      popup: 'swal2-di-popup',
+      confirmButton: 'swal2-di-btn-step1',
+      cancelButton: 'swal2-di-btn-cancel'
+    },
+    buttonsStyling: false
+  }).then(function(step1Result) {
+    if (!step1Result.isConfirmed) {
+      window.showDiToast('info', 'Penghapusan Dibatalkan', 'Data Anda tetap tersimpan dengan aman.');
+      return;
+    }
+
+    // LANGKAH 2: Tanyakan Lagi Sekali (Konfirmasi Akhir / Double Confirmation)
+    Swal.fire({
+      title: '<span style="color:#CC0000;"><i class="fas fa-exclamation-triangle me-1"></i> Konfirmasi Terakhir!</span>',
+      html: '<div style="margin-bottom:12px;">' +
+              '<span style="display:inline-flex;align-items:center;gap:6px;background:#fee2e2;color:#991b1b;font-size:0.78rem;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid #fecaca;">' +
+                '<i class="fas fa-shield-alt"></i> Tahap 2 dari 2: Tanyakan Lagi Sekali' +
+              '</span>' +
+            '</div>' +
+            '<div style="font-size:1.05rem;color:#0f172a;font-weight:700;margin-bottom:8px;">Apakah Anda BENAR-BENAR Ingin Menghapus Data Ini?</div>' +
+            '<div style="font-size:0.86rem;color:#334155;margin-bottom:12px;line-height:1.5;">' +
+              'Data yang sudah dihapus akan <strong>hilang secara permanen</strong> dari database sistem dan tidak dapat dipulihkan kembali!' +
+            '</div>' +
+            '<div style="font-size:0.82rem;color:#991b1b;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;text-align:left;display:flex;align-items:center;gap:10px;">' +
+              '<i class="fas fa-trash-alt" style="font-size:1.1rem;color:#dc2626;flex-shrink:0;"></i>' +
+              '<span>Pilih <strong>\"Ya, Hapus Sekarang\"</strong> jika Anda yakin, atau <strong>\"Batal, Jangan Hapus\"</strong> untuk membatalkannya.</span>' +
+            '</div>',
+      icon: 'error',
+      iconColor: '#CC0000',
+      showCancelButton: true,
+      confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Ya, Hapus Sekarang!',
+      cancelButtonText: '<i class="fas fa-undo me-1"></i> Batal, Jangan Hapus',
+      reverseButtons: true,
+      focusCancel: true,
+      customClass: {
+        popup: 'swal2-di-popup',
+        confirmButton: 'swal2-di-btn-confirm',
+        cancelButton: 'swal2-di-btn-cancel'
+      },
+      buttonsStyling: false
+    }).then(function(step2Result) {
+      if (step2Result.isConfirmed) {
+        Swal.fire({
+          title: 'Menghapus Data...',
+          html: '<div style="font-size:0.88rem;color:#64748b;margin-top:6px;">Mohon tunggu, sistem sedang memproses penghapusan data secara aman.</div>',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: function() {
+            Swal.showLoading();
+          }
+        });
+
+        if (form) {
+          form.dataset.confirmed = 'true';
+          form.submit();
+        }
+      } else {
+        window.showDiToast('info', 'Penghapusan Dibatalkan', 'Data Anda tetap tersimpan dengan aman.');
+      }
+    });
+  });
+
+  return false;
+};
+
+// General Action Confirmation (1-step for non-destructive actions like activate/toggle/renew)
+window.confirmAction = function(event, form, message, title, btnText) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  if (form && form.dataset.confirmed === 'true') {
+    delete form.dataset.confirmed;
+    return true;
+  }
+
+  Swal.fire({
+    title: title || 'Konfirmasi Tindakan',
+    text: message || 'Apakah Anda yakin ingin melanjutkan tindakan ini?',
+    icon: 'question',
+    iconColor: '#0284c7',
+    showCancelButton: true,
+    confirmButtonText: btnText || '<i class="fas fa-check me-1"></i> Ya, Lanjutkan',
+    cancelButtonText: '<i class="fas fa-times me-1"></i> Batal',
+    reverseButtons: true,
+    focusCancel: true,
+    customClass: {
+      popup: 'swal2-di-popup',
+      confirmButton: 'swal2-di-btn-confirm',
+      cancelButton: 'swal2-di-btn-cancel'
+    },
+    buttonsStyling: false
+  }).then(function(result) {
+    if (result.isConfirmed) {
+      if (form) {
+        form.dataset.confirmed = 'true';
+        form.submit();
+      }
+    }
+  });
+
+  return false;
+};
+
+// Universal automatic interception: Replace browser native confirm on all forms
+(function() {
+  function attachSwalConfirmToForms() {
+    document.querySelectorAll('form').forEach(function(form) {
+      var onsubmitAttr = form.getAttribute('onsubmit') || '';
+      if (onsubmitAttr.includes('confirm(') && !onsubmitAttr.includes('confirmDelete(') && !onsubmitAttr.includes('confirmAction(')) {
+        var match = onsubmitAttr.match(/confirm\(\s*['"`]([^'"`]+)['"`]\s*\)/);
+        var msg = match && match[1] ? match[1] : 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+
+        form.removeAttribute('onsubmit');
+        form.onsubmit = null;
+
+        var isDelete = (form.querySelector('input[name="_method"][value="DELETE"]') !== null) ||
+                       (form.getAttribute('action') && form.getAttribute('action').includes('destroy')) ||
+                       msg.toLowerCase().includes('hapus') ||
+                       msg.toLowerCase().includes('delete');
+
+        form.addEventListener('submit', function(e) {
+          if (form.dataset.confirmed === 'true') {
+            return true;
+          }
+          if (isDelete) {
+            return window.confirmDelete(e, form, msg);
+          } else {
+            return window.confirmAction(e, form, msg);
+          }
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachSwalConfirmToForms);
+  } else {
+    attachSwalConfirmToForms();
+  }
+
+  // Also capture click events directly on submit buttons before any inline handler runs
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button[type="submit"], input[type="submit"]');
+    if (!btn) return;
+    var form = btn.closest('form');
+    if (!form) return;
+
+    var onsubmitAttr = form.getAttribute('onsubmit') || '';
+    if (onsubmitAttr.includes('confirm(') && !onsubmitAttr.includes('confirmDelete(') && !onsubmitAttr.includes('confirmAction(')) {
+      var match = onsubmitAttr.match(/confirm\(\s*['"`]([^'"`]+)['"`]\s*\)/);
+      var msg = match && match[1] ? match[1] : 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+
+      form.removeAttribute('onsubmit');
+      form.onsubmit = null;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      var isDelete = (form.querySelector('input[name="_method"][value="DELETE"]') !== null) ||
+                     (form.getAttribute('action') && form.getAttribute('action').includes('destroy')) ||
+                     msg.toLowerCase().includes('hapus') ||
+                     msg.toLowerCase().includes('delete');
+
+      if (isDelete) {
+        window.confirmDelete(e, form, msg);
+      } else {
+        window.confirmAction(e, form, msg);
+      }
+      return false;
+    }
+  }, true);
+})();
+</script>
+
+<style>
+  .note-editor.note-frame {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: none;
+    background: #fff;
+  }
+  .note-editor.note-frame .note-toolbar {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 6px 10px;
+  }
+  .note-editor.note-frame .note-statusbar {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+  }
+  .note-editor.note-frame.focus {
+    border-color: #CC0000 !important;
+    box-shadow: 0 0 0 0.25rem rgba(204, 0, 0, 0.15) !important;
+  }
+  .note-btn {
+    font-size: 0.82rem;
+    padding: 4px 8px;
+  }
+</style>
+<script>
+  $(document).ready(function() {
+    function initGlobalSummernote() {
+      $('.summernote, .summernote-editor, textarea[data-editor="summernote"]').each(function() {
+        var $el = $(this);
+        if (!$el.hasClass('summernote-initialized') && !$el.next().hasClass('note-editor')) {
+          $el.addClass('summernote-initialized');
+          var customHeight = $el.data('height') || ($el.attr('rows') ? Math.max($el.attr('rows') * 35, 150) : 180);
+          $el.summernote({
+            height: customHeight,
+            minHeight: 120,
+            toolbar: [
+              ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+              ['font', ['strikethrough', 'superscript', 'subscript']],
+              ['color', ['color']],
+              ['para', ['ul', 'ol', 'paragraph']],
+              ['insert', ['link', 'table', 'hr']],
+              ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            placeholder: $el.attr('placeholder') || 'Tulis konten di sini...'
+          });
+        }
+      });
+    }
+
+    initGlobalSummernote();
+
+    // Re-init / refresh for dynamic Bootstrap tabs
+    $('button[data-bs-toggle="tab"], a[data-bs-toggle="tab"]').on('shown.bs.tab', function() {
+      initGlobalSummernote();
+    });
+  });
+</script>
 
 <style>
   input[type="date"] { cursor: pointer; }
@@ -346,6 +1148,97 @@
       }
     }
   });
+
+  // Pertahankan posisi scroll sidebar navigasi saat berpindah halaman
+  (function() {
+    try {
+      var sidebar = document.querySelector('.sidebar');
+      if (!sidebar) return;
+
+      function applySidebarScroll() {
+        var saved = sessionStorage.getItem('backoffice_sidebar_scroll');
+        if (saved !== null) {
+          sidebar.scrollTop = parseInt(saved, 10);
+        } else {
+          var active = sidebar.querySelector('a.active');
+          if (active) {
+            active.scrollIntoView({ block: 'center', behavior: 'auto' });
+          }
+        }
+      }
+
+      applySidebarScroll();
+      window.addEventListener('load', applySidebarScroll);
+
+      var scrollTimer;
+      sidebar.addEventListener('scroll', function() {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() {
+          sessionStorage.setItem('backoffice_sidebar_scroll', sidebar.scrollTop);
+        }, 50);
+      }, { passive: true });
+
+      sidebar.addEventListener('click', function(e) {
+        var link = e.target.closest('a');
+        if (link) {
+          sessionStorage.setItem('backoffice_sidebar_scroll', sidebar.scrollTop);
+        }
+      });
+
+      window.addEventListener('beforeunload', function() {
+        sessionStorage.setItem('backoffice_sidebar_scroll', sidebar.scrollTop);
+      });
+    } catch (err) {}
+  })();
+
+  // Mobile Sidebar Toggle Controller
+  (function() {
+    var toggleBtn = document.getElementById('sidebarToggleBtn');
+    var closeBtn = document.getElementById('sidebarCloseBtn');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    var sidebar = document.getElementById('sidebarNav') || document.querySelector('.sidebar');
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.add('open');
+      if (backdrop) backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+    // Auto-close on mobile when clicking any navigation link
+    if (sidebar) {
+      sidebar.querySelectorAll('.sidebar-nav a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            closeSidebar();
+          }
+        });
+      });
+    }
+
+    // Auto-close on desktop resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        closeSidebar();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+  })();
 </script>
 
 @stack('scripts')

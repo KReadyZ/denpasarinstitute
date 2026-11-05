@@ -36,7 +36,7 @@
                                 <button type="button" class="btn btn-warning btn-icon" title="Edit" onclick="openEditModal('{{ $kategori->id }}', '{{ addslashes($kategori->nama) }}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <form action="{{ route('backoffice.kategori-event.destroy', $kategori->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')" style="display:inline;">
+                                <form action="{{ route('backoffice.kategori-event.destroy', $kategori->id) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Yakin ingin menghapus kategori ini?')" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-icon" title="Hapus">

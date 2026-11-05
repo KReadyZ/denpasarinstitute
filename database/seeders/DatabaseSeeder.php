@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             SuperAdminSeeder::class,
             HeroSliderSeeder::class,
             StatisticSeeder::class,
-            DivisiSeeder::class
+            DivisiSeeder::class,
+            ContentManagementSeeder::class
         ]);
     }
 }

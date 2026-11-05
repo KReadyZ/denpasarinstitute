@@ -70,7 +70,7 @@
                     <i class="fas fa-download"></i> Unduh Kartu
                 </button>
 
-                <form action="{{ route('backoffice.profile.ecard.renew', $user->id) }}" method="POST" onsubmit="return confirm('Perpanjang masa berlaku kartu 1 tahun dari hari ini?');">
+                <form action="{{ route('backoffice.profile.ecard.renew', $user->id) }}" method="POST" onsubmit="return confirmAction(event, this, 'Perpanjang masa berlaku kartu 1 tahun dari hari ini?', 'Perpanjang E-Card');">
                     @csrf
                     <button type="submit" class="btn btn-warning">
                         <i class="fas fa-redo"></i> Perpanjang Masa Berlaku

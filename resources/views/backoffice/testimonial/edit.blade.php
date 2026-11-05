@@ -49,7 +49,7 @@
 
             <div class="form-group">
                 <label>Kutipan / Testimoni <span style="color:#CC0000;">*</span></label>
-                <textarea name="quote" rows="4" required>{{ old('quote', $testimonial->quote) }}</textarea>
+                <textarea name="quote" class="form-control summernote" rows="4" required>{{ old('quote', $testimonial->quote) }}</textarea>
                 @error('quote')<small style="color:#CC0000;">{{ $message }}</small>@enderror
             </div>
 

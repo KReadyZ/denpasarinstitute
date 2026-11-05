@@ -66,7 +66,7 @@
     <h3 style="color:#991b1b; margin:0; font-size:0.95rem;">
       <i class="fas fa-bell"></i> Antrean Verifikasi Anggota Baru Menunggu Tindakan
     </h3>
-    <div style="display:flex; gap:8px;">
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
       @if(($pendingKonsultanCount ?? 0) > 0)
         <a href="{{ route('backoffice.konsultan.verifikasi') }}" class="btn btn-sm btn-danger" style="background:#CC0000; color:#fff; padding:6px 14px; border-radius:4px; font-weight:600; font-size:0.8rem; text-decoration:none;">
           <i class="fas fa-user-check"></i> Verifikasi Konsultan ({{ $pendingKonsultanCount }})

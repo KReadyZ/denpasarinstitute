@@ -41,7 +41,7 @@
                                 <a href="{{ route('backoffice.divisi.edit', $divisi->id) }}" class="btn btn-warning btn-icon" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('backoffice.divisi.destroy', $divisi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
+                                <form action="{{ route('backoffice.divisi.destroy', $divisi->id) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Yakin ingin menghapus divisi ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-icon" title="Hapus">

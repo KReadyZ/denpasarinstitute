@@ -78,7 +78,7 @@
               </button>
               @endif
 
-              <form action="{{ route('backoffice.admission.destroy', $admission->id) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
+              <form action="{{ route('backoffice.admission.destroy', $admission->id) }}" method="POST" onsubmit="return confirmDelete(event, this, 'Hapus data ini?')">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger btn-icon" title="Hapus">

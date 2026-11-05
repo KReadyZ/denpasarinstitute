@@ -129,7 +129,7 @@
                             @endif
                             <a href="{{ route('backoffice.grcs.show', $member->id) }}" class="btn btn-sm btn-info" title="Lihat Profil"><i class="fas fa-eye"></i></a>
                             <a href="{{ route('backoffice.grcs.edit', $member->id) }}" class="btn btn-sm btn-warning" title="Edit Data"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('backoffice.grcs.destroy', $member->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus anggota GRCS ini?')">
+                            <form action="{{ route('backoffice.grcs.destroy', $member->id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete(event, this, 'Yakin hapus anggota GRCS ini?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-trash"></i></button>
                             </form>

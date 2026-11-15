@@ -25,14 +25,21 @@ use App\Http\Controllers\Backoffice\StatisticController;
 use App\Http\Controllers\Backoffice\NavigationController;
 use App\Http\Controllers\Backoffice\SiteSettingController;
 use App\Http\Controllers\Backoffice\PartnershipPillarController;
+use App\Http\Controllers\Backoffice\PartnershipSubmissionController;
 use App\Http\Controllers\Backoffice\EventController as BackofficeEventController;
 use App\Http\Controllers\Backoffice\BursaSdmController as BackofficeBursaSdmController;
 use App\Http\Controllers\Backoffice\TestimonialController as BackofficeTestimonialController;
 use App\Http\Controllers\Backoffice\AdmissionController as BackofficeAdmissionController;
+use App\Http\Controllers\Backoffice\CashflowController;
+use App\Http\Controllers\Backoffice\CashflowCategoryController;
+use App\Http\Controllers\Backoffice\ProjectController;
+use App\Http\Controllers\Backoffice\AdminManagementController;
 use App\Http\Controllers\Backoffice\DivisiSectionController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\PartnerDetailController;
+use App\Http\Controllers\MitraKlienController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -47,20 +54,27 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
         Route::post('register', [AuthController::class, 'register'])->name('register.submit');
     });
 
-    Route::middleware(['backoffice'])->group(function () {
-
+    Route::middleware(['backoffice:superadmin,admin,finance'])->group(function () {
         Route::get('/', function () {
+            if (auth()->check() && auth()->user()->role === 'finance') {
+                return redirect()->route('backoffice.cashflow.index');
+            }
+            if (auth()->check() && auth()->user()->role === 'admin') {
+                return redirect()->route('backoffice.admission.index');
+            }
             return redirect()->route('backoffice.dashboard');
         });
+        Route::post('logout',   [AuthController::class, 'logout'])->name('logout');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('profile',      [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('profile',      [ProfileController::class, 'update'])->name('profile.update');
+    });
+
+    Route::middleware(['backoffice:superadmin,admin'])->group(function () {
         Route::get('partnership', function () {
             return redirect()->route('backoffice.partnership-pillar.index');
         });
 
-        Route::post('logout',   [AuthController::class, 'logout'])->name('logout');
-        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-        Route::get('profile',      [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::put('profile',      [ProfileController::class, 'update'])->name('profile.update');
         Route::get('profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
         Route::post('profile/{id}/ecard/generate', [ProfileController::class, 'generateEcard'])->name('profile.ecard.generate');
@@ -172,7 +186,7 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
             Route::delete('/{admission}',        [BackofficeAdmissionController::class, 'destroy'])->name('destroy');
         });
 
-        Route::middleware(['backoffice:superadmin'])->group(function () {
+        Route::middleware(['backoffice:superadmin,admin'])->group(function () {
 
             Route::post('users/{id}/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggle-active');
             Route::post('slider/order', [HeroSliderController::class, 'updateOrder'])->name('slider.order');
@@ -257,7 +271,82 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
                 Route::delete('/{id}',              [PartnershipPillarController::class, 'destroy'])->name('destroy');
                 Route::patch('/{id}/toggle-active', [PartnershipPillarController::class, 'toggleActive'])->name('toggle-active');
             });
+
+            // Pendaftar & Verifikasi Mitra & Klien (Partnership Submissions)
+            Route::prefix('partnership-submission')->name('partnership-submission.')->group(function () {
+                Route::get('/',              [PartnershipSubmissionController::class, 'index'])->name('index');
+                Route::get('/create',        [PartnershipSubmissionController::class, 'create'])->name('create');
+                Route::post('/',             [PartnershipSubmissionController::class, 'store'])->name('store');
+                Route::get('/{id}/edit',     [PartnershipSubmissionController::class, 'edit'])->name('edit');
+                Route::put('/{id}',          [PartnershipSubmissionController::class, 'update'])->name('update');
+                Route::patch('/{id}/status', [PartnershipSubmissionController::class, 'updateStatus'])->name('update-status');
+                Route::delete('/{id}',       [PartnershipSubmissionController::class, 'destroy'])->name('destroy');
+            });
+
         });
+    });
+
+    // Khusus Super Admin: Kelola Akun Admin & Finance
+    Route::middleware(['backoffice:superadmin'])->group(function () {
+        Route::prefix('admin-management')->name('admin-management.')->group(function () {
+            Route::get('/',                                     [AdminManagementController::class, 'index'])->name('index');
+            Route::post('/',                                    [AdminManagementController::class, 'store'])->name('store');
+            Route::match(['put', 'post'], '/{id}',              [AdminManagementController::class, 'update'])->name('update');
+            Route::match(['put', 'post'], '/{id}/password',     [AdminManagementController::class, 'updatePassword'])->name('update-password');
+            Route::match(['patch', 'post'], '/{id}/toggle-active', [AdminManagementController::class, 'toggleActive'])->name('toggle-active');
+            Route::match(['delete', 'post'], '/{id}',           [AdminManagementController::class, 'destroy'])->name('destroy');
+
+            // Pengelolaan Role Dinamis (Database)
+            Route::post('roles',                [AdminManagementController::class, 'storeRole'])->name('roles.store');
+            Route::put('roles/{id}',            [AdminManagementController::class, 'updateRole'])->name('roles.update');
+            Route::delete('roles/{id}',         [AdminManagementController::class, 'destroyRole'])->name('roles.destroy');
+        });
+    });
+
+    Route::middleware(['backoffice:superadmin,finance'])->group(function () {
+            // Buku Kas Keuangan (Pemasukan & Pengeluaran)
+            Route::prefix('cashflow')->name('cashflow.')->group(function () {
+                // Kategori Kas Dinamis
+                Route::prefix('kategori')->name('kategori.')->group(function () {
+                    Route::get('/',             [CashflowCategoryController::class, 'index'])->name('index');
+                    Route::get('/create',       [CashflowCategoryController::class, 'create'])->name('create');
+                    Route::post('/',            [CashflowCategoryController::class, 'store'])->name('store');
+                    Route::get('/{id}/edit',    [CashflowCategoryController::class, 'edit'])->name('edit');
+                    Route::put('/{id}',         [CashflowCategoryController::class, 'update'])->name('update');
+                    Route::patch('/{id}/toggle',[CashflowCategoryController::class, 'toggle'])->name('toggle');
+                    Route::delete('/{id}',      [CashflowCategoryController::class, 'destroy'])->name('destroy');
+                });
+
+                Route::get('/',                 [CashflowController::class, 'index'])->name('index');
+                Route::get('/export/csv',       [CashflowController::class, 'exportCsv'])->name('export.csv');
+                Route::get('/create',           [CashflowController::class, 'create'])->name('create');
+                Route::post('/',                [CashflowController::class, 'store'])->name('store');
+                Route::get('/cetak/laporan',    [CashflowController::class, 'cetak'])->name('cetak');
+                Route::get('/{id}/invoice',     [CashflowController::class, 'invoice'])->name('invoice');
+                Route::get('/api/generate-kode',[CashflowController::class, 'generateKodeApi'])->name('api.generate-kode');
+                Route::get('/{id}/edit',        [CashflowController::class, 'edit'])->name('edit');
+                Route::put('/{id}',             [CashflowController::class, 'update'])->name('update');
+                Route::post('/{id}/pelunasan',  [CashflowController::class, 'pelunasan'])->name('pelunasan');
+                Route::delete('/{id}',          [CashflowController::class, 'destroy'])->name('destroy');
+            });
+
+            // Manajemen Proyek & Program Khusus (Peserta & Kelas DI)
+            Route::prefix('project')->name('project.')->group(function () {
+                Route::get('/',                     [ProjectController::class, 'index'])->name('index');
+                Route::get('/create',               [ProjectController::class, 'create'])->name('create');
+                Route::post('/',                    [ProjectController::class, 'store'])->name('store');
+                Route::get('/tambah-program',       [ProjectController::class, 'createProgram'])->name('program.create');
+                Route::post('/tambah-program',      [ProjectController::class, 'storeProgram'])->name('program.store');
+                Route::get('/kategori/{id}',        [ProjectController::class, 'kategori'])->name('kategori');
+                Route::get('/kategori/{id}/export-csv', [ProjectController::class, 'exportKategoriCsv'])->name('kategori.export-csv');
+                Route::get('/{id}',                 [ProjectController::class, 'show'])->name('show');
+                Route::get('/{id}/edit',            [ProjectController::class, 'edit'])->name('edit');
+                Route::put('/{id}',                 [ProjectController::class, 'update'])->name('update');
+                Route::delete('/{id}',              [ProjectController::class, 'destroy'])->name('destroy');
+                Route::post('/{id}/transaksi',      [ProjectController::class, 'storeTransaction'])->name('transaksi.store');
+                Route::post('/{id}/update-nilai',   [ProjectController::class, 'updateNilai'])->name('update-nilai');
+                Route::get('/{id}/cetak',           [ProjectController::class, 'cetak'])->name('cetak');
+            });
     });
 });
 
@@ -380,6 +469,23 @@ Route::get('/partner-with-di', function () {
     return view('partner');
 })->name('partners-and-community');
 
+// Submit Form Kemitraan (Pop-up Modal)
+Route::post('/partner-with-di/form-kemitraan', [PartnerDetailController::class, 'submitForm'])->name('partner.submit-form');
+
+// Detail 6 Pilar Kemitraan (Dynamic)
+Route::get('/partner-with-di/{slug}', [PartnerDetailController::class, 'show'])->name('partner.detail');
+
+Route::get('/partner-with-di/research-and-innovation', function () {
+    return redirect()->route('partner.detail', 'research-and-innovation');
+})->name('partner.research-innovation');
+
 Route::get('/partners-and-collaboration', function () {
     return view('partner');
 })->name('partners-and-collaboration');
+
+// Halaman Publik Mitra & Klien (Baru)
+Route::get('/mitra-dan-klien', [MitraKlienController::class, 'index'])->name('mitra-dan-klien');
+Route::get('/mitra-klien', fn() => redirect()->route('mitra-dan-klien'));
+Route::get('/partner', fn() => redirect()->route('mitra-dan-klien'));
+Route::get('/partners', fn() => redirect()->route('mitra-dan-klien'));
+Route::get('/partners-and-clients', fn() => redirect()->route('mitra-dan-klien'));

@@ -35,7 +35,7 @@
     pointer-events: none;
   }
   .partner-hero-inner {
-    max-width: 920px;
+    max-width: 1200px;
     margin: 0 auto;
     position: relative;
     z-index: 2;
@@ -57,13 +57,14 @@
     backdrop-filter: blur(4px);
   }
   .partner-hero-title {
-    font-size: 2.6rem;
+    font-size: clamp(1.35rem, 2.35vw, 2.3rem);
     font-weight: 900;
     line-height: 1.25;
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-shadow: 0 3px 14px rgba(0, 0, 0, 0.6);
+    white-space: nowrap;
   }
   .partner-hero-title span {
     color: var(--yellow);
@@ -205,19 +206,6 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
-  }
-  .partner-card-num {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(204, 0, 0, 0.08);
-    color: var(--red);
-    font-size: 0.88rem;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
   }
   .partner-card-title {
     font-size: 1.22rem;
@@ -391,7 +379,7 @@
 
   @media (max-width: 768px) {
     .partner-page-hero { padding: 55px 16px 80px; }
-    .partner-hero-title { font-size: 1.7rem !important; line-height: 1.3; }
+    .partner-hero-title { font-size: 1.55rem !important; line-height: 1.3; white-space: normal; }
     .partner-hero-tagline { font-size: 0.98rem; margin-bottom: 16px; }
     .partner-hero-desc { font-size: 0.92rem; line-height: 1.7; text-align: left; }
     .partner-hero-wave svg { height: 42px; }
@@ -419,6 +407,18 @@
     </div>
     <div class="partner-hero-desc">
       {!! \App\Models\SiteSetting::get('partner_hero_desc', 'Partnership, Community & Global Engagement merupakan wadah pengembangan kerja sama dan kolaborasi Denpasar Institute dengan berbagai institusi pendidikan, pemerintah, dunia usaha, industri, dan komunitas di tingkat nasional maupun internasional. Melalui kemitraan strategis, kami mendorong pertukaran pengetahuan, pengembangan riset, inovasi, dan peningkatan kualitas sumber daya manusia.') !!}
+    </div>
+
+    <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{{ route('mitra-dan-klien') }}" class="btn-partner-cta-wa" style="background:#F5C400;color:#111827;text-decoration:none;font-weight:800;box-shadow:0 4px 14px rgba(245,196,0,0.35);">
+        <i class="fas fa-building"></i> Lihat Mitra &amp; Klien ({{ \App\Models\PartnershipSubmission::approved()->count() }})
+      </a>
+      <button type="button" class="btn-partner-cta-wa" onclick="openPartnerModal('', 'Kemitraan Strategis Denpasar Institute')" style="border:1.5px solid rgba(255,255,255,0.4);cursor:pointer;background:rgba(255,255,255,0.15);color:#ffffff;font-weight:700;" title="Buka Formulir Kemitraan">
+        <i class="fas fa-file-signature"></i> Form Kemitraan
+      </button>
+      <a href="{{ route('home') }}" class="btn-partner-cta-back" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+        <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+      </a>
     </div>
   </div>
 
@@ -459,20 +459,25 @@
     {{-- 6 Pillar Cards Grid --}}
     <div class="partner-grid">
       @php
-        $pillars = \App\Models\PartnershipPillar::active()->get();
+        $pillars = \App\Models\PartnershipPillar::active()->get()->shuffle();
       @endphp
       @forelse($pillars as $p)
         <article class="partner-card">
           <div class="partner-card-media">
-            <img src="{{ asset($p->image) }}" alt="{{ $p->title }}" loading="lazy">
+            <a href="{{ $p->link_url ?? '#' }}" style="display:block;width:100%;height:100%;" {{ (str_starts_with($p->link_url ?? '', 'http') || str_starts_with($p->link_url ?? '', '//')) ? 'target="_blank" rel="noopener noreferrer"' : '' }}>
+              <img src="{{ asset($p->image) }}" alt="{{ $p->title }}" loading="lazy">
+            </a>
             <div class="partner-card-tag">
               <i class="fas {{ $p->icon ?? 'fa-handshake' }}"></i> {{ $p->tag }}
             </div>
           </div>
           <div class="partner-card-body">
             <div class="partner-card-header-row">
-              <span class="partner-card-num">{{ $p->number }}</span>
-              <h3 class="partner-card-title">{{ $p->title }}</h3>
+              <h3 class="partner-card-title">
+                <a href="{{ $p->link_url ?? '#' }}" style="color:inherit;text-decoration:none;" {{ (str_starts_with($p->link_url ?? '', 'http') || str_starts_with($p->link_url ?? '', '//')) ? 'target="_blank" rel="noopener noreferrer"' : '' }}>
+                  {{ $p->title }}
+                </a>
+              </h3>
             </div>
             <div class="partner-card-desc">
               {!! $p->description !!}
@@ -488,28 +493,10 @@
       @endforelse
     </div>
 
-    {{-- Bottom Action Box (Merah Putih Signature DI) --}}
-    <div class="partner-bottom-cta">
-      <div class="partner-cta-info">
-        <h3>{{ \App\Models\SiteSetting::get('partner_cta_title', 'Siap Berkolaborasi Bersama Denpasar Institute?') }}</h3>
-        <div>{!! \App\Models\SiteSetting::get('partner_cta_desc', 'Diskusikan peluang kemitraan strategis, riset bersama, pelatihan institusi, maupun kolaborasi global bersama tim kami.') !!}</div>
       </div>
-      <div class="partner-cta-btns">
-        @php
-          $partnerWa = \App\Models\SiteSetting::get('partner_cta_wa_phone', '6282144814593');
-          $partnerWaClean = preg_replace('/[^0-9]/', '', $partnerWa);
-        @endphp
-        <a href="https://wa.me/{{ $partnerWaClean }}?text=Halo%20Denpasar%20Institute,%20saya%20tertarik%20untuk%20berkolaborasi%20dan%20menjadi%20partner." target="_blank" rel="noopener noreferrer" class="btn-partner-cta-wa">
-          <i class="fab fa-whatsapp"></i> Hubungi Tim Kemitraan
-        </a>
-        <a href="{{ route('home') }}" class="btn-partner-cta-back">
-          <i class="fas fa-arrow-left"></i> Kembali ke Beranda
-        </a>
-      </div>
-    </div>
 </div>
-    </div>
 
-  </div>
-</div>
+{{-- Pop-up Modal Form Kemitraan --}}
+@include('partials.modal-form-kemitraan')
+
 @endsection

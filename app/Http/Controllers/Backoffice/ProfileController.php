@@ -162,7 +162,7 @@ class ProfileController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (Auth::user()->role !== 'superadmin') {
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             abort(403, 'Hanya admin yang dapat menerbitkan kartu anggota.');
         }
 
@@ -198,7 +198,7 @@ class ProfileController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (Auth::id() != $id && Auth::user()->role !== 'superadmin') {
+        if (Auth::id() != $id && !in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             abort(403);
         }
 

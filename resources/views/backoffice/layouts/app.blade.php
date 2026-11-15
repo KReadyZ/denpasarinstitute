@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <title>@yield('title', 'Backoffice') | Denpasar Institute</title>
+
+  {{-- Favicon Logo Denpasar Institute --}}
+  <link rel="icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
+  <link rel="shortcut icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
+  <link rel="apple-touch-icon" href="{{ asset('image/Logo_DI.png') }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -19,9 +24,68 @@
 
     .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh;
       background:var(--dark); display:flex; flex-direction:column; z-index:100; overflow-y:auto; }
-    .sidebar-logo { padding:24px 20px; border-bottom:1px solid rgba(255,255,255,0.08); }
-    .sidebar-logo span { font-size:1rem; font-weight:700; color:var(--yellow); }
-    .sidebar-logo small { display:block; font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:2px; }
+    .sidebar-logo {
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      min-width: 0;
+      flex: 1;
+    }
+    .sidebar-logo-box {
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .sidebar-brand:hover .sidebar-logo-box {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(245, 196, 0, 0.25);
+    }
+    .sidebar-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .sidebar-brand-text {
+      min-width: 0;
+      line-height: 1.25;
+    }
+    .sidebar-brand-name, .sidebar-logo span {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--yellow);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
+    }
+    .sidebar-brand-sub, .sidebar-logo small {
+      display: block;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: 2px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
     .sidebar-nav { padding:16px 0; flex:1; }
     .nav-section { padding:8px 20px 4px; font-size:0.65rem; font-weight:700; text-transform:uppercase;
       letter-spacing:1.5px; color:rgba(255,255,255,0.3); margin-top:8px; }
@@ -99,14 +163,32 @@
 
     .form-group { margin-bottom:16px; }
     .form-group label { display:block; font-size:0.78rem; font-weight:700; margin-bottom:5px; }
-    .form-group input, .form-group select, .form-group textarea {
+    .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group select, .form-group textarea {
       width:100%; padding:9px 12px; border:1px solid #d1d5db; border-radius:4px;
       font-family:Poppins,sans-serif; font-size:0.83rem; outline:none; transition:border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--red); }
+    .form-group input:not([type="checkbox"]):not([type="radio"]):focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--red); }
+    .form-group input[type="checkbox"], .form-group input[type="radio"] {
+      width: 16px !important;
+      height: 16px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      cursor: pointer;
+      accent-color: var(--red);
+      flex-shrink: 0;
+    }
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     .form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
-    .form-check-wrap { border:1px solid #d1d5db; border-radius:4px; padding:12px 14px; }
-    .form-check-line { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:0.83rem; }
+    .form-check-wrap { border:1px solid #e2e8f0; border-radius:6px; padding:12px 14px; background:#f8fafc; }
+    .form-check-line { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:0.83rem; }
+    .form-check-line input[type="checkbox"], .form-check-line input[type="radio"] {
+      width: 16px !important;
+      height: 16px !important;
+      margin: 0 !important;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: var(--red);
+    }
+    .form-check-line label { margin-bottom: 0 !important; cursor: pointer; font-weight: 500; font-size: 0.83rem; color: #1e293b; user-select: none; }
 
     .img-preview { width:80px; height:50px; object-fit:cover; border-radius:4px; border:1px solid #e8e8e8; }
 
@@ -142,6 +224,66 @@
     .empty-state i { font-size: 3rem; color: #d1d5db; margin-bottom: 16px; }
     .empty-state h3 { color: #6b7280; margin-bottom: 8px; }
     .empty-state p { color: #9ca3af; margin-bottom: 20px; }
+
+    /* Backoffice Pagination Clean Styles */
+    ul.pagination, .pagination {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      list-style: none !important;
+      list-style-type: none !important;
+      padding-left: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      gap: 5px !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+    }
+    .pagination li, li.page-item, .page-item {
+      display: inline-block !important;
+      list-style: none !important;
+      list-style-type: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagination li::marker, li.page-item::marker {
+      display: none !important;
+      content: '' !important;
+    }
+    .page-item .page-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 36px !important;
+      height: 36px !important;
+      padding: 0 12px !important;
+      border-radius: 8px !important;
+      font-size: 0.88rem !important;
+      font-weight: 600 !important;
+      color: #374151 !important;
+      background: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      text-decoration: none !important;
+      transition: all 0.18s ease !important;
+      cursor: pointer !important;
+    }
+    .page-item:not(.active):not(.disabled) .page-link:hover {
+      background: #fee2e2 !important;
+      border-color: #fca5a5 !important;
+      color: #cc0000 !important;
+    }
+    .page-item.active .page-link {
+      background-color: #cc0000 !important;
+      border-color: #cc0000 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 8px rgba(204, 0, 0, 0.28) !important;
+    }
+    .page-item.disabled .page-link {
+      color: #9ca3af !important;
+      background: #f9fafb !important;
+      border-color: #e5e7eb !important;
+      cursor: not-allowed !important;
+    }
 
     .pagination-info { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid #e8e8e8; }
     .pagination-info small { color: #6b7280; }
@@ -318,6 +460,9 @@
       }
       .main-wrap {
         margin-left: 0;
+        min-width: 0;
+        width: 100%;
+        overflow-x: hidden;
       }
       .topbar-back {
         padding: 0 16px;
@@ -331,7 +476,7 @@
         display: none !important;
       }
       .page-content {
-        padding: 16px 14px;
+        padding: 16px 12px;
       }
       .stat-grid {
         grid-template-columns: 1fr 1fr;
@@ -509,21 +654,28 @@
 
 <aside class="sidebar" id="sidebarNav">
   <div class="sidebar-logo">
-    <div>
-      <span>Denpasar Institute</span>
-      <small>Backoffice Panel</small>
-    </div>
+    <a href="{{ auth()->check() && auth()->user()->role === 'finance' ? route('backoffice.cashflow.index') : route('backoffice.dashboard') }}" class="sidebar-brand text-decoration-none" title="Denpasar Institute Backoffice">
+      <div class="sidebar-logo-box">
+        <img src="{{ asset('image/Logo_DI.png') }}" alt="Logo Denpasar Institute" class="sidebar-logo-img" onerror="this.onerror=null;this.src='/image/logo-di.png';">
+      </div>
+      <div class="sidebar-brand-text">
+        <span class="sidebar-brand-name">Denpasar Institute</span>
+        <small class="sidebar-brand-sub">Backoffice Panel</small>
+      </div>
+    </a>
     <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup Menu">
       <i class="fas fa-times"></i>
     </button>
   </div>
   <nav class="sidebar-nav">
+    @if(!auth()->check() || auth()->user()->role !== 'finance')
     <div class="nav-section">Main</div>
     <a href="{{ route('backoffice.dashboard') }}" class="{{ request()->routeIs('backoffice.dashboard') ? 'active' : '' }}">
       <i class="fas fa-tachometer-alt"></i> Dashboard
     </a>
+    @endif
 
-    @if(auth()->check() && auth()->user()->role === 'superadmin')
+    @if(auth()->check() && in_array(auth()->user()->role, ['superadmin', 'admin']))
     <div class="nav-section">Pendaftaran &amp; Verifikasi</div>
     <a href="{{ route('backoffice.konsultan.verifikasi') }}" class="{{ request()->routeIs('backoffice.konsultan.verifikasi*') ? 'active' : '' }}" style="display:flex; align-items:center; justify-content:space-between;">
       <span><i class="fas fa-user-check"></i> Verifikasi Konsultan</span>
@@ -543,6 +695,9 @@
         <span class="badge" style="background:#2563eb; color:#fff; font-size:0.68rem; padding:2px 7px; border-radius:10px;">{{ $pendingAdmissionCount }}</span>
       @endif
     </a>
+    <a href="{{ route('backoffice.settings.index', ['tab' => 'admission']) }}" class="{{ (request()->routeIs('backoffice.settings.*') && request('tab') === 'admission') ? 'active' : '' }}">
+      <i class="fas fa-file-pen"></i> Editor Form Pendaftaran
+    </a>
 
     <div class="nav-section">Data Anggota</div>
     <a href="{{ route('backoffice.konsultan.index') }}" class="{{ (request()->routeIs('backoffice.konsultan.*') && !request()->routeIs('backoffice.konsultan.verifikasi*')) ? 'active' : '' }}">
@@ -555,7 +710,32 @@
       <i class="fas fa-briefcase"></i> Bursa SDM
     </a>
 
-    <div class="nav-section">Pengguna</div>
+    @if(auth()->user()->role === 'superadmin')
+    <div class="nav-section">Manajemen Keuangan</div>
+    <a href="{{ route('backoffice.cashflow.index') }}" 
+       class="{{ request()->routeIs('backoffice.cashflow.index') || request()->routeIs('backoffice.cashflow.create') || request()->routeIs('backoffice.cashflow.edit') ? 'active' : '' }}">
+      <i class="fas fa-wallet"></i> Keuangan Umum
+    </a>
+    <a href="{{ route('backoffice.project.index') }}" 
+       class="{{ (request()->routeIs('backoffice.project.*') && !request()->routeIs('backoffice.project.program.create')) ? 'active' : '' }}">
+      <i class="fas fa-graduation-cap"></i> Keuangan Program
+    </a>
+    <a href="{{ route('backoffice.project.program.create') }}" 
+       class="{{ request()->routeIs('backoffice.project.program.create') ? 'active' : '' }}">
+      <i class="fas fa-plus-circle"></i> Tambah Program
+    </a>
+    <a href="{{ route('backoffice.cashflow.kategori.index') }}" 
+       class="{{ request()->routeIs('backoffice.cashflow.kategori.*') ? 'active' : '' }}">
+      <i class="fas fa-tags"></i> Kategori Keuangan
+    </a>
+    @endif
+
+    <div class="nav-section">Pengguna &amp; Akses</div>
+    @if(auth()->check() && auth()->user()->role === 'superadmin')
+    <a href="{{ route('backoffice.admin-management.index') }}" class="{{ request()->routeIs('backoffice.admin-management.*') ? 'active' : '' }}">
+      <i class="fas fa-user-shield"></i> Kelola Admin &amp; Finance
+    </a>
+    @endif
     <a href="{{ route('backoffice.users.index') }}" class="{{ request()->routeIs('backoffice.users.*') ? 'active' : '' }}">
       <i class="fas fa-user-cog"></i> Manajemen User
     </a>
@@ -582,7 +762,16 @@
       <i class="fas fa-bars"></i> Navigasi &amp; Menu
     </a>
     <a href="{{ route('backoffice.partnership-pillar.index') }}" class="{{ request()->routeIs('backoffice.partnership-pillar.*') ? 'active' : '' }}">
-      <i class="fas fa-handshake"></i> Pilar Kemitraan (Partner)
+      <i class="fas fa-cubes"></i> 6 Pilar Kemitraan
+    </a>
+    <a href="{{ route('backoffice.partnership-submission.index') }}" class="{{ request()->routeIs('backoffice.partnership-submission.*') ? 'active' : '' }}">
+      <i class="fas fa-user-check"></i> Verifikasi &amp; Mitra Klien
+      @php
+        $pendingPartnerCount = \App\Models\PartnershipSubmission::where('status', 'pending')->count();
+      @endphp
+      @if($pendingPartnerCount > 0)
+        <span class="badge bg-warning text-dark ms-auto" style="font-size:0.7rem;font-weight:700;">{{ $pendingPartnerCount }} Baru</span>
+      @endif
     </a>
     <a href="{{ route('backoffice.settings.index') }}" class="{{ request()->routeIs('backoffice.settings.*') ? 'active' : '' }}">
       <i class="fas fa-sliders-h"></i> Konten, Kontak &amp; Footer
@@ -597,6 +786,18 @@
     <div class="nav-section">Testimonial</div>
     <a href="{{ route('backoffice.testimonial.index') }}" class="{{ request()->routeIs('backoffice.testimonial.*') ? 'active' : '' }}">
       <i class="fas fa-comment-dots"></i> Testimoni
+    </a>
+
+    @elseif(auth()->check() && auth()->user()->role === 'finance')
+    <div class="nav-section">Manajemen Keuangan</div>
+    <a href="{{ route('backoffice.cashflow.index') }}" class="{{ request()->routeIs('backoffice.cashflow.index') || request()->routeIs('backoffice.cashflow.create') || request()->routeIs('backoffice.cashflow.edit') ? 'active' : '' }}">
+      <i class="fas fa-wallet"></i> Keuangan Umum
+    </a>
+    <a href="{{ route('backoffice.project.index') }}" class="{{ request()->routeIs('backoffice.project.*') && !request()->routeIs('backoffice.project.program.create') ? 'active' : '' }}">
+      <i class="fas fa-graduation-cap"></i> Keuangan Program
+    </a>
+    <a href="{{ route('backoffice.cashflow.kategori.index') }}" class="{{ request()->routeIs('backoffice.cashflow.kategori.*') ? 'active' : '' }}">
+      <i class="fas fa-tags"></i> Kategori Keuangan
     </a>
 
     @elseif(auth()->check() && auth()->user()->role === 'konsultan')
@@ -1110,6 +1311,7 @@ window.confirmAction = function(event, form, message, title, btnText) {
           $el.summernote({
             height: customHeight,
             minHeight: 120,
+            dialogsInBody: true,
             toolbar: [
               ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
               ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -1126,8 +1328,11 @@ window.confirmAction = function(event, form, message, title, btnText) {
 
     initGlobalSummernote();
 
-    // Re-init / refresh for dynamic Bootstrap tabs
+    // Re-init / refresh for dynamic Bootstrap tabs and modals
     $('button[data-bs-toggle="tab"], a[data-bs-toggle="tab"]').on('shown.bs.tab', function() {
+      initGlobalSummernote();
+    });
+    $(document).on('shown.bs.modal', function() {
       initGlobalSummernote();
     });
   });

@@ -29,6 +29,7 @@ class HomeController extends Controller
         $latestBeritas = Berita::where('is_active', true)
             ->where('status', 'approved')
             ->orderBy('published_at', 'desc')
+            ->orderBy('id', 'desc')
             ->limit(6)
             ->get();
 

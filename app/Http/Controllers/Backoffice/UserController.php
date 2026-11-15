@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::whereIn('role', ['konsultan', 'grcs']);
+        $query = User::whereIn('role', ['admin', 'finance', 'konsultan', 'grcs']);
         
         if ($request->filled('role')) {
             $query->where('role', $request->role);
@@ -33,8 +33,8 @@ class UserController extends Controller
         
         $totalKonsultan = User::where('role', 'konsultan')->count();
         $totalGrcs = User::where('role', 'grcs')->count();
-        $totalActive = User::whereIn('role', ['konsultan', 'grcs'])->where('is_active', true)->count();
-        $totalInactive = User::whereIn('role', ['konsultan', 'grcs'])->where('is_active', false)->count();
+        $totalActive = User::whereIn('role', ['admin', 'finance', 'konsultan', 'grcs'])->where('is_active', true)->count();
+        $totalInactive = User::whereIn('role', ['admin', 'finance', 'konsultan', 'grcs'])->where('is_active', false)->count();
         
         return view('backoffice.users.index', compact(
             'users', 'totalKonsultan', 'totalGrcs', 'totalActive', 'totalInactive'
@@ -52,7 +52,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:konsultan,grcs',
+            'role' => 'required|in:admin,finance,konsultan,grcs',
             'nip_nim' => 'nullable|string|max:50',
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:255',
@@ -85,7 +85,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8',
-            'role' => 'required|in:konsultan,grcs',
+            'role' => 'required|in:admin,finance,konsultan,grcs',
             'nip_nim' => 'nullable|string|max:50',
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:255',

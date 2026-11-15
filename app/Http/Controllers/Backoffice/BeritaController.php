@@ -15,7 +15,7 @@ class BeritaController extends Controller
     {
         $query = Berita::orderBy('created_at', 'desc');
 
-        if (Auth::user()->role !== 'superadmin') {
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             $query->where('created_by', Auth::id());
         }
 
@@ -52,7 +52,11 @@ class BeritaController extends Controller
             'published_at', 'title', 'content', 'views',
         ]);
 
-        $isSuperadmin = Auth::user()->role === 'superadmin';
+        if (empty($data['published_at'])) {
+            $data['published_at'] = now();
+        }
+
+        $isSuperadmin = in_array(Auth::user()->role, ['superadmin', 'admin']);
 
         if ($isSuperadmin) {
             $data['status']      = 'approved';
@@ -111,7 +115,11 @@ class BeritaController extends Controller
             'published_at', 'title', 'content', 'views',
         ]);
 
-        $isSuperadmin = Auth::user()->role === 'superadmin';
+        if (empty($data['published_at'])) {
+            $data['published_at'] = now();
+        }
+
+        $isSuperadmin = in_array(Auth::user()->role, ['superadmin', 'admin']);
 
         if ($isSuperadmin) {
             $data['is_active'] = $request->has('is_active');
@@ -159,8 +167,8 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        if (Auth::user()->role !== 'superadmin') {
-            abort(403, 'Hanya superadmin yang bisa mengubah status tayang.');
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
+            abort(403, 'Hanya admin yang bisa mengubah status tayang.');
         }
 
         if ($berita->status !== 'approved') {
@@ -222,15 +230,15 @@ class BeritaController extends Controller
 
     private function authorizeOwner(Berita $berita)
     {
-        if (Auth::user()->role !== 'superadmin' && $berita->created_by !== Auth::id()) {
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin']) && $berita->created_by !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses ke berita ini.');
         }
     }
 
     private function ensureSuperadmin()
     {
-        if (Auth::user()->role !== 'superadmin') {
-            abort(403, 'Hanya superadmin yang bisa mengakses halaman ini.');
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
+            abort(403, 'Hanya admin yang bisa mengakses halaman ini.');
         }
     }
 }

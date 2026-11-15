@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group">
                     <label for="published_at">Tanggal Publikasi</label>
-                    <input type="date" name="published_at" id="published_at" class="form-control" value="{{ old('published_at') }}">
+                    <input type="date" name="published_at" id="published_at" class="form-control" value="{{ old('published_at', date('Y-m-d')) }}">
                 </div>
             </div>
 

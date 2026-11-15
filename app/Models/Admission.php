@@ -18,6 +18,13 @@ class Admission extends Model
         'special_request',
         'bukti_bayar_pendaftaran',
         'bukti_bayar_program',
+        'nominal_pembayaran',
+        'total_biaya',
+        'sisa_piutang',
+        'status_pembayaran',
+        'metode_pembayaran',
+        'deskripsi_pembayaran',
+        'cashflow_id',
         'sumber_informasi',
         'status',
         'catatan_admin',
@@ -25,11 +32,19 @@ class Admission extends Model
     ];
 
     protected $casts = [
-        'sumber_informasi' => 'collection',
+        'nominal_pembayaran' => 'decimal:2',
+        'total_biaya' => 'decimal:2',
+        'sisa_piutang' => 'decimal:2',
+        'sumber_informasi' => 'array',
         'approved_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function cashflow()
+    {
+        return $this->belongsTo(Cashflow::class, 'cashflow_id');
+    }
 
     public function programs()
     {

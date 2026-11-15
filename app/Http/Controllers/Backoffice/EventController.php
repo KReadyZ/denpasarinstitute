@@ -15,7 +15,7 @@ class EventController extends Controller
     {
         $query = Event::orderBy('created_at', 'desc');
 
-        if (Auth::user()->role !== 'superadmin') {
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             $query->where('created_by', Auth::id());
         }
 
@@ -52,7 +52,7 @@ class EventController extends Controller
             'published_at', 'title', 'content', 'views',
         ]);
 
-        $isSuperadmin = Auth::user()->role === 'superadmin';
+        $isSuperadmin = in_array(Auth::user()->role, ['superadmin', 'admin']);
 
         if ($isSuperadmin) {
             $data['status']      = 'approved';
@@ -111,7 +111,7 @@ class EventController extends Controller
             'published_at', 'title', 'content', 'views',
         ]);
 
-        $isSuperadmin = Auth::user()->role === 'superadmin';
+        $isSuperadmin = in_array(Auth::user()->role, ['superadmin', 'admin']);
 
         if ($isSuperadmin) {
             $data['is_active'] = $request->has('is_active');
@@ -159,8 +159,8 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        if (Auth::user()->role !== 'superadmin') {
-            abort(403, 'Hanya superadmin yang bisa mengubah status tayang.');
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
+            abort(403, 'Hanya admin yang bisa mengubah status tayang.');
         }
 
         if ($event->status !== 'approved') {
@@ -222,15 +222,15 @@ class EventController extends Controller
 
     private function authorizeOwner(Event $event)
     {
-        if (Auth::user()->role !== 'superadmin' && $event->created_by !== Auth::id()) {
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin']) && $event->created_by !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses ke event ini.');
         }
     }
 
     private function ensureSuperadmin()
     {
-        if (Auth::user()->role !== 'superadmin') {
-            abort(403, 'Hanya superadmin yang bisa mengakses halaman ini.');
+        if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
+            abort(403, 'Hanya admin yang bisa mengakses halaman ini.');
         }
     }
 }

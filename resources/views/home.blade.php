@@ -823,11 +823,11 @@
     .div-grid-2x2 > :only-child { grid-column: 1 / -1; max-width: 580px; width: 100%; margin: 0 auto; }
     .div-card-h { background: var(--red); border-radius: 14px; padding: 22px 22px 16px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer; }
     .div-card-h:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(204,0,0,0.3); }
-    .div-card-h-left { display: flex; align-items: center; gap: 16px; }
+    .div-card-h-left { display: flex; align-items: center; gap: 16px; min-height: 54px; }
     .div-avatar { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-    .div-avatar img { width: 100%; height: 100%; object-fit: contain; padding: -2px; }
-    .div-card-num { font-size: 0.76rem; font-weight: 700; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 3px; }
-    .div-card-name { font-size: 1.08rem; font-weight: 700; color: #fff; margin: 0; line-height: 1.35; }
+    .div-avatar img { width: 100%; height: 100%; object-fit: contain; }
+    .div-card-num { display: none; }
+    .div-card-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0; line-height: 1.3; }
     .div-card-desc { font-size: 0.92rem; color: rgba(255,255,255,0.88); line-height: 1.65; margin: 0; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .div-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
     .div-socials { display: flex; gap: 8px; }
@@ -1246,7 +1246,7 @@
     </div>
 
     <div class="hero-right">
-      <div class="col-header"><span>Berita &amp; Opini</span><a href="{{ route('berita.index') }}">Lihat Semua</a></div>
+      <div class="col-header"><span>News &amp; Event</span><a href="{{ route('berita.index') }}">Lihat Semua</a></div>
       <div class="sharing-list">
         @forelse(($latestBeritas ?? collect())->take(5) as $b)
           <a href="{{ route('berita.show', $b->id) }}" class="sharing-item" style="text-decoration:none; color:inherit;">
@@ -1270,8 +1270,8 @@
     </div>
 
     <div class="hero-btns-bar">
-      <a href="https://orcid.org/0000-0002-1520-3463" target="_blank" rel="noopener noreferrer" class="btn-yellow" title="Profil ORCID Prof. Dr. I Nengah Laba">
-        <i class="fab fa-orcid"></i> Profil Lead Consultant
+      <a href="https://orcid.org/0000-0002-1520-3463" target="_blank" rel="noopener noreferrer" class="btn-yellow" title="ORCID Prof. Dr. I Nengah Laba - Lead Consultant">
+        <i class="fab fa-orcid"></i> Lead Consultant
       </a>
       <button type="button" class="btn-yellow" onclick="openTentangModal()" title="Tentang Denpasar Institute">
         <i class="fas fa-university"></i> Tentang DI
@@ -1393,8 +1393,7 @@
                       <img src="{{ $divisiImages[$loop->parent->index * 4 + $loop->index] ?? '/image/divisi-01-riset.png' }}" alt="{{ $divisi->nama ?? $divisiNames[$loop->parent->index * 4 + $loop->index] }}">
                     @endif
                   </div>
-                  <div>
-                    <p class="div-card-num">Divisi {{ str_pad($loop->parent->index * 4 + $loop->index + 1, 2, '0', STR_PAD_LEFT) }}</p>
+                  <div style="flex: 1; min-width: 0;">
                     <p class="div-card-name">{{ $divisi->nama ?? $divisiNames[$loop->parent->index * 4 + $loop->index] }}</p>
                   </div>
                 </div>
@@ -1422,8 +1421,7 @@
                     <div class="div-avatar">
                       <img src="{{ $divisiImages[$i] }}" alt="{{ $divisiNames[$i] }}">
                     </div>
-                    <div>
-                      <p class="div-card-num">Divisi {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</p>
+                    <div style="flex: 1; min-width: 0;">
                       <p class="div-card-name">{{ $divisiNames[$i] }}</p>
                     </div>
                   </div>
@@ -1723,7 +1721,12 @@
             <h3 class="news-card-title">{{ $b->title }}</h3>
             <p class="news-card-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($b->content), 110) }}</p>
             <div class="news-card-footer">
-              <span class="news-date"><i class="far fa-calendar-alt"></i> {{ $b->published_at ? $b->published_at->format('d M Y') : $b->created_at->format('d M Y') }}</span>
+              <div style="display:inline-flex;align-items:center;gap:12px;">
+                <span class="news-date"><i class="far fa-calendar-alt"></i> {{ $b->published_at ? $b->published_at->format('d M Y') : $b->created_at->format('d M Y') }}</span>
+                <span class="news-views" style="font-size:0.72rem;color:#888;display:inline-flex;align-items:center;gap:4px;" title="{{ number_format($b->views ?? 0) }} kali dilihat">
+                  <i class="far fa-eye" style="font-size:0.74rem;"></i> {{ number_format($b->views ?? 0) }}
+                </span>
+              </div>
               <span class="btn-read">Baca</span>
             </div>
           </div>

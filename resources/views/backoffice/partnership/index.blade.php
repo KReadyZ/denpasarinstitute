@@ -19,12 +19,25 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    {{-- Tabs Navigasi Kemitraan --}}
+    @php
+        $pendingCount = \App\Models\PartnershipSubmission::where('status', 'pending')->count();
+    @endphp
+    <ul class="nav nav-pills mb-4" style="background:#ffffff;padding:8px 12px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #fee2e2;">
+        <li class="nav-item">
+            <a class="nav-link active bg-danger" href="{{ route('backoffice.partnership-pillar.index') }}">
+                <i class="fas fa-cubes me-1"></i> 6 Pilar Kemitraan
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{{ route('backoffice.partnership-submission.index') }}">
+                <i class="fas fa-clipboard-list text-danger me-1"></i> Pendaftar Formulir Kemitraan
+                @if($pendingCount > 0)
+                    <span class="badge bg-warning text-dark ms-1">{{ $pendingCount }} Baru</span>
+                @endif
+            </a>
+        </li>
+    </ul>
 
     <div class="card shadow-sm border-0">
         <div class="card-body table-responsive p-0">

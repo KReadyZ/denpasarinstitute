@@ -17,4 +17,9 @@ class Program extends Model
     {
         return $this->belongsTo(Divisi::class);
     }
+
+    public function cashflows()
+    {
+        return $this->hasMany(Cashflow::class);
+    }
 }

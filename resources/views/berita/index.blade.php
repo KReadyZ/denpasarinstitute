@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Berita & Opini - Denpasar Institute')
+@section('title', 'News & Event - Denpasar Institute')
 
 @push('styles')
 <style>
@@ -479,7 +479,7 @@
 
     <div class="section-header" style="margin-bottom:32px;">
       <span class="section-tag">Berita</span>
-      <h2>Berita &amp; Opini</h2>
+      <h2>News &amp; Event</h2>
       <div class="section-line"></div>
     </div>
 

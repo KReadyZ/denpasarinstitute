@@ -13,11 +13,17 @@ class AdmissionController extends Controller
      */
     public function create()
     {
-        $programs = Program::where('is_active', true)
+        $divisiList = \App\Models\Divisi::with(['programs' => function ($q) {
+            $q->where('is_active', true)->orderBy('nama');
+        }])->where('is_active', true)->orderBy('urutan')->orderBy('nama')->get();
+
+        $programs = Program::with('divisi')
+            ->where('is_active', true)
+            ->orderBy('divisi_id', 'asc')
             ->orderBy('nama', 'asc')
             ->get();
         
-        return view('admission.create', compact('programs'));
+        return view('admission.create', compact('programs', 'divisiList'));
     }
 
     /**
@@ -33,6 +39,9 @@ class AdmissionController extends Controller
             'program_ids' => 'nullable|array|min:1',
             'program_ids.*' => 'exists:programs,id',
             'special_request' => 'nullable|string|max:5000',
+            'nominal_pembayaran' => 'nullable|string',
+            'metode_pembayaran' => 'nullable|string|max:100',
+            'deskripsi_pembayaran' => 'nullable|string',
             'bukti_bayar_pendaftaran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'bukti_bayar_program' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'sumber_informasi' => 'nullable|array',
@@ -70,6 +79,16 @@ class AdmissionController extends Controller
 
         // Set default status
         $validated['status'] = 'pending';
+
+        // Sanitasi nominal pembayaran
+        if ($request->filled('nominal_pembayaran')) {
+            $nomStr = preg_replace('/[^0-9]/', '', (string)$request->nominal_pembayaran);
+            $validated['nominal_pembayaran'] = $nomStr ? (float)$nomStr : 250000.00;
+        } else {
+            $validated['nominal_pembayaran'] = 250000.00;
+        }
+        $validated['metode_pembayaran'] = $request->metode_pembayaran ?: 'Transfer Bank';
+        $validated['status_pembayaran'] = str_contains($validated['metode_pembayaran'], 'DP') ? 'dp' : 'lunas';
 
         // Create admission record
         $admission = Admission::create($validated);

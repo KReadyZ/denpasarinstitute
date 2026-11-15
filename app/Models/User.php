@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'password_plain',
         'nip_nim',
         'phone',
         'address',
@@ -213,6 +214,16 @@ class User extends Authenticatable
         return $this->role === 'superadmin';
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isFinance(): bool
+    {
+        return $this->role === 'finance';
+    }
+
     public function isKonsultan(): bool
     {
         return $this->role === 'konsultan';
@@ -226,6 +237,28 @@ class User extends Authenticatable
     public function isMitra(): bool
     {
         return $this->role === 'mitra';
+    }
+
+    public function roleModel()
+    {
+        return $this->belongsTo(Role::class, 'role', 'slug');
+    }
+
+    public function getRoleDisplayNameAttribute(): string
+    {
+        return $this->roleModel?->name ?? ucfirst($this->role);
+    }
+
+    public function getDecryptedPasswordAttribute(): ?string
+    {
+        if (empty($this->password_plain)) {
+            return null;
+        }
+        try {
+            return \Illuminate\Support\Facades\Crypt::decryptString($this->password_plain);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     public function isVerified(): bool

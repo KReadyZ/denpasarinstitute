@@ -47,6 +47,10 @@ class AuthController extends Controller
             }
 
             $request->session()->regenerate();
+            if ($user->role === 'finance') {
+                return redirect()->route('backoffice.cashflow.index');
+            }
+
             return redirect()->route('backoffice.dashboard');
         }
 

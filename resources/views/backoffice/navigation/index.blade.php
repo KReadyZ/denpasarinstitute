@@ -14,13 +14,6 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
     {{-- Tabs Lokasi Menu --}}
     <ul class="nav nav-pills mb-3" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #e2e8f0;">
         @foreach($locations as $key => $label)

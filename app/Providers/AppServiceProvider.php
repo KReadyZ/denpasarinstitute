@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Divisi;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrapFive();
+
         // Share $allDivisi ke layout.app dengan caching 1 jam
         View::composer('layouts.app', function ($view) {
             $allDivisi = Cache::remember('all_divisi_active', 3600, function() {

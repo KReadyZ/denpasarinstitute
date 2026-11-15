@@ -32,25 +32,76 @@
         <input type="email" name="email" value="{{ old('email') }}" required>
       </div>
 
+      @php
+        $divisiProgramMap = [];
+        $programToDivisiMap = [];
+        foreach ($divisiList as $div) {
+            $divisiProgramMap[$div->id] = [
+                'id' => $div->id,
+                'nama' => $div->nama,
+                'programs' => $div->programs->map(fn($p) => [
+                    'id' => $p->id,
+                    'nama' => $p->nama,
+                ])->values()->all(),
+            ];
+            foreach ($div->programs as $p) {
+                $programToDivisiMap[$p->id] = $div->id;
+            }
+        }
+        $oldProgramIds = array_values(array_filter((array) old('program_ids', [])));
+      @endphp
       <div class="form-group">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <label style="margin:0;">Daftar Program</label>
-          <button type="button" class="btn btn-info" id="btnAddProgram">
-            <i class="fas fa-plus"></i> Tambah Program
+          <label style="margin:0; font-weight:700;">Daftar Program yang Diikuti <span style="color:#dc2626;">*</span></label>
+          <button type="button" class="btn btn-outline-danger btn-sm" id="btnAddProgram" style="font-weight:600; font-size:0.82rem; padding:4px 12px; border-radius:6px;">
+            <i class="fas fa-plus"></i> Tambah Program Lain
           </button>
         </div>
-        <div id="programContainer">
-          <div class="program-item">
-            <select name="program_ids[]" class="form-control" required>
-              <option value="">Pilih Program</option>
-              @foreach($programs as $program)
-              <option value="{{ $program->id }}">{{ $program->nama }}</option>
-              @endforeach
-            </select>
-            <button type="button" class="btn-remove-program" style="display:none;" title="Hapus">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
+        <div id="programContainer" style="display:flex; flex-direction:column; gap:12px;">
+          @if(count($oldProgramIds) > 0)
+            @foreach($oldProgramIds as $oldProgId)
+              @php
+                $selectedDivId = $programToDivisiMap[$oldProgId] ?? null;
+                $availableProgs = $selectedDivId && isset($divisiProgramMap[$selectedDivId]) ? $divisiProgramMap[$selectedDivId]['programs'] : [];
+              @endphp
+              <div class="program-item d-flex gap-2 align-items-center">
+                <select class="form-control js-divisi-select" style="flex:1;">
+                  <option value="">-- 1. Pilih Divisi --</option>
+                  @foreach($divisiList as $div)
+                    <option value="{{ $div->id }}" {{ $selectedDivId == $div->id ? 'selected' : '' }}>
+                      {{ $div->nama }} ({{ $div->programs->count() }} Program)
+                    </option>
+                  @endforeach
+                </select>
+                <select name="program_ids[]" class="form-control js-program-select" style="flex:1.3;" required {{ $selectedDivId ? '' : 'disabled' }}>
+                  <option value="">-- 2. Pilih Program --</option>
+                  @foreach($availableProgs as $pItem)
+                    <option value="{{ $pItem['id'] }}" {{ $pItem['id'] == $oldProgId ? 'selected' : '' }}>
+                      {{ $pItem['nama'] }}
+                    </option>
+                  @endforeach
+                </select>
+                <button type="button" class="btn-remove-program" title="Hapus">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            @endforeach
+          @else
+            <div class="program-item d-flex gap-2 align-items-center">
+              <select class="form-control js-divisi-select" style="flex:1;">
+                <option value="">-- 1. Pilih Divisi Lembaga --</option>
+                @foreach($divisiList as $div)
+                  <option value="{{ $div->id }}">{{ $div->nama }} ({{ $div->programs->count() }} Program)</option>
+                @endforeach
+              </select>
+              <select name="program_ids[]" class="form-control js-program-select" style="flex:1.3;" required disabled>
+                <option value="">-- 2. Pilih Program (Pilih Divisi Dulu) --</option>
+              </select>
+              <button type="button" class="btn-remove-program" style="display:none;" title="Hapus">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          @endif
         </div>
       </div>
 
@@ -61,15 +112,38 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>Upload Bukti Biaya Pendaftaran (jika ada)</label>
-          <input type="file" name="bukti_bayar_pendaftaran">
-          <small>Max 2MB</small>
+          <label>Nominal Pembayaran (Rp)</label>
+          <input
+            type="text"
+            name="nominal_pembayaran"
+            value="{{ old('nominal_pembayaran', '250.000') }}"
+            placeholder="Contoh: 250.000"
+            oninput="let v = this.value.replace(/[^0-9]/g, ''); if(v) this.value = new Intl.NumberFormat('id-ID').format(v);"
+          >
+          <small>Nominal biaya yang dibayarkan</small>
         </div>
         <div class="form-group">
-          <label>Upload Bukti Biaya Program (jika ada)</label>
-          <input type="file" name="bukti_bayar_program">
-          <small>Max 2MB</small>
+          <label>Metode Pembayaran</label>
+          <select name="metode_pembayaran" class="form-control">
+            <optgroup label="-- Pelunasan Penuh --">
+              <option value="Transfer Bank (BCA / Mandiri / BNI / BRI)" {{ old('metode_pembayaran') === 'Transfer Bank (BCA / Mandiri / BNI / BRI)' ? 'selected' : '' }}>Transfer Bank (BCA / Mandiri / BNI / BRI)</option>
+              <option value="QRIS / E-Wallet" {{ old('metode_pembayaran') === 'QRIS / E-Wallet' ? 'selected' : '' }}>QRIS / E-Wallet</option>
+              <option value="Tunai (Cash)" {{ old('metode_pembayaran') === 'Tunai (Cash)' ? 'selected' : '' }}>Tunai di Kampus Denpasar Institute</option>
+            </optgroup>
+            <optgroup label="-- Pembayaran DP / Uang Muka --">
+              <option value="DP (Uang Muka) - Transfer Bank" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Transfer Bank' ? 'selected' : '' }}>DP (Uang Muka) - Transfer Bank</option>
+              <option value="DP (Uang Muka) - QRIS / E-Wallet" {{ old('metode_pembayaran') === 'DP (Uang Muka) - QRIS / E-Wallet' ? 'selected' : '' }}>DP (Uang Muka) - QRIS / E-Wallet</option>
+              <option value="DP (Uang Muka) - Tunai di Kampus" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Tunai di Kampus' ? 'selected' : '' }}>DP (Uang Muka) - Tunai di Kampus</option>
+            </optgroup>
+          </select>
+          <small>Metode yang digunakan peserta (tersedia opsi Lunas atau DP)</small>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Upload Bukti Pembayaran / Transfer (jika ada)</label>
+        <input type="file" name="bukti_bayar_pendaftaran" accept="image/jpeg,image/jpg,image/png,application/pdf">
+        <small>Format: PDF, JPG, JPEG, PNG (Maks. 2MB)</small>
       </div>
 
       <div class="form-group">
@@ -203,71 +277,114 @@
       ]
     });
 
-    // Dynamic Program Selection
+    // Cascading Divisi -> Program Selection
     const container = document.getElementById('programContainer');
     const btnAdd = document.getElementById('btnAddProgram');
-    const programsData = {!! json_encode($programs) !!};
+    const divisiPrograms = {!! json_encode($divisiProgramMap) !!};
 
     function updateRemoveButtons() {
       const items = container.querySelectorAll('.program-item');
-      items.forEach((item, idx) => {
+      items.forEach((item) => {
         const btn = item.querySelector('.btn-remove-program');
-        if (items.length > 1) {
-          btn.style.display = 'flex';
-        } else {
-          btn.style.display = 'none';
+        if (btn) {
+          btn.style.display = items.length > 1 ? 'inline-flex' : 'none';
         }
       });
     }
 
+    function setupRowEvents(item) {
+      const divSelect = item.querySelector('.js-divisi-select');
+      const progSelect = item.querySelector('.js-program-select');
+      const btnRemove = item.querySelector('.btn-remove-program');
+
+      if (divSelect) {
+        divSelect.addEventListener('change', function () {
+          const divId = this.value;
+          progSelect.innerHTML = '';
+
+          if (divId && divisiPrograms[divId] && divisiPrograms[divId].programs.length > 0) {
+            const d = divisiPrograms[divId];
+            const defOpt = document.createElement('option');
+            defOpt.value = '';
+            defOpt.textContent = '-- 2. Pilih Program di ' + d.nama + ' (' + d.programs.length + ' Pilihan) --';
+            progSelect.appendChild(defOpt);
+
+            d.programs.forEach(p => {
+              const opt = document.createElement('option');
+              opt.value = p.id;
+              opt.textContent = p.nama;
+              progSelect.appendChild(opt);
+            });
+
+            progSelect.disabled = false;
+            progSelect.focus();
+          } else {
+            const defOpt = document.createElement('option');
+            defOpt.value = '';
+            defOpt.textContent = '-- 2. Pilih Program (Pilih Divisi Dulu) --';
+            progSelect.appendChild(defOpt);
+            progSelect.disabled = true;
+          }
+        });
+      }
+
+      if (btnRemove) {
+        btnRemove.addEventListener('click', function (e) {
+          e.preventDefault();
+          item.remove();
+          updateRemoveButtons();
+        });
+      }
+    }
+
     function createProgramItem() {
       const div = document.createElement('div');
-      div.className = 'program-item';
-      
-      const select = document.createElement('select');
-      select.name = 'program_ids[]';
-      select.className = 'form-control';
-      select.required = true;
-      select.innerHTML = '<option value="">-- Pilih Program --</option>';
-      
-      programsData.forEach(prog => {
-        const option = document.createElement('option');
-        option.value = prog.id;
-        option.textContent = prog.nama;
-        select.appendChild(option);
+      div.className = 'program-item d-flex gap-2 align-items-center';
+
+      const divSelect = document.createElement('select');
+      divSelect.className = 'form-control js-divisi-select';
+      divSelect.style.flex = '1';
+      divSelect.innerHTML = '<option value="">-- 1. Pilih Divisi Lembaga --</option>';
+      Object.values(divisiPrograms).forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = d.nama + ' (' + d.programs.length + ' Program)';
+        divSelect.appendChild(opt);
       });
+
+      const progSelect = document.createElement('select');
+      progSelect.name = 'program_ids[]';
+      progSelect.className = 'form-control js-program-select';
+      progSelect.style.flex = '1.3';
+      progSelect.required = true;
+      progSelect.disabled = true;
+      progSelect.innerHTML = '<option value="">-- 2. Pilih Program (Pilih Divisi Dulu) --</option>';
 
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'btn-remove-program';
       btn.title = 'Hapus';
       btn.innerHTML = '<i class="fas fa-times"></i>';
-      btn.onclick = function(e) {
-        e.preventDefault();
-        div.remove();
-        updateRemoveButtons();
-      };
 
-      div.appendChild(select);
+      div.appendChild(divSelect);
+      div.appendChild(progSelect);
       div.appendChild(btn);
+
+      setupRowEvents(div);
       return div;
     }
 
-    btnAdd.addEventListener('click', function(e) {
-      e.preventDefault();
-      container.appendChild(createProgramItem());
-      updateRemoveButtons();
-    });
+    container.querySelectorAll('.program-item').forEach(setupRowEvents);
 
-    updateRemoveButtons();
-
-    document.querySelectorAll('.btn-remove-program').forEach(btn => {
-      btn.addEventListener('click', function(e) {
+    if (btnAdd) {
+      btnAdd.addEventListener('click', function(e) {
         e.preventDefault();
-        this.closest('.program-item').remove();
+        container.appendChild(createProgramItem());
         updateRemoveButtons();
       });
-    });
+    }
+
+    updateRemoveButtons();
   });
 </script>
 @endpush

@@ -27,9 +27,16 @@
     <div class="card" style="margin-bottom: 24px;">
         <div class="card-header">
             <h3><i class="fas fa-filter"></i> Filter & Pencarian</h3>
-            <a href="{{ route('backoffice.users.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Tambah User
-            </a>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                @if(auth()->check() && auth()->user()->role === 'superadmin')
+                <a href="{{ route('backoffice.admin-management.index') }}" class="btn" style="background: #111827; color: #fff;">
+                    <i class="fas fa-user-shield"></i> Kelola Admin &amp; Finance
+                </a>
+                @endif
+                <a href="{{ route('backoffice.users.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tambah User
+                </a>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('backoffice.users.index') }}" method="GET" class="filter-form">
@@ -37,6 +44,8 @@
                     <label>Role</label>
                     <select name="role">
                         <option value="">Semua Role</option>
+                        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="finance" {{ request('role') == 'finance' ? 'selected' : '' }}>Finance</option>
                         <option value="konsultan" {{ request('role') == 'konsultan' ? 'selected' : '' }}>Konsultan</option>
                         <option value="grcs" {{ request('role') == 'grcs' ? 'selected' : '' }}>GRCS Club</option>
                     </select>

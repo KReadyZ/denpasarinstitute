@@ -11,6 +11,7 @@ use App\Models\Event;
 use App\Models\Admission;
 use App\Models\Divisi;
 use App\Models\Testimonial;
+use App\Models\Cashflow;
 
 class DashboardController extends Controller
 {
@@ -24,7 +25,7 @@ class DashboardController extends Controller
             'role' => $role,
         ];
         
-        if ($role === 'superadmin') {
+        if (in_array($role, ['superadmin', 'admin'])) {
             $data['totalSliders'] = HeroSlider::where('is_active', true)->count();
             $data['totalUsers'] = User::count();
             $data['totalKonsultan'] = User::where('role', 'konsultan')->count();
@@ -73,6 +74,10 @@ class DashboardController extends Controller
             $data['showGrcsStats'] = false;
         }
         
+        if ($role === 'finance') {
+            return redirect()->route('backoffice.cashflow.index');
+        }
+
         if ($role === 'konsultan') {
             $data['profileCompletion'] = $user->profile_completion ?? 0;
             $data['membershipStatus'] = $user->membership_type ?? 'pending';

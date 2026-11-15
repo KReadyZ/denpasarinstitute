@@ -101,7 +101,7 @@ class KartuController extends Controller
     private function authorizeUser($id): User
     {
         $user = User::findOrFail($id);
-        if (Auth::id() != $id && Auth::user()->role !== 'superadmin') {
+        if (Auth::id() != $id && !in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             abort(403, 'Akses ditolak.');
         }
         return $user;

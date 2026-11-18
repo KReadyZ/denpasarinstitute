@@ -683,8 +683,20 @@ class CashflowController extends Controller
         ]);
 
         $label = $request->tipe === 'masuk' ? 'Uang Masuk' : 'Uang Keluar';
+        $successMsg = "Transaksi {$label} [{$request->kode}] berhasil dicatat.";
+
+        if ($request->input('submit_action') === 'save_and_add') {
+            if ($request->header('referer') && str_contains($request->header('referer'), 'backoffice/cashflow/create')) {
+                return redirect()->route('backoffice.cashflow.create')
+                    ->with('success', $successMsg . ' Silakan catat transaksi berikutnya.');
+            }
+            return redirect()->route('backoffice.cashflow.index')
+                ->with('success', $successMsg . ' Silakan catat transaksi berikutnya.')
+                ->with('open_modal_tambah', true);
+        }
+
         return redirect()->route('backoffice.cashflow.index')
-            ->with('success', "Transaksi {$label} [{$request->kode}] berhasil dicatat.");
+            ->with('success', $successMsg);
     }
 
     /**

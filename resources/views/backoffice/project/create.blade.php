@@ -164,9 +164,12 @@
               <textarea name="keterangan" rows="3" class="form-control" placeholder="Tuliskan deskripsi kelas, jadwal batch, kesepakatan termin cicilan, dsb...">{{ old('keterangan') }}</textarea>
             </div>
 
-            <div class="col-12 pt-3 border-top d-flex justify-content-end gap-2">
+            <div class="col-12 pt-3 border-top d-flex justify-content-end gap-2 flex-wrap">
               <a href="{{ route('backoffice.project.index') }}" class="btn btn-secondary px-3">Batal</a>
-              <button type="submit" class="btn btn-danger fw-bold px-4">
+              <button type="submit" name="submit_action" value="save_and_add" class="btn btn-outline-di px-3">
+                <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+              </button>
+              <button type="submit" name="submit_action" value="save" class="btn btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
                 <i class="fas fa-check me-1"></i> Simpan Program Kursus
               </button>
             </div>

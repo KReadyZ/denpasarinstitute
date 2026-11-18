@@ -460,11 +460,16 @@
             <textarea name="deskripsi" class="form-control" rows="3" placeholder="Uraian singkat mengenai program kursus ini..."></textarea>
           </div>
         </div>
-        <div class="modal-footer bg-light border-top py-2 px-4 d-flex justify-content-between">
+        <div class="modal-footer bg-light border-top py-2 px-4 d-flex justify-content-between flex-wrap gap-2">
           <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-sm btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
-            <i class="fas fa-save me-1"></i> Simpan Program
-          </button>
+          <div class="d-flex gap-2">
+            <button type="submit" name="submit_action" value="save_and_add" class="btn btn-sm btn-outline-di px-3">
+              <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+            </button>
+            <button type="submit" name="submit_action" value="save" class="btn btn-sm btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
+              <i class="fas fa-save me-1"></i> Simpan Program
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -481,6 +486,18 @@
     const modal = new bootstrap.Modal(document.getElementById('modalTambahProgramKursus'));
     modal.show();
   }
+
+  @if(session('open_modal_program'))
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      const modalEl = document.getElementById('modalTambahProgramKursus');
+      if (modalEl && typeof bootstrap !== 'undefined') {
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+      }
+    }, 350);
+  });
+  @endif
 </script>
 @endpush
 @endsection

@@ -138,6 +138,25 @@
     .btn-info:hover { background:#0284c7; }
     .btn-success { background:#16a34a; color:#fff; }
     .btn-success:hover { background:#15803d; }
+    .btn-outline-di {
+      background-color: #ffffff !important;
+      color: #CC0000 !important;
+      border: 1.5px solid #CC0000 !important;
+      font-weight: 700;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn-outline-di:hover,
+    .btn-outline-di:focus,
+    .btn-outline-di:active {
+      background-color: #CC0000 !important;
+      color: #ffffff !important;
+      border-color: #CC0000 !important;
+    }
+    .btn-outline-di:hover i,
+    .btn-outline-di:focus i,
+    .btn-outline-di:active i {
+      color: #ffffff !important;
+    }
 
     .table-wrap { overflow-x:auto; }
     table { width:100%; border-collapse:collapse; font-size:0.82rem; }

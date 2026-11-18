@@ -85,13 +85,18 @@
             </div>
           </div>
 
-          <div class="card-footer bg-light border-top py-3 px-4 d-flex justify-content-between align-items-center">
+          <div class="card-footer bg-light border-top py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
             <a href="{{ route('backoffice.project.index') }}" class="btn btn-sm btn-outline-secondary px-3" style="border-radius: 8px;">
               Batal
             </a>
-            <button type="submit" class="btn btn-sm btn-danger fw-bold px-4 shadow-sm" style="background: #CC0000; border-color: #CC0000; border-radius: 8px; height: 38px;">
-              <i class="fas fa-save me-1"></i> Simpan Program Kursus
-            </button>
+            <div class="d-flex gap-2">
+              <button type="submit" name="submit_action" value="save_and_add" class="btn btn-sm btn-outline-di px-3 shadow-sm" style="border-radius: 8px; height: 38px;">
+                <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+              </button>
+              <button type="submit" name="submit_action" value="save" class="btn btn-sm btn-danger fw-bold px-4 shadow-sm" style="background: #CC0000; border-color: #CC0000; border-radius: 8px; height: 38px;">
+                <i class="fas fa-save me-1"></i> Simpan Program Kursus
+              </button>
+            </div>
           </div>
         </form>
       </div>

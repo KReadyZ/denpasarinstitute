@@ -331,8 +331,11 @@
           <div class="form-text small text-muted">Format: JPG, PNG, PDF (Maks. 5MB).</div>
         </div>
 
-        <div class="col-12 d-flex justify-content-end pt-2">
-          <button type="submit" class="btn btn-success fw-bold px-4">
+        <div class="col-12 d-flex justify-content-end gap-2 pt-2 flex-wrap">
+          <button type="submit" name="submit_action" value="save_and_add" class="btn btn-outline-success fw-bold px-3">
+            <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+          </button>
+          <button type="submit" name="submit_action" value="save" class="btn btn-success fw-bold px-4">
             <i class="fas fa-save me-1"></i> Simpan Pembayaran Masuk
           </button>
         </div>

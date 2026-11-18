@@ -107,8 +107,15 @@ class CashflowCategoryController extends Controller
             'is_active' => $request->has('is_active') ? (bool) $request->is_active : true,
         ]);
 
+        $successMsg = "Kategori [{$kode}] {$request->nama} berhasil ditambahkan!";
+
+        if ($request->input('submit_action') === 'save_and_add') {
+            return redirect()->route('backoffice.cashflow.kategori.create')
+                ->with('success', $successMsg . ' Silakan tambah kategori lainnya.');
+        }
+
         return redirect()->route('backoffice.cashflow.kategori.index')
-            ->with('success', "Kategori [{$kode}] {$request->nama} berhasil ditambahkan!");
+            ->with('success', $successMsg);
     }
 
     /**

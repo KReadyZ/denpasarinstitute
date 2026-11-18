@@ -416,8 +416,26 @@ class ProjectController extends Controller
             'is_active'  => true,
         ]);
 
+        $successMsg = "Program kursus \"{$program->nama}\" berhasil ditambahkan ke {$divisi->nama}!";
+
+        if ($request->input('submit_action') === 'save_and_add') {
+            $referer = (string) $request->header('referer');
+            if (str_contains($referer, 'tambah-program')) {
+                return redirect()->route('backoffice.project.program.create')
+                    ->with('success', $successMsg . ' Silakan tambah program kursus berikutnya.');
+            }
+            if (str_contains($referer, 'kategori')) {
+                return redirect()->back()
+                    ->with('success', $successMsg . ' Silakan tambah program kursus berikutnya.')
+                    ->with('open_modal_program', true);
+            }
+            return redirect()->route('backoffice.project.index')
+                ->with('success', $successMsg . ' Silakan tambah program kursus berikutnya.')
+                ->with('open_modal_program', true);
+        }
+
         return redirect()->route('backoffice.project.index')
-            ->with('success', "Program kursus \"{$program->nama}\" berhasil ditambahkan ke {$divisi->nama}!");
+            ->with('success', $successMsg);
     }
 
     /**
@@ -490,8 +508,15 @@ class ProjectController extends Controller
             'created_by'      => auth()->id(),
         ]);
 
+        $successMsg = "Program kursus [{$project->kode}] {$project->nama_proyek} berhasil didaftarkan.";
+
+        if ($request->input('submit_action') === 'save_and_add') {
+            return redirect()->route('backoffice.project.create')
+                ->with('success', $successMsg . ' Silakan daftarkan kelas/program kursus berikutnya.');
+        }
+
         return redirect()->route('backoffice.project.show', $project->id)
-            ->with('success', "Program kursus [{$project->kode}] {$project->nama_proyek} berhasil didaftarkan.");
+            ->with('success', $successMsg);
     }
 
     /**
@@ -689,8 +714,15 @@ class ProjectController extends Controller
             'created_by'        => auth()->id(),
         ]);
 
+        $msg = "Pembayaran masuk Rp " . number_format($totalNominal, 0, ',', '.') . " berhasil dicatat ke program kursus ini.";
+
+        if ($request->input('submit_action') === 'save_and_add') {
+            return redirect()->to(route('backoffice.project.show', $project->id) . '#formTransaksiProyek')
+                ->with('success', $msg . ' Silakan catat pembayaran masuk berikutnya.');
+        }
+
         return redirect()->route('backoffice.project.show', $project->id)
-            ->with('success', "Pembayaran masuk Rp " . number_format($totalNominal, 0, ',', '.') . " berhasil dicatat ke program kursus ini.");
+            ->with('success', $msg);
     }
 
     /**

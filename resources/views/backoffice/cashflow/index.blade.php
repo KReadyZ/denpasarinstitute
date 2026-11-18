@@ -1579,6 +1579,16 @@
       const walk = (x - startX) * 1.5;
       wrapper.scrollLeft = scrollStart - walk;
     });
+
+    @if(session('open_modal_tambah'))
+    setTimeout(function() {
+      var modalEl = document.getElementById('modalTambahTransaksi');
+      if (modalEl && typeof bootstrap !== 'undefined') {
+        var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+      }
+    }, 350);
+    @endif
   });
 </script>
 @endpush

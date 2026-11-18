@@ -221,11 +221,14 @@
             </div>
 
             {{-- Action Buttons --}}
-            <div class="col-12 d-flex justify-content-end gap-2 pt-3 border-top mt-4">
+            <div class="col-12 d-flex justify-content-end gap-2 pt-3 border-top mt-4 flex-wrap">
               <a href="{{ route('backoffice.cashflow.index') }}" class="btn btn-outline-secondary px-4">
                 Batal
               </a>
-              <button type="submit" class="btn btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
+              <button type="submit" name="submit_action" value="save_and_add" class="btn btn-outline-di px-3">
+                <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+              </button>
+              <button type="submit" name="submit_action" value="save" class="btn btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
                 <i class="fas fa-save me-1"></i> Simpan Transaksi
               </button>
             </div>

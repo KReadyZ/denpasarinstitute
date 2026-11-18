@@ -164,11 +164,14 @@
         </div>
 
         {{-- Modal Footer --}}
-        <div class="modal-footer bg-white px-4 pb-4 pt-3 border-top-0 d-flex justify-content-end gap-2">
+        <div class="modal-footer bg-white px-4 pb-4 pt-3 border-top-0 d-flex justify-content-end gap-2 flex-wrap">
           <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal">
             Batal
           </button>
-          <button type="submit" class="btn btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
+          <button type="submit" name="submit_action" value="save_and_add" class="btn btn-outline-di px-3">
+            <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+          </button>
+          <button type="submit" name="submit_action" value="save" class="btn btn-danger fw-bold px-4" style="background: #CC0000; border-color: #CC0000;">
             <i class="fas fa-save me-1"></i> Simpan Transaksi
           </button>
         </div>

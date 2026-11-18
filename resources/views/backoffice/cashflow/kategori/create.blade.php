@@ -136,9 +136,12 @@
           <hr class="my-4 text-muted opacity-25">
 
           {{-- Buttons --}}
-          <div class="d-flex justify-content-end gap-2">
+          <div class="d-flex justify-content-end gap-2 flex-wrap">
             <a href="{{ route('backoffice.cashflow.kategori.index') }}" class="btn btn-outline-secondary px-4">Batal</a>
-            <button type="submit" class="btn btn-danger px-4 fw-bold">
+            <button type="submit" name="submit_action" value="save_and_add" class="btn btn-outline-di px-3">
+              <i class="fas fa-plus-circle me-1"></i> Simpan &amp; Tambah
+            </button>
+            <button type="submit" name="submit_action" value="save" class="btn btn-danger px-4 fw-bold">
               <i class="fas fa-save me-1"></i> Simpan Kategori Baru
             </button>
           </div>

@@ -3,7 +3,7 @@
   <div class="modal-tentang-card">
     <div class="modal-tentang-header">
       <div class="modal-tentang-brand">
-        <img src="/image/Logo_DI.png" alt="Logo Denpasar Institute" class="modal-tentang-logo" onerror="this.style.display='none'">
+        <img src="{{ \App\Models\SiteSetting::getLogoUrl() }}" alt="Logo Denpasar Institute" class="modal-tentang-logo" onerror="this.src='{{ asset('image/Logo_DI.png') }}';">
         <div>
           <span class="modal-tentang-label">Profil Resmi Lembaga</span>
           <h3 id="modalTentangTitle" class="modal-tentang-title">Tentang Denpasar Institute</h3>

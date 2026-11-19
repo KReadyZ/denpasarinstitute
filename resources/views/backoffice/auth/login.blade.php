@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Denpasar Institute Backoffice</title>
-  <link rel="icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="shortcut icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="apple-touch-icon" href="{{ asset('image/Logo_DI.png') }}">
+  <link rel="icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="shortcut icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="apple-touch-icon" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -56,6 +56,7 @@
 <div class="auth-wrap">
   <div class="auth-card">
     <div class="auth-logo">
+      <img src="{{ \App\Models\SiteSetting::getLogoUrl() }}" alt="Logo Denpasar Institute" style="height: 52px; width: auto; object-fit: contain; margin-bottom: 10px;" onerror="this.onerror=null;this.src='{{ asset('image/Logo_DI.png') }}';"><br>
       <span>Denpasar Institute</span>
       <small>Backoffice Panel</small>
     </div>

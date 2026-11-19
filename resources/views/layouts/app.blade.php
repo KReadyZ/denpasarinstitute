@@ -6,9 +6,9 @@
   <title>@yield('title', 'Denpasar Institute')</title>
 
   {{-- Favicon Logo Denpasar Institute --}}
-  <link rel="icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="shortcut icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="apple-touch-icon" href="{{ asset('image/Logo_DI.png') }}">
+  <link rel="icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="shortcut icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="apple-touch-icon" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
@@ -1066,8 +1066,8 @@
     </ul>
 
     <a href="{{ route('home') }}" class="nav-logo-center" title="Denpasar Institute - Beranda">
-      <img src="/image/logo_DI.png" alt="Denpasar Institute"
-        onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:1.1rem;font-weight:800;color:var(--red)\'>DI</span>'">
+      <img src="{{ \App\Models\SiteSetting::getLogoUrl() }}" alt="Denpasar Institute"
+        onerror="this.src='{{ asset('image/Logo_DI.png') }}';">
     </a>
 
     <ul class="nav-right">

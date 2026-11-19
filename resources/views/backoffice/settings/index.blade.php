@@ -20,7 +20,7 @@
         <ul class="nav nav-tabs mb-4" id="settingsTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ request('tab', 'contact') === 'contact' ? 'active' : '' }} font-weight-bold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-pane" type="button" role="tab">
-                    <i class="fas fa-address-book text-danger"></i> Kontak &amp; Footer
+                    <i class="fas fa-sliders-h text-danger"></i> Logo, Kontak &amp; Footer
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -47,8 +47,48 @@
 
         <div class="tab-content" id="settingsTabContent">
             
-            {{-- TAB 1: KONTAK & FOOTER --}}
+            {{-- TAB 1: LOGO, KONTAK & FOOTER --}}
             <div class="tab-pane fade show active" id="contact-pane" role="tabpanel">
+                {{-- Card: Logo Website --}}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-image text-danger"></i> Logo Resmi Denpasar Institute (Website &amp; Backoffice)</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row align-items-center g-3">
+                            <div class="col-12 col-md-4 text-center">
+                                @if(!empty($settings['site_logo']))
+                                    <div class="position-relative d-inline-block p-3 border rounded-3 bg-light shadow-sm text-center w-100">
+                                        <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo DI" class="img-fluid" style="max-height: 90px; object-fit: contain;">
+                                        <div class="mt-2"><span class="badge bg-success">Logo Kustom Aktif</span></div>
+                                        <div class="form-check mt-2 text-start small">
+                                            <input class="form-check-input" type="checkbox" name="remove_site_logo" value="1" id="removeSiteLogo">
+                                            <label class="form-check-label text-danger fw-bold" for="removeSiteLogo">
+                                                <i class="fas fa-trash-alt me-1"></i> Hapus &amp; Kembalikan ke Logo Default
+                                            </label>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-3 border border-dashed rounded-3 bg-light text-center">
+                                        <img src="{{ asset('image/Logo_DI.png') }}" alt="Logo DI Default" class="img-fluid mb-2" style="max-height: 85px; object-fit: contain;">
+                                        <div><span class="badge bg-secondary">Logo Bawaan Sistem</span></div>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <label class="form-label font-weight-bold">Unggah Logo Baru</label>
+                                <input type="file" name="site_logo" class="form-control mb-2" accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml">
+                                <small class="text-muted d-block">
+                                    Format yang didukung: <strong>PNG (disarankan transparan), JPG, WEBP, SVG</strong>. Ukuran maksimal 2 MB.
+                                </small>
+                                <small class="text-success d-block fw-semibold mt-1">
+                                    <i class="fas fa-check-circle me-1"></i> Logo ini otomatis akan tampil pada navbar atas website, sidebar backoffice, favicon browser, dan dokumen resmi sistem.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0 font-weight-bold"><i class="fas fa-map-marker-alt text-danger"></i> Informasi Kontak &amp; Footer</h5>
@@ -150,6 +190,44 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="row g-3">
+                            {{-- Foto Pak Laba --}}
+                            <div class="col-12 mb-2 pb-3 border-bottom">
+                                <label class="form-label font-weight-bold">
+                                    <i class="fas fa-user-tie text-danger me-1"></i> Foto Pimpinan / Lead Consultant (Prof. Dr. I Nengah Laba)
+                                </label>
+                                <div class="row align-items-center g-3">
+                                    <div class="col-12 col-md-3 text-center">
+                                        @if(!empty($settings['sambutan_leader_photo']))
+                                            <div class="position-relative d-inline-block p-2 border rounded-3 bg-light shadow-sm text-center w-100">
+                                                <img src="{{ asset('storage/' . $settings['sambutan_leader_photo']) }}" alt="Foto Pak Laba" class="img-fluid rounded" style="max-height: 160px; object-fit: contain;">
+                                                <div class="mt-2"><span class="badge bg-success">Foto Kustom Aktif</span></div>
+                                                <div class="form-check mt-2 text-start small">
+                                                    <input class="form-check-input" type="checkbox" name="remove_sambutan_leader_photo" value="1" id="removeLeaderPhoto">
+                                                    <label class="form-check-label text-danger fw-bold" for="removeLeaderPhoto">
+                                                        <i class="fas fa-trash-alt me-1"></i> Hapus &amp; Gunakan Foto Default
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="p-2 border border-dashed rounded-3 bg-light text-center">
+                                                <img src="{{ asset('image/prof_nengah_laba.png') }}" alt="Foto Default Pak Laba" class="img-fluid rounded mb-2" style="max-height: 150px; object-fit: contain;">
+                                                <div><span class="badge bg-secondary">Foto Bawaan Sistem</span></div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <label class="form-label font-weight-bold small">Unggah Foto Pimpinan Baru</label>
+                                        <input type="file" name="sambutan_leader_photo" class="form-control mb-2" accept="image/png,image/jpeg,image/jpg,image/webp">
+                                        <small class="text-muted d-block">
+                                            Format yang didukung: <strong>PNG, JPG, WEBP</strong> (maks. 2 MB). Disarankan menggunakan foto potret vertikal dengan latar belakang rapi/transparan.
+                                        </small>
+                                        <small class="text-success d-block fw-semibold mt-1">
+                                            <i class="fas fa-check-circle me-1"></i> Foto ini otomatis akan tampil pada kotak sambutan utama pimpinan di beranda website.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-md-6">
                                 <label class="form-label font-weight-bold">Nama Pimpinan / Lead Consultant</label>
                                 <input type="text" name="sambutan_leader_name" class="form-control" value="{{ $settings['sambutan_leader_name'] ?? 'Prof. Dr. I Nengah Laba' }}">

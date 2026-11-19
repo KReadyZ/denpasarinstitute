@@ -1169,10 +1169,10 @@
       <div class="sambutan-box">
         <div class="sambutan-foto-col">
           <div class="sambutan-foto-wrap">
-            <img src="{{ asset('image/prof_nengah_laba.png') }}"
-                 alt="Prof. Dr. I Nengah Laba - Denpasar Institute"
+            <img src="{{ \App\Models\SiteSetting::getLeaderPhotoUrl() }}"
+                 alt="{{ \App\Models\SiteSetting::get('sambutan_leader_name', 'Prof. Dr. I Nengah Laba') }} - Denpasar Institute"
                  class="sambutan-foto-img"
-                 onerror="this.src='{{ asset('storage/avatars/prof_nengah_laba.png') }}';">
+                 onerror="this.onerror=null;this.src='{{ asset('image/prof_nengah_laba.png') }}';">
           </div>
           <div class="sambutan-leader-name">{{ \App\Models\SiteSetting::get('sambutan_leader_name', 'Prof. Dr. I Nengah Laba') }}</div>
 

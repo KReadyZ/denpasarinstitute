@@ -45,5 +45,17 @@ class SiteSetting extends Model
             Cache::forget('site_setting_' . $k);
         }
     }
+
+    public static function getLogoUrl(): string
+    {
+        $path = static::get('site_logo');
+        return ($path && $path !== '') ? asset('storage/' . $path) : asset('image/Logo_DI.png');
+    }
+
+    public static function getLeaderPhotoUrl(): string
+    {
+        $path = static::get('sambutan_leader_photo');
+        return ($path && $path !== '') ? asset('storage/' . $path) : asset('image/prof_nengah_laba.png');
+    }
 }
 

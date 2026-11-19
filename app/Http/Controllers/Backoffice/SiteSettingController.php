@@ -33,7 +33,57 @@ class SiteSettingController extends Controller
             SiteSetting::set('qris_image', null, 'admission', 'Foto Barcode QRIS');
         }
 
-        $data = $request->except(['_token', '_method', 'qris_image', 'remove_qris_image', 'current_tab']);
+        // Handle upload Logo DI
+        if ($request->hasFile('site_logo')) {
+            $request->validate([
+                'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            ]);
+            $file = $request->file('site_logo');
+            $filename = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('settings', $filename, 'public');
+
+            $oldPath = SiteSetting::get('site_logo');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('site_logo', $path, 'general', 'Logo Website');
+        } elseif ($request->filled('remove_site_logo')) {
+            $oldPath = SiteSetting::get('site_logo');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('site_logo', null, 'general', 'Logo Website');
+        }
+
+        // Handle upload Foto Pak Laba (Lead Consultant)
+        if ($request->hasFile('sambutan_leader_photo')) {
+            $request->validate([
+                'sambutan_leader_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            ]);
+            $file = $request->file('sambutan_leader_photo');
+            $filename = 'leader_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('settings', $filename, 'public');
+
+            $oldPath = SiteSetting::get('sambutan_leader_photo');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('sambutan_leader_photo', $path, 'home', 'Foto Lead Consultant');
+        } elseif ($request->filled('remove_sambutan_leader_photo')) {
+            $oldPath = SiteSetting::get('sambutan_leader_photo');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('sambutan_leader_photo', null, 'home', 'Foto Lead Consultant');
+        }
+
+        $data = $request->except([
+            '_token', '_method',
+            'qris_image', 'remove_qris_image',
+            'site_logo', 'remove_site_logo',
+            'sambutan_leader_photo', 'remove_sambutan_leader_photo',
+            'current_tab'
+        ]);
 
         foreach ($data as $key => $value) {
             // Determine appropriate group based on key prefix

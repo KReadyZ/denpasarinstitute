@@ -6,9 +6,9 @@
   <title>@yield('title', 'Backoffice') | Denpasar Institute</title>
 
   {{-- Favicon Logo Denpasar Institute --}}
-  <link rel="icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="shortcut icon" type="image/png" href="{{ asset('image/Logo_DI.png') }}">
-  <link rel="apple-touch-icon" href="{{ asset('image/Logo_DI.png') }}">
+  <link rel="icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="shortcut icon" type="image/png" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
+  <link rel="apple-touch-icon" href="{{ \App\Models\SiteSetting::getLogoUrl() }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -675,7 +675,7 @@
   <div class="sidebar-logo">
     <a href="{{ auth()->check() && auth()->user()->role === 'finance' ? route('backoffice.cashflow.index') : route('backoffice.dashboard') }}" class="sidebar-brand text-decoration-none" title="Denpasar Institute Backoffice">
       <div class="sidebar-logo-box">
-        <img src="{{ asset('image/Logo_DI.png') }}" alt="Logo Denpasar Institute" class="sidebar-logo-img" onerror="this.onerror=null;this.src='/image/logo-di.png';">
+        <img src="{{ \App\Models\SiteSetting::getLogoUrl() }}" alt="Logo Denpasar Institute" class="sidebar-logo-img" onerror="this.onerror=null;this.src='{{ asset('image/Logo_DI.png') }}';">
       </div>
       <div class="sidebar-brand-text">
         <span class="sidebar-brand-name">Denpasar Institute</span>

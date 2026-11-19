@@ -26,6 +26,15 @@
     .form-group input { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:5px;
       font-family:Poppins,sans-serif; font-size:0.85rem; outline:none; transition:border-color 0.2s; }
     .form-group input:focus { border-color:var(--red); }
+    .password-wrap { position:relative; width:100%; display:flex; align-items:center; }
+    .password-wrap input { padding-right:42px; }
+    .btn-toggle-pwd { position:absolute; right:0; top:0; height:100%; width:42px; background:none; border:none;
+      outline:none; color:#9ca3af; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      font-size:0.95rem; transition:color 0.2s; border-radius:0 5px 5px 0; }
+    .btn-toggle-pwd:hover { color:var(--red); }
+    .btn-toggle-pwd:focus-visible { color:var(--red); }
+    /* Hilangkan ikon mata default Edge agar tidak dobel */
+    input::-ms-reveal, input::-ms-clear { display:none; }
     .check-row { display:flex; align-items:center; gap:8px; font-size:0.78rem; color:#666; margin-bottom:16px; }
     .btn-login { width:100%; padding:11px; background:var(--red); color:#fff; border:none;
       border-radius:5px; font-family:Poppins,sans-serif; font-size:0.88rem; font-weight:700;
@@ -66,8 +75,13 @@
         <input type="email" name="email" value="{{ old('email') }}" placeholder="email@denpasarinstitute.id" required>
       </div>
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="••••••••" required>
+        <label for="passwordInput">Password</label>
+        <div class="password-wrap">
+          <input type="password" name="password" id="passwordInput" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="btn-toggle-pwd" id="togglePasswordBtn" aria-label="Tampilkan password" title="Tampilkan password">
+            <i class="far fa-eye" id="togglePasswordIcon"></i>
+          </button>
+        </div>
       </div>
       <div class="check-row">
         <input type="checkbox" name="remember" id="remember">
@@ -78,5 +92,45 @@
     <p class="auth-link">Belum punya akun? <a href="{{ route('backoffice.register') }}">Daftar di sini</a></p>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const pwdInput = document.getElementById('passwordInput');
+    const pwdIcon = document.getElementById('togglePasswordIcon');
+
+    if (toggleBtn && pwdInput && pwdIcon) {
+      // Mencegah input kehilangan fokus saat ikon mata diklik
+      toggleBtn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+      });
+
+      toggleBtn.addEventListener('click', function () {
+        const isPassword = pwdInput.type === 'password';
+        const start = pwdInput.selectionStart;
+        const end = pwdInput.selectionEnd;
+
+        pwdInput.type = isPassword ? 'text' : 'password';
+
+        // Pertahankan kursor/seleksi
+        if (typeof start === 'number' && typeof end === 'number') {
+          pwdInput.setSelectionRange(start, end);
+        }
+
+        if (isPassword) {
+          pwdIcon.classList.remove('fa-eye');
+          pwdIcon.classList.add('fa-eye-slash');
+          toggleBtn.setAttribute('title', 'Sembunyikan password');
+          toggleBtn.setAttribute('aria-label', 'Sembunyikan password');
+        } else {
+          pwdIcon.classList.remove('fa-eye-slash');
+          pwdIcon.classList.add('fa-eye');
+          toggleBtn.setAttribute('title', 'Tampilkan password');
+          toggleBtn.setAttribute('aria-label', 'Tampilkan password');
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>

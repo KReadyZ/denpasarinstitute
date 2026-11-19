@@ -27,6 +27,15 @@
     .form-group input, .form-group select { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:5px;
       font-family:Poppins,sans-serif; font-size:0.85rem; outline:none; transition:border-color 0.2s; }
     .form-group input:focus, .form-group select:focus { border-color:var(--red); }
+    .password-wrap { position:relative; width:100%; display:flex; align-items:center; }
+    .password-wrap input { padding-right:42px; }
+    .btn-toggle-pwd { position:absolute; right:0; top:0; height:100%; width:42px; background:none; border:none;
+      outline:none; color:#9ca3af; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      font-size:0.95rem; transition:color 0.2s; border-radius:0 5px 5px 0; }
+    .btn-toggle-pwd:hover { color:var(--red); }
+    .btn-toggle-pwd:focus-visible { color:var(--red); }
+    /* Hilangkan ikon mata default Edge agar tidak dobel */
+    input::-ms-reveal, input::-ms-clear { display:none; }
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .role-info { font-size:0.7rem; color:#888; margin-top:4px; }
     .btn-reg { width:100%; padding:11px; background:var(--red); color:#fff; border:none;
@@ -104,13 +113,23 @@
       </div>
 
       <div class="form-group">
-        <label>Password *</label>
-        <input type="password" name="password" placeholder="Minimal 8 karakter" required>
+        <label for="regPassword">Password *</label>
+        <div class="password-wrap">
+          <input type="password" name="password" id="regPassword" placeholder="Minimal 8 karakter" required autocomplete="new-password">
+          <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)" aria-label="Tampilkan password" title="Tampilkan password">
+            <i class="far fa-eye"></i>
+          </button>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>Konfirmasi Password *</label>
-        <input type="password" name="password_confirmation" placeholder="Ulangi password" required>
+        <label for="regPasswordConfirm">Konfirmasi Password *</label>
+        <div class="password-wrap">
+          <input type="password" name="password_confirmation" id="regPasswordConfirm" placeholder="Ulangi password" required autocomplete="new-password">
+          <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('regPasswordConfirm', this)" aria-label="Tampilkan password" title="Tampilkan password">
+            <i class="far fa-eye"></i>
+          </button>
+        </div>
       </div>
 
       <button type="submit" class="btn-reg">Daftar Sekarang</button>
@@ -118,5 +137,44 @@
     <p class="auth-link">Sudah punya akun? <a href="{{ route('backoffice.login') }}">Login di sini</a></p>
   </div>
 </div>
+
+<script>
+  function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = btn.querySelector('i');
+    const isPassword = input.type === 'password';
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    input.type = isPassword ? 'text' : 'password';
+
+    if (typeof start === 'number' && typeof end === 'number') {
+      input.setSelectionRange(start, end);
+    }
+
+    if (isPassword) {
+      if (icon) {
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      }
+      btn.setAttribute('title', 'Sembunyikan password');
+      btn.setAttribute('aria-label', 'Sembunyikan password');
+    } else {
+      if (icon) {
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+      btn.setAttribute('title', 'Tampilkan password');
+      btn.setAttribute('aria-label', 'Tampilkan password');
+    }
+  }
+
+  document.querySelectorAll('.btn-toggle-pwd').forEach(btn => {
+    btn.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+    });
+  });
+</script>
 </body>
 </html>

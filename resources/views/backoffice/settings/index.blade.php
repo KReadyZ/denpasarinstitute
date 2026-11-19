@@ -88,6 +88,26 @@
                                 <label class="form-label font-weight-bold">Teks Hak Cipta (Footer Copyright)</label>
                                 <input type="text" name="footer_copyright" class="form-control" value="{{ $settings['footer_copyright'] ?? 'Denpasar Institute. Hak cipta dilindungi undang-undang.' }}">
                             </div>
+
+                            <div class="col-12 mt-4 pt-3 border-top">
+                                <h6 class="font-weight-bold text-danger mb-2"><i class="fas fa-handshake"></i> Bagian Kolaborasi (Section "Mari Berkolaborasi" di Beranda)</h6>
+                                <small class="text-muted d-block mb-3">Pengaturan judul, slogan, dan teks ajakan kolaborasi yang tampil di bagian bawah halaman depan (sebelum footer).</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label font-weight-bold">Judul Ajakan Kolaborasi</label>
+                                <input type="text" name="contact_collab_title" class="form-control" value="{{ $settings['contact_collab_title'] ?? 'Mari Berkolaborasi' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label font-weight-bold">Slogan / Motto Kolaborasi</label>
+                                <input type="text" name="contact_collab_motto" class="form-control" value="{{ $settings['contact_collab_motto'] ?? '"Transforming Ideas into Action"' }}">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label font-weight-bold">Deskripsi Ajakan Kolaborasi</label>
+                                <textarea name="contact_collab_desc" class="form-control" rows="3">{{ $settings['contact_collab_desc'] ?? 'Kami percaya kemajuan terbaik lahir dari kolaborasi. Bersama Denpasar Institute, kita wujudkan inovasi yang memberi dampak nyata bagi masyarakat dan bangsa.' }}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

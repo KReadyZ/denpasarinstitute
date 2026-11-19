@@ -641,6 +641,9 @@
     .sharing-cat { font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 3px; }
     .sharing-cat.red { color: var(--red); }
     .sharing-cat.orange { color: #e05a00; }
+    .sharing-meta-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .sharing-views { font-size: 0.73rem; color: #718096; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font-weight: 500; }
+    .sharing-views i { font-size: 0.72rem; color: #a0aec0; }
     .sharing-title { font-size: 0.92rem; font-weight: 600; color: var(--dark); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .sharing-btn { padding: 10px 14px; border-top: 2px solid var(--yellow); }
     .sharing-btn a { display: block; text-align: center; padding: 9px; background: var(--yellow); color: var(--dark); font-weight: 800; font-size: 0.84rem; text-transform: uppercase; border-radius: 4px; transition: 0.2s; }
@@ -1251,16 +1254,23 @@
         @forelse(($latestBeritas ?? collect())->take(5) as $b)
           <a href="{{ route('berita.show', $b->id) }}" class="sharing-item" style="text-decoration:none; color:inherit;">
             <img src="{{ $b->image ? asset('storage/'.$b->image) : 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=140&auto=format&fit=crop' }}" class="sharing-thumb" alt="{{ $b->title }}">
-            <div>
-              <span class="sharing-cat red">{{ $b->kategori }}</span>
+            <div style="flex: 1; min-width: 0;">
+              <div class="sharing-meta-row">
+                <span class="sharing-cat red" style="margin-bottom: 0;">{{ $b->kategori }}</span>
+                <span class="sharing-views" title="{{ number_format($b->views ?? 0) }} kali dilihat">
+                  <i class="far fa-eye"></i> {{ number_format($b->views ?? 0) }}
+                </span>
+              </div>
               <span class="sharing-title">{{ $b->title }}</span>
             </div>
           </a>
         @empty
           <div class="sharing-item">
             <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=140&auto=format&fit=crop" class="sharing-thumb">
-            <div>
-              <span class="sharing-cat red">Berita</span>
+            <div style="flex: 1; min-width: 0;">
+              <div class="sharing-meta-row">
+                <span class="sharing-cat red" style="margin-bottom: 0;">Berita</span>
+              </div>
               <span class="sharing-title">Belum ada berita terbaru</span>
             </div>
           </div>
@@ -1905,18 +1915,27 @@
 <section class="contact-section" id="contact">
   <div class="contact-grid">
     <div class="contact-left">
-      <h2>Mari Berkolaborasi</h2>
-      <p>Kami percaya kemajuan terbaik lahir dari kolaborasi. Bersama Denpasar Institute, kita wujudkan inovasi yang memberi dampak nyata bagi masyarakat dan bangsa.</p>
-      <p class="highlight">"Transforming Ideas into Action"</p>
+      <h2>{{ \App\Models\SiteSetting::get('contact_collab_title', 'Mari Berkolaborasi') }}</h2>
+      <p>{{ \App\Models\SiteSetting::get('contact_collab_desc', 'Kami percaya kemajuan terbaik lahir dari kolaborasi. Bersama Denpasar Institute, kita wujudkan inovasi yang memberi dampak nyata bagi masyarakat dan bangsa.') }}</p>
+      <p class="highlight">{{ \App\Models\SiteSetting::get('contact_collab_motto', '"Transforming Ideas into Action"') }}</p>
       <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;">
         <div style="display:flex;align-items:flex-start;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;">
           <i class="fab fa-whatsapp" style="color:#25d366;font-size:1.1rem;margin-top:2px;"></i>
           <div style="display:flex;flex-direction:column;gap:3px;">
-            <a href="https://wa.me/6282144814593" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">+62 821-4481-4593</a>
-            <a href="https://wa.me/6282318666547" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">+62 823-1866-6547</a>
+            @php
+              $cPhone1 = \App\Models\SiteSetting::get('contact_phone_1', '+62 821-4481-4593');
+              $cPhone2 = \App\Models\SiteSetting::get('contact_phone_2', '+62 823-1866-6547');
+              $cPhone1Clean = preg_replace('/[^0-9]/', '', $cPhone1);
+              $cPhone2Clean = preg_replace('/[^0-9]/', '', $cPhone2);
+              $cEmail = \App\Models\SiteSetting::get('contact_email', 'info@denpasarinstitute.id');
+            @endphp
+            <a href="https://wa.me/{{ $cPhone1Clean }}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">{{ $cPhone1 }}</a>
+            @if(!empty($cPhone2))
+              <a href="https://wa.me/{{ $cPhone2Clean }}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">{{ $cPhone2 }}</a>
+            @endif
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;"><i class="fas fa-envelope" style="color:var(--yellow);"></i>info@denpasarinstitute.id</div>
+        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.84rem;"><i class="fas fa-envelope" style="color:var(--yellow);"></i><a href="mailto:{{ $cEmail }}" style="color:inherit;text-decoration:none;">{{ $cEmail }}</a></div>
       </div>
     </div>
     <div>

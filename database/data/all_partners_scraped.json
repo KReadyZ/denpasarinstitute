@@ -1,0 +1,282 @@
+[
+  {
+    "institusi": "Perusahaan Listrik Negara (PLN)",
+    "kategori": "BUMN & Korporasi",
+    "website": "https://pln.co.id",
+    "logo": "image/partners/logo_perusahaan-listrik-negara-pln.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "A Banyan Tree Escape: Buahan",
+    "kategori": "Industri & Hospitality",
+    "website": "https://escape.banyantree.com",
+    "logo": "image/partners/logo_a-banyan-tree-escape-buahan.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "BP2MI (Badan Pelindungan Pekerja Migran Indonesia)",
+    "kategori": "Lembaga Pemerintah",
+    "website": "https://www.bp2mi.go.id",
+    "logo": "image/partners/bp2mi.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "STIKES Yarsi Mataram",
+    "kategori": "Perguruan Tinggi",
+    "website": "http://stikesyarsimataram.ac.id/",
+    "logo": "image/partners/stikes-yarsi.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Universitas Dwijendra",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://undwi.ac.id/",
+    "logo": "image/partners/logo_universitas-dwijendra.jpg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "STP Mataram",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://www.stpmataram.ac.id/",
+    "logo": "image/partners/logo_stp-mataram.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Universitas Ngurah Rai",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://www.unr.ac.id/",
+    "logo": "image/partners/logo_universitas-ngurah-rai.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Gcom Consultant",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "http://gcomconsultant.com/",
+    "logo": "image/partners/logo_gcom-consultant.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Forum Publikasi Ilmiah Indonesia",
+    "kategori": "Publikasi & Media",
+    "website": "https://fublin.id/",
+    "logo": "image/partners/logo_forum-publikasi-ilmiah-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Institut Desain dan Bisnis Bali",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://www.idbbali.ac.id/",
+    "logo": "image/partners/logo_institut-desain-dan-bisnis-bali.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Lembaga Ilmu Pengetahuan Indonesia",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "http://lipi.go.id/",
+    "logo": "image/partners/logo_lembaga-ilmu-pengetahuan-indonesia.jpg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Forum Pengelola Jurnal Ilmiah Indonesia",
+    "kategori": "Publikasi & Media",
+    "website": "https://forkompjii.wordpress.com/",
+    "logo": "image/partners/logo_forum-pengelola-jurnal-ilmiah-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Universitas Dhyana Pura",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://undhirabali.ac.id/universitas-dhyana-pura/",
+    "logo": "image/partners/logo_universitas-dhyana-pura.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Institut Teknologi dan Kesehatan Bali",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://itekes-bali.ac.id/",
+    "logo": "image/partners/logo_institut-teknologi-dan-kesehatan-bali.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Kementerian Riset dan Teknologi",
+    "kategori": "Lembaga Pemerintah",
+    "website": "https://www.ristekbrin.go.id/",
+    "logo": "image/partners/logo_kementerian-riset-dan-teknologi.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Om Ham Retreat & Resort, Ubud",
+    "kategori": "Industri & Hospitality",
+    "website": "https://www.omhamretreat.com/",
+    "logo": "image/partners/logo_om-ham-retreat-resort-ubud.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Universitas PGRI Mahadewa Indonesia",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://mahadewa.ac.id/",
+    "logo": "image/partners/logo_universitas-pgri-mahadewa-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "JASINTEK",
+    "kategori": "Publikasi & Media",
+    "website": "https://jasintek.denpasarinstitute.com/",
+    "logo": "image/partners/logo_jasintek.jpeg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "IJOLIDA",
+    "kategori": "Publikasi & Media",
+    "website": "https://ijolida.denpasarinstitute.com/",
+    "logo": "image/partners/logo_ijolida.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Pusat Sains Data dan Teknologi Informasi",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://www.datascience.denpasarinstitute.com",
+    "logo": "image/partners/logo_pusat-sains-data-dan-teknologi-informasi.jpg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Penerbit YAGUWIPA",
+    "kategori": "Publikasi & Media",
+    "website": "https://www.publisher.denpasarinstitute.com",
+    "logo": "image/partners/logo_penerbit-yaguwipa.jpeg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "PKBM Wahana Edukasi",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://www.wahanaedukasi.denpasarinstitute.com",
+    "logo": "image/partners/logo_pkbm-wahana-edukasi.jpeg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Kementerian Pendidikan, Kebudayaan, Riset dan Teknologi",
+    "kategori": "Lembaga Pemerintah",
+    "website": "https://www.kemdikbud.go.id/",
+    "logo": "image/partners/logo_kementerian-pendidikan-kebudayaan-riset-dan-teknologi.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "THE VASINI - Smart Boutique Hotel",
+    "kategori": "Industri & Hospitality",
+    "website": "https://www.thevasini.com/",
+    "logo": "image/partners/logo_the-vasini-smart-boutique-hotel.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Munduk Moding Plantation Nature Resort & Spa",
+    "kategori": "Industri & Hospitality",
+    "website": "https://www.mundukmodingplantation.com/",
+    "logo": "image/partners/logo_munduk-moding-plantation-nature-resort-spa.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "The Magani Hotel and Spa",
+    "kategori": "Industri & Hospitality",
+    "website": "https://www.themagani.com",
+    "logo": "image/partners/logo_the-magani-hotel-and-spa.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Bank Negara Indonesia",
+    "kategori": "BUMN & Korporasi",
+    "website": "https://www.bni.co.id",
+    "logo": "image/partners/logo_bank-negara-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Universitas Hindu Indonesia",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://www.unhi.ac.id",
+    "logo": "image/partners/logo_universitas-hindu-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "AKPAR Denpasar",
+    "kategori": "Perguruan Tinggi",
+    "website": "http://www.akpar-denpasar.ac.id",
+    "logo": "image/partners/logo_akpar-denpasar.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Berita Bali",
+    "kategori": "Publikasi & Media",
+    "website": "https://beritabali.com",
+    "logo": "image/partners/logo_berita-bali.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Penerbit Guna Media",
+    "kategori": "Publikasi & Media",
+    "website": "https://gunamedia.denpasarinstitute.com",
+    "logo": "image/partners/logo_penerbit-guna-media.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Ausbildung & Leben in Deutschland",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://www.aulid.de",
+    "logo": "image/partners/logo_ausbildung-leben-in-deutschland.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Noble Career Gurus - Education Migration",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://www.noblecareergurus.com",
+    "logo": "image/partners/logo_noble-career-gurus-education-migration.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Bali Web Design",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://www.rumahmedia.com",
+    "logo": "image/partners/logo_bali-web-design.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Bursa SDM Indonesia",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://bursasdm.denpasarinstitute.com",
+    "logo": "image/partners/logo_bursa-sdm-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Forum Komunikasi SDM Indonesia",
+    "kategori": "Konsultan & Layanan Bisnis",
+    "website": "https://forumsdm.denpasarinstitute.com",
+    "logo": "image/partners/logo_forum-komunikasi-sdm-indonesia.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Denpasar Hotel School",
+    "kategori": "Perguruan Tinggi",
+    "website": "https://www.dhs.or.id",
+    "logo": "image/partners/logo_denpasar-hotel-school.jpg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Indo Bali Tour",
+    "kategori": "Industri & Hospitality",
+    "website": "https://www.indobalitour.com",
+    "logo": "image/partners/logo_indo-bali-tour.jpg",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Taco Casa Bali",
+    "kategori": "Industri & Hospitality",
+    "website": "http://tacocasabali.com/",
+    "logo": "image/partners/logo_taco-casa-bali.png",
+    "logo_exists": true
+  },
+  {
+    "institusi": "Vouk Hotel & Suites Nusa Dua Bali",
+    "kategori": "Industri & Hospitality",
+    "website": "http://www.voukbali.com",
+    "logo": "image/partners/logo_vouk-hotel-suites-nusa-dua-bali.png",
+    "logo_exists": true
+  }
+]

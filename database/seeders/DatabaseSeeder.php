@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
             HeroSliderSeeder::class,
             StatisticSeeder::class,
             DivisiSeeder::class,
-            ContentManagementSeeder::class
+            ContentManagementSeeder::class,
+            PartnershipPillarDetailSeeder::class,
+            MitraKlienSeeder::class,
         ]);
     }
 }

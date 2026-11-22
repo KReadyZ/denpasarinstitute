@@ -13,7 +13,11 @@ class MitraKlienSeeder extends Seeder
      */
     public function run(): void
     {
-        $jsonPath = storage_path('app/all_partners_scraped.json');
+        $jsonPath = database_path('data/all_partners_scraped.json');
+        if (!File::exists($jsonPath)) {
+            $jsonPath = storage_path('app/all_partners_scraped.json');
+        }
+
         if (!File::exists($jsonPath)) {
             $this->command->error("File {$jsonPath} not found!");
             return;

@@ -984,6 +984,37 @@
   $navRight = \App\Models\NavigationItem::location('navbar_right')->where('is_active', true)->get();
   $footerKomunitas = \App\Models\NavigationItem::location('footer_komunitas')->where('is_active', true)->get();
   $allDivisi = \App\Models\Divisi::where('is_active', true)->orderBy('urutan', 'asc')->get();
+
+  // Fallback agar navbar tidak pernah hilang jika database hosting belum di-seed
+  if ($navLeft->isEmpty()) {
+    $navLeft = collect([
+      (object)['title' => 'Home', 'url' => '/', 'target' => '_self'],
+      (object)['title' => 'Divisi', 'url' => '#divisi-detail', 'target' => '_self'],
+      (object)['title' => 'Konsultan', 'url' => '/konsultan', 'target' => '_self'],
+      (object)['title' => 'GRCS Club', 'url' => '/grcs-club', 'target' => '_self'],
+    ]);
+  }
+  if ($navRight->isEmpty()) {
+    $navRight = collect([
+      (object)['title' => 'Bursa SDM', 'url' => '/bursa-sdm', 'target' => '_self'],
+      (object)['title' => 'Event', 'url' => '/event', 'target' => '_self'],
+      (object)['title' => 'News', 'url' => '/berita', 'target' => '_self'],
+    ]);
+  }
+  if ($allDivisi->isEmpty()) {
+    $allDivisi = collect([
+      (object)['nama' => 'Lembaga Riset & Publikasi Ilmiah', 'slug' => 'divisi-riset-dan-publikasi-ilmiah'],
+      (object)['nama' => 'Pusat Pendidikan & Pelatihan Vokasi', 'slug' => 'divisi-pendidikan-dan-pelatihan-vokasi'],
+      (object)['nama' => 'Unit Sertifikasi Profesi & Standarisasi Kompetensi', 'slug' => 'divisi-sertifikasi-profesi'],
+      (object)['nama' => 'Pusat Pengembangan Karir & Penempatan Kerja', 'slug' => 'divisi-pengembangan-karir'],
+      (object)['nama' => 'Pusat Inkubasi Bisnis & Kewirausahaan', 'slug' => 'divisi-inkubasi-bisnis'],
+      (object)['nama' => 'Pusat Layanan Konsultasi Manajemen & Kebijakan Publik', 'slug' => 'divisi-konsultasi-manajemen'],
+      (object)['nama' => 'Unit Kerja Sama & Hubungan Internasional', 'slug' => 'divisi-kerja-sama-internasional'],
+      (object)['nama' => 'Pusat Studi Kebudayaan, Pariwisata & Ekonomi Kreatif', 'slug' => 'divisi-kebudayaan-pariwisata'],
+      (object)['nama' => 'Pusat Sains Data & Teknologi Informasi', 'slug' => 'divisi-sains-data-teknologi'],
+    ]);
+  }
+
   $siteLanguages = [
     // Prioritas & Asia Tenggara / Timur
     ['code' => 'id',    'name' => 'Indonesia',            'native' => 'Bahasa Indonesia', 'short' => 'ID', 'flag' => 'id'],

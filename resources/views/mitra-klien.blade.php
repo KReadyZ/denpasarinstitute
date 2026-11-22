@@ -728,11 +728,14 @@
              class="mitra-card" 
              title="{{ $hasLink ? 'Kunjungi Website Resmi ' . $p->institusi : $p->institusi }}">
             <div class="mitra-logo-box">
-              @if($p->logo && file_exists(public_path($p->logo)))
-                <img src="{{ asset($p->logo) }}" alt="Logo {{ $p->institusi }}" class="mitra-logo-img" loading="lazy"
-                     onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'font-size:2rem;color:#cbd5e1;font-weight:800;\'><i class=\'fas fa-building\'></i></div>'">
+              @if(!empty($p->logo))
+                <img src="{{ str_starts_with($p->logo, 'http') ? $p->logo : asset($p->logo) }}" 
+                     alt="Logo {{ $p->institusi }}" 
+                     class="mitra-logo-img" 
+                     loading="lazy"
+                     onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'width:75px;height:75px;border-radius:50%;background:#fef2f2;color:#cc0000;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;border:1px solid #fecaca;margin:0 auto;\'><i class=\'fas fa-building\'></i></div>';">
               @else
-                <div style="width:75px;height:75px;border-radius:50%;background:#fef2f2;color:#cc0000;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;border:1px solid #fecaca;">
+                <div style="width:75px;height:75px;border-radius:50%;background:#fef2f2;color:#cc0000;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;border:1px solid #fecaca;margin:0 auto;">
                   <i class="fas fa-building"></i>
                 </div>
               @endif

@@ -1014,6 +1014,17 @@
       (object)['nama' => 'Pusat Sains Data & Teknologi Informasi', 'slug' => 'divisi-sains-data-teknologi'],
     ]);
   }
+  if ($footerKomunitas->isEmpty()) {
+    $footerKomunitas = collect([
+      (object)['title' => 'GRCS Club', 'url' => '/grcs-club', 'target' => '_self'],
+      (object)['title' => 'Konsultan', 'url' => '/konsultan', 'target' => '_self'],
+      (object)['title' => 'Bursa SDM', 'url' => '/bursa-sdm', 'target' => '_self'],
+      (object)['title' => 'Partnership', 'url' => '/partner-with-di', 'target' => '_self'],
+      (object)['title' => 'Event', 'url' => '/event', 'target' => '_self'],
+      (object)['title' => 'News', 'url' => '/berita', 'target' => '_self'],
+      (object)['title' => 'Research Sharing', 'url' => '/#news', 'target' => '_self'],
+    ]);
+  }
 
   $siteLanguages = [
     // Prioritas & Asia Tenggara / Timur

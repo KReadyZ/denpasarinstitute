@@ -11,35 +11,39 @@
         </div>
     </div>
 
+        @php
+            $currentTab = request('tab', 'contact');
+        @endphp
+
         <form action="{{ route('backoffice.settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <input type="hidden" name="current_tab" id="current_tab" value="{{ request('tab', 'contact') }}">
+        <input type="hidden" name="current_tab" id="current_tab" value="{{ $currentTab }}">
 
         {{-- Nav Tabs --}}
         <ul class="nav nav-tabs mb-4" id="settingsTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link {{ request('tab', 'contact') === 'contact' ? 'active' : '' }} font-weight-bold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-pane" type="button" role="tab">
+                <button class="nav-link {{ $currentTab === 'contact' ? 'active' : '' }} font-weight-bold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-pane" type="button" role="tab">
                     <i class="fas fa-sliders-h text-danger"></i> Logo, Kontak &amp; Footer
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link {{ request('tab') === 'social' ? 'active' : '' }} font-weight-bold" id="social-tab" data-bs-toggle="tab" data-bs-target="#social-pane" type="button" role="tab">
+                <button class="nav-link {{ $currentTab === 'social' ? 'active' : '' }} font-weight-bold" id="social-tab" data-bs-toggle="tab" data-bs-target="#social-pane" type="button" role="tab">
                     <i class="fas fa-share-alt text-danger"></i> Media Sosial
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link {{ request('tab') === 'home' ? 'active' : '' }} font-weight-bold" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-pane" type="button" role="tab">
+                <button class="nav-link {{ $currentTab === 'home' ? 'active' : '' }} font-weight-bold" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-pane" type="button" role="tab">
                     <i class="fas fa-home text-danger"></i> Sambutan &amp; Moto Beranda
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link {{ request('tab') === 'partner' ? 'active' : '' }} font-weight-bold" id="partner-tab" data-bs-toggle="tab" data-bs-target="#partner-pane" type="button" role="tab">
+                <button class="nav-link {{ $currentTab === 'partner' ? 'active' : '' }} font-weight-bold" id="partner-tab" data-bs-toggle="tab" data-bs-target="#partner-pane" type="button" role="tab">
                     <i class="fas fa-handshake text-danger"></i> Halaman Kemitraan (Partner)
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link {{ request('tab') === 'admission' ? 'active' : '' }} font-weight-bold" id="admission-tab" data-bs-toggle="tab" data-bs-target="#admission-pane" type="button" role="tab">
+                <button class="nav-link {{ $currentTab === 'admission' ? 'active' : '' }} font-weight-bold" id="admission-tab" data-bs-toggle="tab" data-bs-target="#admission-pane" type="button" role="tab">
                     <i class="fas fa-file-pen text-danger"></i> Editor Form Pendaftaran (Admission)
                 </button>
             </li>
@@ -48,7 +52,7 @@
         <div class="tab-content" id="settingsTabContent">
             
             {{-- TAB 1: LOGO, KONTAK & FOOTER --}}
-            <div class="tab-pane fade show active" id="contact-pane" role="tabpanel">
+            <div class="tab-pane fade {{ $currentTab === 'contact' ? 'show active' : '' }}" id="contact-pane" role="tabpanel">
                 {{-- Card: Logo Website --}}
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
@@ -154,7 +158,7 @@
             </div>
 
             {{-- TAB 2: MEDIA SOSIAL --}}
-            <div class="tab-pane fade" id="social-pane" role="tabpanel">
+            <div class="tab-pane fade {{ $currentTab === 'social' ? 'show active' : '' }}" id="social-pane" role="tabpanel">
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0 font-weight-bold"><i class="fas fa-share-alt text-danger"></i> Tautan Media Sosial (Footer)</h5>
@@ -183,7 +187,7 @@
             </div>
 
             {{-- TAB 3: SAMBUTAN & MOTO BERANDA --}}
-            <div class="tab-pane fade" id="home-pane" role="tabpanel">
+            <div class="tab-pane fade {{ $currentTab === 'home' ? 'show active' : '' }}" id="home-pane" role="tabpanel">
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0 font-weight-bold"><i class="fas fa-quote-left text-danger"></i> Sambutan Lead Consultant &amp; Moto Teks Berjalan</h5>
@@ -273,7 +277,7 @@
             </div>
 
             {{-- TAB 4: HALAMAN KEMITRAAN (PARTNER) --}}
-            <div class="tab-pane fade" id="partner-pane" role="tabpanel">
+            <div class="tab-pane fade {{ $currentTab === 'partner' ? 'show active' : '' }}" id="partner-pane" role="tabpanel">
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0 font-weight-bold"><i class="fas fa-handshake text-danger"></i> Konten Halaman Kemitraan (Partner with DI)</h5>
@@ -314,7 +318,7 @@
             </div>
 
             {{-- TAB 5: FORM PENDAFTARAN (ADMISSION) --}}
-            <div class="tab-pane fade {{ request('tab') === 'admission' ? 'show active' : '' }}" id="admission-pane" role="tabpanel">
+            <div class="tab-pane fade {{ $currentTab === 'admission' ? 'show active' : '' }}" id="admission-pane" role="tabpanel">
                 {{-- Card 1: Header & Banner Formulir --}}
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
@@ -509,10 +513,19 @@
     </form>
 </div>
 
+@push('styles')
+<style>
+    /* Hilangkan delay animasi fade agar perpindahan tab terjadi seketika (instant 0ms) */
+    #settingsTabContent > .tab-pane {
+        transition: none !important;
+    }
+</style>
+@endpush
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Track active tab
+        // Track active tab and update current_tab input & URL instantly
         const tabBtns = document.querySelectorAll('#settingsTab button[data-bs-toggle="tab"]');
         const currentTabInput = document.getElementById('current_tab');
 
@@ -522,19 +535,14 @@
                 if (currentTabInput) {
                     currentTabInput.value = targetId;
                 }
+                // Update URL parameter secara langsung tanpa reload halaman
+                if (window.history.replaceState) {
+                    const url = new URL(window.location);
+                    url.searchParams.set('tab', targetId);
+                    window.history.replaceState({}, '', url);
+                }
             });
         });
-
-        // Auto switch tab if URL has ?tab=...
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeTabParam = urlParams.get('tab');
-        if (activeTabParam) {
-            const targetBtn = document.getElementById(activeTabParam + '-tab');
-            if (targetBtn) {
-                const bsTab = new bootstrap.Tab(targetBtn);
-                bsTab.show();
-            }
-        }
     });
 </script>
 @endpush

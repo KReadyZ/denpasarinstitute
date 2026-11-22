@@ -38,18 +38,19 @@ class BeritaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori'     => 'required|string',
-            'kontributor'  => 'required|string|max:255',
-            'title'        => 'required|string|max:255',
-            'content'      => 'required|string',
-            'published_at' => 'nullable|date',
-            'views'        => 'nullable|integer|min:0|max:500',
-            'image'        => 'nullable|image|max:2048',
+            'kategori'      => 'required|string',
+            'kontributor'   => 'required|string|max:255',
+            'title'         => 'required|string|max:255',
+            'content'       => 'required|string',
+            'published_at'  => 'nullable|date',
+            'views'         => 'nullable|integer|min:0|max:500',
+            'image'         => 'nullable|image|max:2048',
+            'image_caption' => 'nullable|string|max:255',
         ]);
 
         $data = $request->only([
             'kategori', 'kontributor', 'no_anggota',
-            'published_at', 'title', 'content', 'views',
+            'published_at', 'title', 'content', 'views', 'image_caption',
         ]);
 
         if (empty($data['published_at'])) {
@@ -72,8 +73,18 @@ class BeritaController extends Controller
         $data['views'] = $data['views'] ?? 0;
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')
+            $path = $request->file('image')
                 ->store('berita/image', 'public');
+            $data['image'] = $path;
+
+            // Mirror file ke public/storage untuk menjamin aksesibilitas di server hosting / LiteSpeed
+            try {
+                $targetFile = public_path('storage/' . $path);
+                if (!file_exists(dirname($targetFile))) {
+                    @mkdir(dirname($targetFile), 0755, true);
+                }
+                @copy(storage_path('app/public/' . $path), $targetFile);
+            } catch (\Throwable $e) {}
         }
 
         Berita::create($data);
@@ -101,18 +112,19 @@ class BeritaController extends Controller
         $this->authorizeOwner($berita);
 
         $request->validate([
-            'kategori'     => 'required|string',
-            'kontributor'  => 'required|string|max:255',
-            'title'        => 'required|string|max:255',
-            'content'      => 'required|string',
-            'published_at' => 'nullable|date',
-            'views'        => 'nullable|integer|min:0|max:500',
-            'image'        => 'nullable|image|max:2048',
+            'kategori'      => 'required|string',
+            'kontributor'   => 'required|string|max:255',
+            'title'         => 'required|string|max:255',
+            'content'       => 'required|string',
+            'published_at'  => 'nullable|date',
+            'views'         => 'nullable|integer|min:0|max:500',
+            'image'         => 'nullable|image|max:2048',
+            'image_caption' => 'nullable|string|max:255',
         ]);
 
         $data = $request->only([
             'kategori', 'kontributor', 'no_anggota',
-            'published_at', 'title', 'content', 'views',
+            'published_at', 'title', 'content', 'views', 'image_caption',
         ]);
 
         if (empty($data['published_at'])) {
@@ -134,9 +146,20 @@ class BeritaController extends Controller
         if ($request->hasFile('image')) {
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
+                @unlink(public_path('storage/' . $berita->image));
             }
-            $data['image'] = $request->file('image')
+            $path = $request->file('image')
                 ->store('berita/image', 'public');
+            $data['image'] = $path;
+
+            // Mirror file ke public/storage untuk menjamin aksesibilitas di server hosting / LiteSpeed
+            try {
+                $targetFile = public_path('storage/' . $path);
+                if (!file_exists(dirname($targetFile))) {
+                    @mkdir(dirname($targetFile), 0755, true);
+                }
+                @copy(storage_path('app/public/' . $path), $targetFile);
+            } catch (\Throwable $e) {}
         }
 
         $berita->update($data);

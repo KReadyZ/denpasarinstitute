@@ -1050,6 +1050,16 @@
   .swal2-di-toast-info {
     border-left: 4px solid #0284c7 !important;
   }
+  /* Pastikan toast SweetAlert tidak menghalangi klik mouse pada tab atau tombol lain */
+  .swal2-container.swal2-top-end,
+  .swal2-container.swal2-top,
+  .swal2-container.swal2-bottom-end {
+    pointer-events: none !important;
+  }
+  .swal2-container.swal2-top-end .swal2-popup,
+  .swal2-container .swal2-toast {
+    pointer-events: auto !important;
+  }
 </style>
 
 <script>

@@ -101,10 +101,17 @@
         display: block;
     }
     .article-image-caption {
-        font-size: 0.8rem;
-        color: #999;
+        font-size: 0.82rem;
+        color: #666;
         line-height: 1.5;
-        margin: 8px 0 28px;
+        margin: 8px 0 24px;
+        padding: 7px 14px;
+        background: #f8f9fa;
+        border-left: 3px solid #CC0000;
+        border-radius: 0 4px 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .article-body {
@@ -297,8 +304,14 @@
 
             @if($berita->image)
             <div class="article-image-wrap">
-                <img src="{{ asset('storage/' . $berita->image) }}" alt="{{ $berita->title }}">
+                <img src="{{ $berita->gambar_url }}" alt="{{ $berita->title }}">
             </div>
+            @if($berita->image_caption)
+            <div class="article-image-caption">
+                <i class="fas fa-camera text-danger"></i>
+                <span>{{ $berita->image_caption }}</span>
+            </div>
+            @endif
             @endif
 
             <div class="article-body">
@@ -325,7 +338,7 @@
             <a href="{{ route('berita.show', $lain->id) }}" class="sharing-corner-item">
                 <div class="sharing-corner-thumb">
                     @if($lain->image)
-                        <img src="{{ asset('storage/' . $lain->image) }}" alt="{{ $lain->title }}">
+                        <img src="{{ $lain->gambar_url }}" alt="{{ $lain->title }}">
                     @else
                         <div class="thumb-placeholder"><i class="far fa-newspaper"></i></div>
                     @endif

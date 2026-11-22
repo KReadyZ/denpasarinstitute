@@ -14,6 +14,7 @@ class Berita extends Model
         'title',
         'content',
         'image',
+        'image_caption',
         'views',
         'is_active',
         'status',
@@ -57,6 +58,20 @@ class Berita extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function getGambarUrlAttribute()
+    {
+        if (empty($this->image)) {
+            return 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&auto=format&fit=crop';
+        }
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+        if (str_starts_with($this->image, 'image/')) {
+            return asset($this->image);
+        }
+        return asset('storage/' . ltrim($this->image, '/'));
     }
 
     public function getStatusLabelAttribute()

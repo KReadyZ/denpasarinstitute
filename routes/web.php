@@ -489,3 +489,16 @@ Route::get('/mitra-klien', fn() => redirect()->route('mitra-dan-klien'));
 Route::get('/partner', fn() => redirect()->route('mitra-dan-klien'));
 Route::get('/partners', fn() => redirect()->route('mitra-dan-klien'));
 Route::get('/partners-and-clients', fn() => redirect()->route('mitra-dan-klien'));
+
+// Fallback Route untuk Akses Media Storage (Memastikan file upload seperti foto berita selalu tampil di cPanel/Hostinger)
+Route::get('/storage/{path}', function ($path) {
+    $storageAppPath = storage_path('app/public/' . $path);
+    if (file_exists($storageAppPath)) {
+        return response()->file($storageAppPath);
+    }
+    $pubStoragePath = public_path('storage/' . $path);
+    if (file_exists($pubStoragePath)) {
+        return response()->file($pubStoragePath);
+    }
+    abort(404);
+})->where('path', '.*')->name('storage.fallback');

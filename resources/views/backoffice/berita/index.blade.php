@@ -51,7 +51,17 @@
                     @foreach($beritas as $berita)
                     <tr>
                         <td>{{ ($beritas->currentPage() - 1) * $beritas->perPage() + $loop->iteration }}</td>
-                        <td>{{ $berita->title }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="{{ $berita->gambar_url }}" alt="" style="width: 52px; height: 36px; object-fit: cover; border-radius: 4px; flex-shrink: 0; border: 1px solid #e2e8f0;">
+                                <div>
+                                    <strong style="color: #1e293b; display: block; line-height: 1.3;">{{ $berita->title }}</strong>
+                                    @if($berita->image_caption)
+                                        <small style="color: #64748b; font-size: 0.76rem;"><i class="fas fa-camera"></i> {{ \Illuminate\Support\Str::limit($berita->image_caption, 40) }}</small>
+                                    @endif
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ $berita->kategori }}</td>
                         <td>{{ $berita->kontributor }}</td>
                         <td>

@@ -493,7 +493,7 @@
       @forelse($beritas as $item)
         <div class="news-card">
           <a href="{{ route('berita.show', $item->id) }}" style="color:inherit;text-decoration:none;display:block;">
-            <img src="{{ $item->image ? asset('storage/'.$item->image) : 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&auto=format&fit=crop' }}" alt="{{ $item->title }}">
+            <img src="{{ $item->gambar_url }}" alt="{{ $item->title }}">
             <div class="news-card-body">
               <span class="news-card-cat">{{ $item->kategori }}</span>
               <h3 class="news-card-title">{{ $item->title }}</h3>
@@ -647,9 +647,18 @@
         </div>
 
         <div class="form-group">
-          <label for="image">Gambar Berita</label>
-          <input type="file" name="image" id="image" accept="image/*">
-          <small><strong>Max:</strong> 2MB | <strong>Format:</strong> JPG, PNG</small>
+          <label for="image">Gambar Utama / Sampul Berita</label>
+          <input type="file" name="image" id="modal_image" accept="image/*" onchange="previewModalImage(this)">
+          <small><strong>Max:</strong> 2MB | <strong>Format:</strong> JPG, PNG, WEBP (Landscape 16:9)</small>
+          <div id="modal_image_preview_box" style="display:none; margin-top:10px;">
+            <img id="modal_image_preview" src="" alt="Preview" style="max-width:100%; height:180px; object-fit:cover; border-radius:6px; border:1px solid #ddd;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="image_caption">Keterangan / Caption Foto (Opsional)</label>
+          <input type="text" name="image_caption" id="image_caption" value="{{ old('image_caption') }}" placeholder="Contoh: Suasana seminar di kampus (Foto: Dok. Pribadi)">
+          @error('image_caption') <span class="error">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">
@@ -740,6 +749,21 @@
             });
         }
     });
+
+    function previewModalImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewImg = document.getElementById('modal_image_preview');
+                const previewBox = document.getElementById('modal_image_preview_box');
+                if (previewImg && previewBox) {
+                    previewImg.src = e.target.result;
+                    previewBox.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
     $(document).ready(function() {
         $('.summernote').summernote({

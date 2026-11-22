@@ -1253,7 +1253,7 @@
       <div class="sharing-list">
         @forelse(($latestBeritas ?? collect())->take(5) as $b)
           <a href="{{ route('berita.show', $b->id) }}" class="sharing-item" style="text-decoration:none; color:inherit;">
-            <img src="{{ $b->image ? asset('storage/'.$b->image) : 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=140&auto=format&fit=crop' }}" class="sharing-thumb" alt="{{ $b->title }}">
+            <img src="{{ $b->gambar_url }}" class="sharing-thumb" alt="{{ $b->title }}">
             <div style="flex: 1; min-width: 0;">
               <div class="sharing-meta-row">
                 <span class="sharing-cat red" style="margin-bottom: 0;">{{ $b->kategori }}</span>
@@ -1725,7 +1725,7 @@
     <div class="news-grid">
       @forelse($latestBeritas ?? [] as $b)
         <a href="{{ route('berita.show', $b->id) }}" class="news-card" style="color:inherit;">
-          <img src="{{ $b->image ? asset('storage/'.$b->image) : 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&auto=format&fit=crop' }}">
+          <img src="{{ $b->gambar_url }}" alt="{{ $b->title }}">
           <div class="news-card-body">
             <span class="news-card-cat">{{ $b->kategori }}</span>
             <h3 class="news-card-title">{{ $b->title }}</h3>

@@ -31,17 +31,18 @@ class BeritaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori'     => 'required|string',
-            'kontributor'  => 'required|string|max:255',
-            'title'        => 'required|string|max:255',
-            'content'      => 'required|string',
-            'published_at' => 'nullable|date',
-            'image'        => 'nullable|image|max:2048',
+            'kategori'      => 'required|string',
+            'kontributor'   => 'required|string|max:255',
+            'title'         => 'required|string|max:255',
+            'content'       => 'required|string',
+            'published_at'  => 'nullable|date',
+            'image'         => 'nullable|image|max:2048',
+            'image_caption' => 'nullable|string|max:255',
         ]);
 
         $data = $request->only([
             'kategori', 'kontributor', 'no_anggota',
-            'published_at', 'title', 'content',
+            'published_at', 'title', 'content', 'image_caption',
         ]);
 
         $data['status']    = 'pending';
@@ -50,8 +51,17 @@ class BeritaController extends Controller
         $data['created_by'] = Auth::id();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')
+            $path = $request->file('image')
                 ->store('berita/image', 'public');
+            $data['image'] = $path;
+
+            try {
+                $targetFile = public_path('storage/' . $path);
+                if (!file_exists(dirname($targetFile))) {
+                    @mkdir(dirname($targetFile), 0755, true);
+                }
+                @copy(storage_path('app/public/' . $path), $targetFile);
+            } catch (\Throwable $e) {}
         }
 
         Berita::create($data);

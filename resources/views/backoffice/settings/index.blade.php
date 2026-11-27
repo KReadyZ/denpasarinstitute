@@ -355,6 +355,46 @@
                     </div>
                 </div>
 
+                {{-- Card: Visibilitas Pilihan Metode Pembayaran di Form --}}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-sliders-h text-danger"></i> Visibilitas Metode Pembayaran di Form Pendaftaran</h5>
+                        <span class="badge badge-info px-2 py-1"><i class="fas fa-eye mr-1"></i> Kontrol Tampilan Publik</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-light border py-2 px-3 small mb-3 text-secondary">
+                            <i class="fas fa-info-circle text-primary mr-1"></i>
+                            Metode <strong>Transfer Bank BNI (Rekening Resmi)</strong> selalu aktif sebagai metode pembayaran utama. Anda dapat menampilkan atau menyembunyikan pilihan metode lainnya di bawah ini kapan saja:
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label font-weight-bold">Opsi QRIS / E-Wallet</label>
+                                <select name="admission_show_qris" class="form-control">
+                                    <option value="0" {{ ($settings['admission_show_qris'] ?? '0') == '0' ? 'selected' : '' }}>Sembunyikan (Hanya BNI yang Tampil)</option>
+                                    <option value="1" {{ ($settings['admission_show_qris'] ?? '0') == '1' ? 'selected' : '' }}>Tampilkan di Form Pendaftaran</option>
+                                </select>
+                                <small class="text-muted">Menampilkan opsi scan barcode QRIS di form.</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label font-weight-bold">Opsi Bayar Tunai di Kampus</label>
+                                <select name="admission_show_tunai" class="form-control">
+                                    <option value="0" {{ ($settings['admission_show_tunai'] ?? '0') == '0' ? 'selected' : '' }}>Sembunyikan (Hanya BNI yang Tampil)</option>
+                                    <option value="1" {{ ($settings['admission_show_tunai'] ?? '0') == '1' ? 'selected' : '' }}>Tampilkan di Form Pendaftaran</option>
+                                </select>
+                                <small class="text-muted">Menampilkan opsi bayar tunai di loket kampus.</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label font-weight-bold">Opsi Pembayaran DP (Uang Muka)</label>
+                                <select name="admission_show_dp" class="form-control">
+                                    <option value="0" {{ ($settings['admission_show_dp'] ?? '0') == '0' ? 'selected' : '' }}>Sembunyikan (Hanya Bayar Penuh / Lunas)</option>
+                                    <option value="1" {{ ($settings['admission_show_dp'] ?? '0') == '1' ? 'selected' : '' }}>Tampilkan di Form Pendaftaran</option>
+                                </select>
+                                <small class="text-muted">Menampilkan kelompok opsi uang muka / cicilan DP.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- Card 2: Rekening Bank Resmi Tujuan Transfer --}}
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">

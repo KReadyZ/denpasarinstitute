@@ -594,6 +594,9 @@
   $tunaiTitle = \App\Models\SiteSetting::get('tunai_title', 'Loket Pembayaran Kampus Denpasar Institute');
   $tunaiAddress = \App\Models\SiteSetting::get('tunai_address', 'Jl. Gatot Subroto VI No. 27, Dauh Puri Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80231 (Senin - Sabtu: 08.00 - 17.00 WITA).');
   $securityNotice = \App\Models\SiteSetting::get('transfer_security_notice', 'Pastikan transfer ditujukan ke rekening resmi atas nama Denpasar Institute. Simpan bukti transfer Anda.');
+  $showQris = \App\Models\SiteSetting::get('admission_show_qris', '0') == '1';
+  $showTunai = \App\Models\SiteSetting::get('admission_show_tunai', '0') == '1';
+  $showDp = \App\Models\SiteSetting::get('admission_show_dp', '0') == '1';
   $waAdmin = \App\Models\SiteSetting::get('admission_wa_admin', '0821-4481-4593');
   $waAdminClean = preg_replace('/[^0-9]/', '', (string)$waAdmin);
   $waAdminLink = str_starts_with($waAdminClean, '0') ? '62' . substr($waAdminClean, 1) : $waAdminClean;
@@ -783,18 +786,38 @@
           <div class="form-group @error('metode_pembayaran') error @enderror">
             <label>Metode Pembayaran</label>
             <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
-              <optgroup label="-- Pembayaran Penuh (Lunas) --">
-                <option value="Transfer Bank BNI (Rekening Resmi)" {{ old('metode_pembayaran') === 'Transfer Bank BNI (Rekening Resmi)' || !old('metode_pembayaran') ? 'selected' : '' }}>Transfer Bank BNI (Rekening Resmi)</option>
-                <option value="QRIS / E-Wallet" {{ old('metode_pembayaran') === 'QRIS / E-Wallet' ? 'selected' : '' }}>QRIS / E-Wallet</option>
-                <option value="Tunai (Cash)" {{ old('metode_pembayaran') === 'Tunai (Cash)' ? 'selected' : '' }}>Tunai di Kampus Denpasar Institute</option>
-              </optgroup>
-              <optgroup label="-- Pembayaran DP (Down Payment / Uang Muka) --">
-                <option value="DP (Uang Muka) - Transfer Bank BNI" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Transfer Bank BNI' ? 'selected' : '' }}>DP (Uang Muka) - Transfer Bank BNI</option>
-                <option value="DP (Uang Muka) - QRIS / E-Wallet" {{ old('metode_pembayaran') === 'DP (Uang Muka) - QRIS / E-Wallet' ? 'selected' : '' }}>DP (Uang Muka) - QRIS / E-Wallet</option>
-                <option value="DP (Uang Muka) - Tunai di Kampus" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Tunai di Kampus' ? 'selected' : '' }}>DP (Uang Muka) - Tunai di Kampus</option>
-              </optgroup>
+              @if(!$showQris && !$showTunai && !$showDp)
+                <option value="Transfer Bank BNI (Rekening Resmi)" selected>Transfer Bank BNI (Rekening Resmi)</option>
+              @else
+                <optgroup label="-- Pembayaran Penuh (Lunas) --">
+                  <option value="Transfer Bank BNI (Rekening Resmi)" {{ old('metode_pembayaran') === 'Transfer Bank BNI (Rekening Resmi)' || !old('metode_pembayaran') ? 'selected' : '' }}>Transfer Bank BNI (Rekening Resmi)</option>
+                  @if($showQris)
+                    <option value="QRIS / E-Wallet" {{ old('metode_pembayaran') === 'QRIS / E-Wallet' ? 'selected' : '' }}>QRIS / E-Wallet</option>
+                  @endif
+                  @if($showTunai)
+                    <option value="Tunai (Cash)" {{ old('metode_pembayaran') === 'Tunai (Cash)' ? 'selected' : '' }}>Tunai di Kampus Denpasar Institute</option>
+                  @endif
+                </optgroup>
+                @if($showDp)
+                  <optgroup label="-- Pembayaran DP (Down Payment / Uang Muka) --">
+                    <option value="DP (Uang Muka) - Transfer Bank BNI" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Transfer Bank BNI' ? 'selected' : '' }}>DP (Uang Muka) - Transfer Bank BNI</option>
+                    @if($showQris)
+                      <option value="DP (Uang Muka) - QRIS / E-Wallet" {{ old('metode_pembayaran') === 'DP (Uang Muka) - QRIS / E-Wallet' ? 'selected' : '' }}>DP (Uang Muka) - QRIS / E-Wallet</option>
+                    @endif
+                    @if($showTunai)
+                      <option value="DP (Uang Muka) - Tunai di Kampus" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Tunai di Kampus' ? 'selected' : '' }}>DP (Uang Muka) - Tunai di Kampus</option>
+                    @endif
+                  </optgroup>
+                @endif
+              @endif
             </select>
-            <small id="metode_subtext">Pilih metode transfer Bank BNI resmi atau opsi alternatif.</small>
+            <small id="metode_subtext">
+              @if(!$showQris && !$showTunai && !$showDp)
+                Pembayaran pendaftaran resmi ditransfer langsung melalui Bank BNI Denpasar Institute.
+              @else
+                Pilih metode transfer Bank BNI resmi atau opsi pembayaran yang tersedia.
+              @endif
+            </small>
           </div>
         </div>
 
@@ -830,6 +853,7 @@
               </div>
 
               {{-- Instruksi QRIS --}}
+              @if($showQris)
               <div id="info_qris" class="p-3 rounded-3 bg-white border mt-2 shadow-sm text-center" style="display: none;">
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
                   <i class="fas fa-qrcode text-danger fs-5"></i>
@@ -865,8 +889,10 @@
                   Buka aplikasi mobile banking (BCA, Mandiri, BNI, BRI) atau e-wallet (GoPay, OVO, Dana, ShopeePay), pilih menu <strong>Scan / Bayar QRIS</strong>, lalu scan barcode di atas.
                 </div>
               </div>
+              @endif
 
               {{-- Instruksi Tunai --}}
+              @if($showTunai)
               <div id="info_tunai" class="p-2.5 rounded-2 bg-white border mt-2" style="display: none;">
                 <div class="d-flex align-items-center gap-2 mb-1">
                   <i class="fas fa-map-marker-alt text-danger fs-5"></i>
@@ -876,6 +902,7 @@
                   {{ $tunaiAddress }}
                 </div>
               </div>
+              @endif
 
               <div class="mt-2 text-muted fst-italic d-flex align-items-center gap-1.5" style="font-size: 0.73rem;">
                 <i class="fas fa-shield-alt text-success"></i>

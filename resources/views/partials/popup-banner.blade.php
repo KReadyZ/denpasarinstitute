@@ -202,17 +202,27 @@
   border-bottom: 1px solid #e2e8f0;
   overflow: hidden;
   text-align: center;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .popup-banner-media-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   position: relative;
   text-decoration: none;
 }
 .popup-banner-img {
-  width: 100%;
+  max-width: 100%;
+  width: auto;
   height: auto;
   max-height: 250px;
   object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   display: block;
   margin: 0 auto;
   transition: transform 0.3s ease;
@@ -348,6 +358,9 @@
   }
   .popup-banner-brand-name {
     font-size: 0.72rem;
+  }
+  .popup-banner-img {
+    max-height: 180px;
   }
   .popup-banner-content {
     padding: 16px 16px 20px;

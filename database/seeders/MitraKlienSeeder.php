@@ -19,7 +19,9 @@ class MitraKlienSeeder extends Seeder
         }
 
         if (!File::exists($jsonPath)) {
-            $this->command->error("File {$jsonPath} not found!");
+            if ($this->command) {
+                $this->command->error("File {$jsonPath} not found!");
+            }
             return;
         }
 
@@ -49,10 +51,14 @@ class MitraKlienSeeder extends Seeder
                 ]
             );
 
-            $this->command->info("Seeded partner #{$order}: {$p['institusi']}");
+            if ($this->command) {
+                $this->command->info("Seeded partner #{$order}: {$p['institusi']}");
+            }
             $order++;
         }
 
-        $this->command->info("Total {$order} partners seeded successfully.");
+        if ($this->command) {
+            $this->command->info("Total {$order} partners seeded successfully.");
+        }
     }
 }

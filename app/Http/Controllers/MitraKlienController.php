@@ -13,6 +13,23 @@ class MitraKlienController extends Controller
      */
     public function index(Request $request)
     {
+        // Auto-seed otomatis jika di hosting tabel masih kosong (belum di-seed)
+        try {
+            if (PartnershipSubmission::count() === 0) {
+                (new \Database\Seeders\MitraKlienSeeder())->run();
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Auto-seed MitraKlienSeeder: ' . $e->getMessage());
+        }
+
+        try {
+            if (PartnershipPillar::count() === 0) {
+                (new \Database\Seeders\PartnershipPillarDetailSeeder())->run();
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Auto-seed PartnershipPillarDetailSeeder: ' . $e->getMessage());
+        }
+
         $query = PartnershipSubmission::approved();
 
         // Filter pencarian

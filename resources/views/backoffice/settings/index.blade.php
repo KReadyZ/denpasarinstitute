@@ -414,13 +414,18 @@
 
                         <div class="row g-3">
                             {{-- Bank BNI (Utama / Tampil di Form) --}}
-                            <div class="col-12 mb-2">
+                            <div class="col-12 mb-3">
                                 <div class="p-3 rounded border border-danger bg-light">
-                                    <div class="d-flex align-items-center justify-content-between mb-2">
-                                        <label class="form-label font-weight-bold text-danger mb-0 fs-6">
-                                            <i class="fas fa-star text-warning mr-1"></i> Bank BNI (Rekening Utama Form Pendaftaran)
-                                        </label>
-                                        <span class="badge badge-danger">Aktif di Publik</span>
+                                    <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 80px; height: 36px; justify-content: center;">
+                                                <img src="{{ asset('image/banks/bni.svg') }}" alt="Bank BNI" style="max-height: 24px; max-width: 70px; object-fit: contain;" onerror="this.onerror=null; this.src='{{ asset('image/banks/bni.png') }}';">
+                                            </div>
+                                            <label class="form-label font-weight-bold text-danger mb-0 fs-6">
+                                                Bank BNI (Rekening Utama Form Pendaftaran)
+                                            </label>
+                                        </div>
+                                        <span class="badge badge-danger">Aktif Utama di Form</span>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-2">
@@ -436,33 +441,83 @@
                             </div>
 
                             {{-- Bank BCA --}}
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-primary">Nomor Rekening Bank BCA <small class="text-muted">(Alternatif)</small></label>
-                                <input type="text" name="bank_bca_rek" class="form-control font-monospace" value="{{ $settings['bank_bca_rek'] ?? '7720918899' }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-primary">Atas Nama Bank BCA</label>
-                                <input type="text" name="bank_bca_holder" class="form-control" value="{{ $settings['bank_bca_holder'] ?? 'Denpasar Institute' }}">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-2.5 rounded border bg-white h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 70px; height: 32px; justify-content: center;">
+                                            <img src="{{ asset('image/banks/bca.svg') }}" alt="Bank BCA" style="max-height: 20px; max-width: 60px; object-fit: contain;">
+                                        </div>
+                                        <label class="form-label font-weight-bold text-primary mb-0">Nomor Rekening Bank BCA <small class="text-muted">(Alternatif)</small></label>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label class="small text-muted mb-1">Nomor Rekening</label>
+                                        <input type="text" name="bank_bca_rek" class="form-control font-monospace" value="{{ $settings['bank_bca_rek'] ?? '7720918899' }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small text-muted mb-1">Atas Nama Rekening</label>
+                                        <input type="text" name="bank_bca_holder" class="form-control" value="{{ $settings['bank_bca_holder'] ?? 'Denpasar Institute' }}">
+                                    </div>
+                                </div>
                             </div>
 
                             {{-- Bank Mandiri --}}
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold" style="color:#b45309;">Nomor Rekening Bank Mandiri <small class="text-muted">(Alternatif)</small></label>
-                                <input type="text" name="bank_mandiri_rek" class="form-control font-monospace" value="{{ $settings['bank_mandiri_rek'] ?? '1450018293812' }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold" style="color:#b45309;">Atas Nama Bank Mandiri</label>
-                                <input type="text" name="bank_mandiri_holder" class="form-control" value="{{ $settings['bank_mandiri_holder'] ?? 'Denpasar Institute' }}">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-2.5 rounded border bg-white h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 70px; height: 32px; justify-content: center;">
+                                            <img src="{{ asset('image/banks/mandiri.svg') }}" alt="Bank Mandiri" style="max-height: 20px; max-width: 60px; object-fit: contain;">
+                                        </div>
+                                        <label class="form-label font-weight-bold mb-0" style="color:#b45309;">Nomor Rekening Bank Mandiri <small class="text-muted">(Alternatif)</small></label>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label class="small text-muted mb-1">Nomor Rekening</label>
+                                        <input type="text" name="bank_mandiri_rek" class="form-control font-monospace" value="{{ $settings['bank_mandiri_rek'] ?? '1450018293812' }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small text-muted mb-1">Atas Nama Rekening</label>
+                                        <input type="text" name="bank_mandiri_holder" class="form-control" value="{{ $settings['bank_mandiri_holder'] ?? 'Denpasar Institute' }}">
+                                    </div>
+                                </div>
                             </div>
 
                             {{-- Bank BRI --}}
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-info">Nomor Rekening Bank BRI <small class="text-muted">(Alternatif)</small></label>
-                                <input type="text" name="bank_bri_rek" class="form-control font-monospace" value="{{ $settings['bank_bri_rek'] ?? '001701002891534' }}">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-2.5 rounded border bg-white h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 70px; height: 32px; justify-content: center;">
+                                            <img src="{{ asset('image/banks/bri.svg') }}" alt="Bank BRI" style="max-height: 20px; max-width: 60px; object-fit: contain;">
+                                        </div>
+                                        <label class="form-label font-weight-bold text-info mb-0">Nomor Rekening Bank BRI <small class="text-muted">(Alternatif)</small></label>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label class="small text-muted mb-1">Nomor Rekening</label>
+                                        <input type="text" name="bank_bri_rek" class="form-control font-monospace" value="{{ $settings['bank_bri_rek'] ?? '001701002891534' }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small text-muted mb-1">Atas Nama Rekening</label>
+                                        <input type="text" name="bank_bri_holder" class="form-control" value="{{ $settings['bank_bri_holder'] ?? 'Denpasar Institute' }}">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-info">Atas Nama Bank BRI</label>
-                                <input type="text" name="bank_bri_holder" class="form-control" value="{{ $settings['bank_bri_holder'] ?? 'Denpasar Institute' }}">
+
+                            {{-- Bank BPD Bali --}}
+                            <div class="col-md-6 mb-3">
+                                <div class="p-2.5 rounded border bg-white h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 70px; height: 32px; justify-content: center;">
+                                            <img src="{{ asset('image/banks/bpd-bali.png') }}" alt="Bank BPD Bali" style="max-height: 22px; max-width: 60px; object-fit: contain;">
+                                        </div>
+                                        <label class="form-label font-weight-bold text-warning mb-0" style="color:#d97706 !important;">Nomor Rekening Bank BPD Bali <small class="text-muted">(Alternatif)</small></label>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label class="small text-muted mb-1">Nomor Rekening</label>
+                                        <input type="text" name="bank_bpd_bali_rek" class="form-control font-monospace" value="{{ $settings['bank_bpd_bali_rek'] ?? '' }}" placeholder="Opsional (contoh: 0100201002345)">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small text-muted mb-1">Atas Nama Rekening</label>
+                                        <input type="text" name="bank_bpd_bali_holder" class="form-control" value="{{ $settings['bank_bpd_bali_holder'] ?? 'Yayasan Denpasar Institute' }}" placeholder="Contoh: Yayasan Denpasar Institute">
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-12 mt-2">
@@ -475,8 +530,13 @@
 
                 {{-- Card 3: QRIS & Pembayaran Tunai --}}
                 <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-qrcode text-danger"></i> Panduan QRIS &amp; Pembayaran Tunai</h5>
+                    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-white px-2 py-1 rounded border mr-2 d-inline-flex align-items-center shadow-sm" style="min-width: 70px; height: 34px; justify-content: center;">
+                                <img src="{{ asset('image/banks/qris.svg') }}" alt="QRIS" style="max-height: 22px; max-width: 60px; object-fit: contain;">
+                            </div>
+                            <h5 class="mb-0 font-weight-bold">Panduan QRIS &amp; Pembayaran Tunai</h5>
+                        </div>
                     </div>
                     <div class="card-body p-4">
                         <div class="row g-3">

@@ -588,6 +588,8 @@
   $holderMandiri = \App\Models\SiteSetting::get('bank_mandiri_holder', 'Denpasar Institute');
   $rekBri = \App\Models\SiteSetting::get('bank_bri_rek', '001701002891534');
   $holderBri = \App\Models\SiteSetting::get('bank_bri_holder', 'Denpasar Institute');
+  $rekBpd = \App\Models\SiteSetting::get('bank_bpd_bali_rek', '');
+  $holderBpd = \App\Models\SiteSetting::get('bank_bpd_bali_holder', 'Denpasar Institute');
   $qrisTitle = \App\Models\SiteSetting::get('qris_title', 'QRIS Resmi Denpasar Institute (NMID: ID102003891829)');
   $qrisDesc = \App\Models\SiteSetting::get('qris_desc', 'Menerima pembayaran dari seluruh aplikasi m-Banking (BCA, Mandiri, BNI, BRI, dll) serta E-Wallet (GoPay, OVO, Dana, ShopeePay, LinkAja).');
   $qrisImage = \App\Models\SiteSetting::get('qris_image');
@@ -833,21 +835,121 @@
               </span>
             </div>
             <div class="card-body p-3">
-              {{-- Rekening Utama: Bank BNI Saja --}}
+              {{-- Rekening Utama: Bank BNI --}}
               <div id="list_rekening_bank">
-                <div class="p-3 rounded-2 bg-white border border-danger-subtle d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 4px solid #dc2626 !important;">
-                  <div>
-                    <div class="d-flex align-items-center gap-2 mb-1">
-                      <span class="badge bg-danger text-white px-2 py-0.5" style="font-size: 0.75rem; font-weight: 700;">BANK BNI</span>
-                      <span class="small text-muted fw-semibold">Rekening Penerimaan Resmi Denpasar Institute</span>
+                <div class="p-3 rounded-2 bg-white border border-danger-subtle d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-2xs" style="border-left: 4px solid #dc2626 !important;">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white p-2 rounded-2 border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 110px; height: 52px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                      <img src="{{ asset('image/banks/bni.svg') }}" alt="Bank BNI" style="max-height: 34px; max-width: 95px; object-fit: contain;" onerror="this.onerror=null; this.src='{{ asset('image/banks/bni.png') }}';">
                     </div>
-                    <div class="font-monospace fw-bold fs-5 text-dark" id="rek_bni" style="letter-spacing: 0.5px;">{{ $rekBni }}</div>
-                    <div class="text-secondary small mt-0.5"><i class="fas fa-user-check text-success me-1"></i> a.n. <strong>{{ $holderBni }}</strong></div>
+                    <div>
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge bg-danger text-white px-2 py-0.5" style="font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;">BANK BNI</span>
+                        <span class="small text-muted fw-semibold">Rekening Penerimaan Utama Resmi</span>
+                      </div>
+                      <div class="font-monospace fw-bold fs-5 text-dark" id="rek_bni" style="letter-spacing: 0.5px;">{{ $rekBni }}</div>
+                      <div class="text-secondary small mt-0.5"><i class="fas fa-user-check text-success me-1"></i> a.n. <strong>{{ $holderBni }}</strong></div>
+                    </div>
                   </div>
                   <div>
                     <button type="button" class="btn btn-outline-danger btn-sm py-1.5 px-3 fw-semibold btn-copy-rek" data-target="{{ $rekBni }}" title="Salin nomor rekening BNI">
                       <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin No. Rekening</span>
                     </button>
+                  </div>
+                </div>
+
+                {{-- Opsi Rekening Bank Alternatif (BCA, Mandiri, BRI, BPD Bali) --}}
+                <div class="mt-2 text-end">
+                  <a class="btn btn-link btn-sm text-decoration-none text-muted p-0 small fw-semibold" data-bs-toggle="collapse" href="#collapseBankLain" role="button" aria-expanded="false" aria-controls="collapseBankLain">
+                    <i class="fas fa-wallet text-secondary me-1"></i> Lihat Pilihan Rekening Bank Lain (BCA, Mandiri, BRI) <i class="fas fa-chevron-down ms-1" style="font-size: 0.7rem;"></i>
+                  </a>
+                </div>
+
+                <div class="collapse mt-2" id="collapseBankLain">
+                  <div class="d-flex flex-column gap-2">
+                    {{-- Bank BCA --}}
+                    @if(!empty($rekBca))
+                    <div class="p-2.5 rounded-2 bg-white border d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 3px solid #005baa !important;">
+                      <div class="d-flex align-items-center gap-2.5">
+                        <div class="bg-white p-1.5 rounded border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 85px; height: 42px;">
+                          <img src="{{ asset('image/banks/bca.svg') }}" alt="Bank BCA" style="max-height: 26px; max-width: 75px; object-fit: contain;">
+                        </div>
+                        <div>
+                          <div class="small fw-bold text-dark">BANK BCA <span class="badge bg-light text-secondary border ms-1" style="font-size: 0.65rem;">Alternatif</span></div>
+                          <div class="font-monospace fw-bold text-dark small" style="letter-spacing: 0.5px;">{{ $rekBca }}</div>
+                          <div class="text-muted" style="font-size: 0.73rem;">a.n. <strong>{{ $holderBca }}</strong></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2.5 fw-semibold btn-copy-rek" data-target="{{ $rekBca }}" title="Salin nomor rekening BCA" style="font-size: 0.75rem;">
+                          <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
+                        </button>
+                      </div>
+                    </div>
+                    @endif
+
+                    {{-- Bank Mandiri --}}
+                    @if(!empty($rekMandiri))
+                    <div class="p-2.5 rounded-2 bg-white border d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 3px solid #003057 !important;">
+                      <div class="d-flex align-items-center gap-2.5">
+                        <div class="bg-white p-1.5 rounded border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 85px; height: 42px;">
+                          <img src="{{ asset('image/banks/mandiri.svg') }}" alt="Bank Mandiri" style="max-height: 26px; max-width: 75px; object-fit: contain;">
+                        </div>
+                        <div>
+                          <div class="small fw-bold text-dark">BANK MANDIRI <span class="badge bg-light text-secondary border ms-1" style="font-size: 0.65rem;">Alternatif</span></div>
+                          <div class="font-monospace fw-bold text-dark small" style="letter-spacing: 0.5px;">{{ $rekMandiri }}</div>
+                          <div class="text-muted" style="font-size: 0.73rem;">a.n. <strong>{{ $holderMandiri }}</strong></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2.5 fw-semibold btn-copy-rek" data-target="{{ $rekMandiri }}" title="Salin nomor rekening Mandiri" style="font-size: 0.75rem;">
+                          <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
+                        </button>
+                      </div>
+                    </div>
+                    @endif
+
+                    {{-- Bank BRI --}}
+                    @if(!empty($rekBri))
+                    <div class="p-2.5 rounded-2 bg-white border d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 3px solid #00529c !important;">
+                      <div class="d-flex align-items-center gap-2.5">
+                        <div class="bg-white p-1.5 rounded border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 85px; height: 42px;">
+                          <img src="{{ asset('image/banks/bri.svg') }}" alt="Bank BRI" style="max-height: 26px; max-width: 75px; object-fit: contain;">
+                        </div>
+                        <div>
+                          <div class="small fw-bold text-dark">BANK BRI <span class="badge bg-light text-secondary border ms-1" style="font-size: 0.65rem;">Alternatif</span></div>
+                          <div class="font-monospace fw-bold text-dark small" style="letter-spacing: 0.5px;">{{ $rekBri }}</div>
+                          <div class="text-muted" style="font-size: 0.73rem;">a.n. <strong>{{ $holderBri }}</strong></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2.5 fw-semibold btn-copy-rek" data-target="{{ $rekBri }}" title="Salin nomor rekening BRI" style="font-size: 0.75rem;">
+                          <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
+                        </button>
+                      </div>
+                    </div>
+                    @endif
+
+                    {{-- Bank BPD Bali --}}
+                    @if(!empty($rekBpd))
+                    <div class="p-2.5 rounded-2 bg-white border d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 3px solid #d97706 !important;">
+                      <div class="d-flex align-items-center gap-2.5">
+                        <div class="bg-white p-1.5 rounded border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 85px; height: 42px;">
+                          <img src="{{ asset('image/banks/bpd-bali.png') }}" alt="Bank BPD Bali" style="max-height: 28px; max-width: 75px; object-fit: contain;">
+                        </div>
+                        <div>
+                          <div class="small fw-bold text-dark">BANK BPD BALI <span class="badge bg-light text-secondary border ms-1" style="font-size: 0.65rem;">Alternatif</span></div>
+                          <div class="font-monospace fw-bold text-dark small" style="letter-spacing: 0.5px;">{{ $rekBpd }}</div>
+                          <div class="text-muted" style="font-size: 0.73rem;">a.n. <strong>{{ $holderBpd }}</strong></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2.5 fw-semibold btn-copy-rek" data-target="{{ $rekBpd }}" title="Salin nomor rekening BPD Bali" style="font-size: 0.75rem;">
+                          <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
+                        </button>
+                      </div>
+                    </div>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -856,11 +958,30 @@
               @if($showQris)
               <div id="info_qris" class="p-3 rounded-3 bg-white border mt-2 shadow-sm text-center" style="display: none;">
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
-                  <i class="fas fa-qrcode text-danger fs-5"></i>
+                  <img src="{{ asset('image/banks/qris.svg') }}" alt="QRIS" style="height: 26px; width: auto; object-fit: contain;">
                   <span class="fw-bold small text-dark">{{ $qrisTitle }}</span>
                 </div>
-                <div class="text-muted small mb-3" style="font-size: 0.78rem;">
+                <div class="text-muted small mb-2" style="font-size: 0.78rem;">
                   {{ $qrisDesc }}
+                </div>
+
+                {{-- Bank Support Badges --}}
+                <div class="d-flex align-items-center justify-content-center flex-wrap gap-2 mb-3">
+                  <span class="badge bg-light text-secondary border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                    <img src="{{ asset('image/banks/bni.svg') }}" alt="BNI" style="height: 12px; width: auto;"> BNI
+                  </span>
+                  <span class="badge bg-light text-secondary border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                    <img src="{{ asset('image/banks/bca.svg') }}" alt="BCA" style="height: 12px; width: auto;"> BCA
+                  </span>
+                  <span class="badge bg-light text-secondary border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                    <img src="{{ asset('image/banks/mandiri.svg') }}" alt="Mandiri" style="height: 12px; width: auto;"> Mandiri
+                  </span>
+                  <span class="badge bg-light text-secondary border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                    <img src="{{ asset('image/banks/bri.svg') }}" alt="BRI" style="height: 12px; width: auto;"> BRI
+                  </span>
+                  <span class="badge bg-light text-secondary border px-2 py-1 small">
+                    <i class="fas fa-wallet text-danger me-1"></i> GoPay / OVO / Dana / ShopeePay
+                  </span>
                 </div>
 
                 @if($qrisImage)

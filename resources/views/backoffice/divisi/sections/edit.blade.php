@@ -110,14 +110,41 @@
                     @endif
 
                     <div class="form-group" style="margin-bottom: 0;">
-                        <label for="slider_images" style="font-weight: 600; font-size: 0.9rem; color: #111;">
-                            <i class="fas fa-plus-circle text-danger"></i> Tambah Foto Slider Baru (Bisa Pilih Banyak Foto Sekaligus)
+                        <label style="font-weight: 700; font-size: 0.92rem; color: #111; margin-bottom: 8px; display: block;">
+                            <i class="fas fa-plus-circle text-danger"></i> Tambah Foto Slider Baru
                         </label>
-                        <input type="file" name="slider_images[]" id="slider_images" class="form-control" accept="image/*" multiple style="background: #fff;">
-                        <small style="color: #666; display: block; margin-top: 6px; line-height: 1.5;">
-                            <i class="fas fa-keyboard"></i> Tips: Tekan & tahan tombol <strong>Ctrl</strong> (atau <strong>Cmd</strong> di Mac) saat memilih file untuk memilih lebih dari 1 foto sekaligus. Format: JPG, PNG, WEBP (Maks: 10MB per foto).
-                        </small>
-                        @error('slider_images.*') <small style="color:red; display:block;">{{ $message }}</small> @enderror
+
+                        <!-- Area Drag & Drop / Klik untuk Pilih Foto (Cukup dengan Mouse) -->
+                        <div id="sliderDropArea" 
+                             style="border: 2px dashed #CC0000; background: #ffffff; border-radius: 8px; padding: 22px 20px; text-align: center; cursor: pointer; transition: all 0.2s;"
+                             onmouseover="this.style.background='#fff0f0'"
+                             onmouseout="this.style.background='#ffffff'">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2.2rem; color: #CC0000; margin-bottom: 6px; display: block;"></i>
+                            <p style="margin: 0 0 4px; font-weight: 700; color: #1e293b; font-size: 0.95rem;">
+                                Klik di Sini untuk Memilih Foto
+                            </p>
+                            <span style="font-size: 0.82rem; color: #64748b;">
+                                Atau tarik &amp; lepas (drag &amp; drop) foto langsung dengan mouse (JPG, PNG, WEBP)
+                            </span>
+                        </div>
+
+                        <!-- Wadah Input File Dinamis (Hidden) -->
+                        <div id="dynamicInputsContainer"></div>
+
+                        <!-- Preview Foto-Foto yang Baru Dipilih -->
+                        <div id="newPhotosPreviewContainer" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px;"></div>
+
+                        <!-- Tombol Tambah Foto Lagi Cukup dengan Klik Mouse -->
+                        <div style="margin-top: 12px;">
+                            <button type="button" id="btnAddPhotoSlot" 
+                                    style="background: #ffffff; border: 1.5px solid #CC0000; color: #CC0000; font-weight: 700; padding: 7px 16px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.86rem; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#CC0000'; this.style.color='#fff';"
+                                    onmouseout="this.style.background='#ffffff'; this.style.color='#CC0000';">
+                                <i class="fas fa-plus"></i> Tambah Foto Lagi
+                            </button>
+                        </div>
+
+                        @error('slider_images.*') <small style="color:red; display:block; margin-top: 8px;">{{ $message }}</small> @enderror
                     </div>
                 </div>
             </div>
@@ -208,6 +235,121 @@ function deleteSliderPhoto(divisiId, sectionId, imagePath, elementId) {
         alert('Terjadi kesalahan saat menghapus foto slider.');
     });
 }
+
+// Handler Multi-Upload Foto Slider tanpa perlu sentuh tombol keyboard
+(function() {
+    let photoIndex = 0;
+    const dropArea = document.getElementById('sliderDropArea');
+    const inputsContainer = document.getElementById('dynamicInputsContainer');
+    const previewsContainer = document.getElementById('newPhotosPreviewContainer');
+    const btnAddMore = document.getElementById('btnAddPhotoSlot');
+
+    if (!dropArea || !inputsContainer || !previewsContainer) return;
+
+    function addFilesToPreview(files) {
+        files.forEach((file) => {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const card = document.createElement('div');
+                card.style.cssText = 'position: relative; width: 130px; height: 95px; border-radius: 6px; overflow: hidden; border: 2px solid #CC0000; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1);';
+                card.innerHTML = `
+                    <img src="${evt.target.result}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.65); color: #fff; font-size: 0.65rem; padding: 2px 4px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                        ${file.name}
+                    </span>
+                    <button type="button" style="position: absolute; top: 4px; right: 4px; background: rgba(220,53,69,0.95); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.72rem;" title="Batalkan foto ini">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                card.querySelector('button').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    card.remove();
+                    // Optional: remove input if needed
+                });
+                previewsContainer.appendChild(card);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function createAndTriggerInput() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'slider_images[]';
+        input.accept = 'image/*';
+        input.multiple = true;
+        input.style.display = 'none';
+        input.id = 'file-input-' + photoIndex;
+        photoIndex++;
+
+        input.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) {
+                input.remove();
+                return;
+            }
+            addFilesToPreview(files);
+            inputsContainer.appendChild(input);
+        });
+
+        input.click();
+    }
+
+    dropArea.addEventListener('click', function(e) {
+        createAndTriggerInput();
+    });
+
+    if (btnAddMore) {
+        btnAddMore.addEventListener('click', function(e) {
+            e.preventDefault();
+            createAndTriggerInput();
+        });
+    }
+
+    // Drag & Drop dengan mouse langsung
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropArea.style.background = '#fff0f0';
+            dropArea.style.borderColor = '#b30000';
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropArea.style.background = '#ffffff';
+            dropArea.style.borderColor = '#CC0000';
+        });
+    });
+
+    dropArea.addEventListener('drop', function(e) {
+        const dt = e.dataTransfer;
+        const files = Array.from(dt.files).filter(f => f.type.startsWith('image/'));
+        if (files.length === 0) return;
+
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'slider_images[]';
+        input.multiple = true;
+        input.style.display = 'none';
+
+        try {
+            const newDt = new DataTransfer();
+            files.forEach(f => newDt.items.add(f));
+            input.files = newDt.files;
+            inputsContainer.appendChild(input);
+        } catch (err) {
+            // fallback
+            inputsContainer.appendChild(input);
+        }
+
+        addFilesToPreview(files);
+    });
+})();
 </script>
 @endpush
 

@@ -643,20 +643,39 @@
                                     <option value="0" {{ ($settings['popup_banner_active'] ?? '1') == '0' ? 'selected' : '' }}>Nonaktif (Sembunyikan)</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold">Judul Banner Pengumuman</label>
-                                <input type="text" name="popup_banner_title" class="form-control" value="{{ $settings['popup_banner_title'] ?? 'Pendaftaran & Kolaborasi Denpasar Institute' }}" placeholder="Judul banner...">
-                            </div>
                             <div class="col-md-3">
                                 <label class="form-label font-weight-bold">Jeda Muncul (Detik)</label>
                                 <input type="number" name="popup_banner_delay" class="form-control" value="{{ $settings['popup_banner_delay'] ?? '2' }}" min="0" max="60">
                                 <small class="text-muted">Waktu tunggu sebelum pop up muncul.</small>
                             </div>
+                            <div class="col-md-3">
+                                <label class="form-label font-weight-bold">Label Badge Header</label>
+                                <input type="text" name="popup_banner_badge" class="form-control" value="{{ $settings['popup_banner_badge'] ?? 'PENGUMUMAN RESMI' }}" placeholder="Contoh: PENGUMUMAN RESMI">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label font-weight-bold">Sub-Judul / Kategori</label>
+                                <input type="text" name="popup_banner_subtitle" class="form-control" value="{{ $settings['popup_banner_subtitle'] ?? 'Program Pendidikan, Riset & Kemitraan' }}" placeholder="Contoh: Program Pendidikan & Riset">
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label font-weight-bold">Judul Utama Pop Up Pengumuman</label>
+                                <input type="text" name="popup_banner_title" class="form-control" value="{{ $settings['popup_banner_title'] ?? 'Pendaftaran & Kolaborasi Denpasar Institute' }}" placeholder="Judul banner...">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label font-weight-bold">Teks Tombol Aksi (CTA)</label>
+                                <input type="text" name="popup_banner_btn_text" class="form-control" value="{{ $settings['popup_banner_btn_text'] ?? 'Daftar / Pelajari Selengkapnya' }}" placeholder="Contoh: Daftar Sekarang">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label font-weight-bold">Teks Penjelasan / Deskripsi Pop Up</label>
+                                <textarea name="popup_banner_desc" rows="3" class="form-control" placeholder="Tuliskan pesan atau pengumuman yang ingin disampaikan...">{{ $settings['popup_banner_desc'] ?? 'Bergabunglah dalam program pendidikan vokasi, riset terapan, publikasi ilmiah, serta kemitraan strategis bersama Denpasar Institute. Konsultasikan kebutuhan Anda sekarang bersama tim kami.' }}</textarea>
+                                <small class="text-muted">Teks penjelasan ini akan tampil rapi di bawah gambar pada modal pop up.</small>
+                            </div>
 
                             <div class="col-md-6">
-                                <label class="form-label font-weight-bold">Link Tujuan Klik Banner</label>
+                                <label class="form-label font-weight-bold">Link Tujuan Klik Tombol &amp; Gambar</label>
                                 <input type="text" name="popup_banner_url" class="form-control" value="{{ $settings['popup_banner_url'] ?? '/admission' }}" placeholder="Contoh: /admission atau https://...">
-                                <small class="text-muted">Halaman yang terbuka saat pengunjung mengklik foto/gambar banner.</small>
+                                <small class="text-muted">Halaman yang terbuka saat pengunjung mengklik tombol aksi atau gambar banner.</small>
                             </div>
 
                             <div class="col-md-6">

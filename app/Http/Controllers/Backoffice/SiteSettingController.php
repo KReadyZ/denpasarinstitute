@@ -115,6 +115,7 @@ class SiteSettingController extends Controller
             elseif (str_starts_with($key, 'social_')) $group = 'social';
             elseif (str_starts_with($key, 'footer_')) $group = 'footer';
             elseif (str_starts_with($key, 'sambutan_')) $group = 'home';
+            elseif (str_starts_with($key, 'popup_')) $group = 'home';
             elseif (str_starts_with($key, 'partner_')) $group = 'partner';
             elseif (str_starts_with($key, 'admission_') || str_starts_with($key, 'bank_') || str_starts_with($key, 'qris_') || str_starts_with($key, 'tunai_') || str_starts_with($key, 'transfer_')) $group = 'admission';
 

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ContentManagementSeeder::class,
             PartnershipPillarDetailSeeder::class,
             MitraKlienSeeder::class,
+            StandardizeDivisiSectionsSeeder::class,
         ]);
     }
 }

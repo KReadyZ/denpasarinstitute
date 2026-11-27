@@ -124,29 +124,72 @@
 
     <div class="kolaborasi-grid">
       <div class="kol-types">
-        <div class="kol-type reveal">
-          <div class="kol-type-icon"><i class="fas fa-user-tie"></i></div>
-          <div class="kol-type-text">
-            <h4>Konsultan Riset</h4>
-            <p>Berkontribusi sebagai konsultan ahli dalam program riset Denpasar Institute.</p>
-          </div>
-        </div>
+        @php
+          $roleTypes = [
+            'divisi-riset-dan-inovasi' => [
+              ['icon' => 'fas fa-user-tie', 'title' => 'Konsultan Riset', 'desc' => 'Berkontribusi sebagai konsultan ahli dalam program riset Denpasar Institute.'],
+              ['icon' => 'fas fa-chalkboard-teacher', 'title' => 'Narasumber & Akademisi', 'desc' => 'Berbagi pengetahuan sebagai narasumber dalam seminar, workshop, dan pelatihan riset.'],
+              ['icon' => 'fas fa-users', 'title' => 'Peneliti Mitra', 'desc' => 'Ikut serta dalam program riset kolaboratif lintas institusi dan disiplin ilmu.']
+            ],
+            'divisi-publikasi-dan-hki' => [
+              ['icon' => 'fas fa-book-reader', 'title' => 'Dewan Editor Jurnal', 'desc' => 'Bergabung dalam pengelolaan dan review editorial berkala jurnal ilmiah terakreditasi.'],
+              ['icon' => 'fas fa-certificate', 'title' => 'Konsultan HKI & Paten', 'desc' => 'Mendampingi pendaftaran hak cipta, paten, merek, dan desain industri sivitas akademika.'],
+              ['icon' => 'fas fa-feather-alt', 'title' => 'Penulis & Kontributor', 'desc' => 'Mempublikasikan naskah ilmiah, artikel opini, dan prosiding bereputasi nasional/global.']
+            ],
+            'divisi-pengembangan-sdm' => [
+              ['icon' => 'fas fa-chalkboard-teacher', 'title' => 'Master Trainer', 'desc' => 'Memfasilitasi pelatihan kepemimpinan dan peningkatan kompetensi profesional industri.'],
+              ['icon' => 'fas fa-users-cog', 'title' => 'Konsultan HR & Organisasi', 'desc' => 'Merancang program continuous improvement dan talent development korporasi terpadu.'],
+              ['icon' => 'fas fa-award', 'title' => 'Asesor Kompetensi', 'desc' => 'Melakukan pemetaan gap kompetensi karyawan dan evaluasi efektivitas pelatihan.']
+            ],
+            'divisi-vokasi-dan-sertifikasi' => [
+              ['icon' => 'fas fa-user-check', 'title' => 'Asesor Kompetensi BNSP', 'desc' => 'Menguji dan menilai uji kompetensi profesi di Tempat Uji Kompetensi (TUK) resmi.'],
+              ['icon' => 'fas fa-handshake', 'title' => 'Mitra Industri & Asosiasi', 'desc' => 'Menjadi mitra kurikulum vokasi berbasis kebutuhan riil dunia usaha dan industri.'],
+              ['icon' => 'fas fa-graduation-cap', 'title' => 'Instruktur Vokasi Terapan', 'desc' => 'Membimbing peserta kursus keahlian praktis terapan yang siap kerja.'],
+            ],
+            'divisi-sains-data-dan-ti' => [
+              ['icon' => 'fas fa-database', 'title' => 'Data Specialist & Analyst', 'desc' => 'Menganalisis big data, data modeling, dan predictive business analytics.'],
+              ['icon' => 'fas fa-laptop-code', 'title' => 'Software & Systems Engineer', 'desc' => 'Mengembangkan aplikasi, SIDIK, SIMAS, dan portal sistem informasi digital.'],
+              ['icon' => 'fas fa-network-wired', 'title' => 'Konsultan Transformasi Digital', 'desc' => 'Membantu modernisasi infrastruktur IT institusi pendidikan dan publik.']
+            ],
+            'divisi-bahasa-seni-dan-budaya' => [
+              ['icon' => 'fas fa-language', 'title' => 'Instruktur Bahasa & BIPA', 'desc' => 'Mengajar persiapan TOEFL, IELTS, TOEIC, atau bahasa Indonesia penutur asing.'],
+              ['icon' => 'fas fa-theater-masks', 'title' => 'Pegiat Seni & Budayawan', 'desc' => 'Menjadi mentor workshop seni tradisi dan pelestarian budaya kearifan Bali.'],
+              ['icon' => 'fas fa-file-alt', 'title' => 'Penerjemah Tersumpah / Ahli', 'desc' => 'Menerjemahkan dokumen resmi, publikasi ilmiah, dan naskah multibahasa.']
+            ],
+            'divisi-kerja-sama-dan-hi' => [
+              ['icon' => 'fas fa-globe-americas', 'title' => 'Liaison Officer Internasional', 'desc' => 'Menjembatani komunikasi diplomatik akademik dengan universitas mitra global.'],
+              ['icon' => 'fas fa-handshake', 'title' => 'Koordinator Kemitraan', 'desc' => 'Menginisiasi MoU, MoA, konsorsium riset, dan program pertukaran sivitas.'],
+              ['icon' => 'fas fa-plane-departure', 'title' => 'Fasilitator Program Mobilitas', 'desc' => 'Mengelola student exchange, visiting scholar, dan joint conference internasional.']
+            ],
+            'divisi-konsultan' => [
+              ['icon' => 'fas fa-user-tie', 'title' => 'Lead Consultant', 'desc' => 'Memimpin studi kelayakan, evaluasi program, dan perumusan kebijakan publik.'],
+              ['icon' => 'fas fa-chart-line', 'title' => 'Strategic Business Advisor', 'desc' => 'Membantu penyusunan rencana strategis (Renstra) dan transformasi manajemen.'],
+              ['icon' => 'fas fa-balance-scale', 'title' => 'Tenaga Ahli Kebijakan', 'desc' => 'Menyusun naskah akademis regulasi dan analisis dampak kebijakan publik.']
+            ],
+            'divisi-karir-dan-kewirausahaan' => [
+              ['icon' => 'fas fa-rocket', 'title' => 'Mentor Bisnis & Startup', 'desc' => 'Mendampingi validasi ide bisnis, pitching, dan inkubasi wirausaha muda.'],
+              ['icon' => 'fas fa-compass', 'title' => 'Career Coach & Counselor', 'desc' => 'Memberikan bimbingan karir, simulasi interview, dan personal branding.'],
+              ['icon' => 'fas fa-briefcase', 'title' => 'Mitra Rekruter Industri', 'desc' => 'Menyerap lulusan kompeten siap kerja melalui jalur magang dan rekrutmen.']
+            ],
+          ];
 
-        <div class="kol-type reveal reveal-delay-1">
-          <div class="kol-type-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-          <div class="kol-type-text">
-            <h4>Narasumber &amp; Akademisi</h4>
-            <p>Berbagi pengetahuan sebagai narasumber dalam seminar, workshop, dan pelatihan riset.</p>
-          </div>
-        </div>
+          $slugKey = $divisi->slug ?? '';
+          $currentRoles = $roleTypes[$slugKey] ?? [
+            ['icon' => 'fas fa-user-tie', 'title' => 'Konsultan Mitra', 'desc' => 'Berkontribusi sebagai konsultan ahli dalam program Denpasar Institute.'],
+            ['icon' => 'fas fa-chalkboard-teacher', 'title' => 'Narasumber & Praktisi', 'desc' => 'Berbagi keahlian dalam seminar, workshop, dan pelatihan spesialis.'],
+            ['icon' => 'fas fa-users', 'title' => 'Mitra Kolaboratif', 'desc' => 'Ikut serta dalam program pengembangan lintas institusi dan disiplin ilmu.']
+          ];
+        @endphp
 
-        <div class="kol-type reveal reveal-delay-2">
-          <div class="kol-type-icon"><i class="fas fa-users"></i></div>
-          <div class="kol-type-text">
-            <h4>Peneliti Mitra</h4>
-            <p>Ikut serta dalam program riset kolaboratif lintas institusi dan disiplin ilmu.</p>
+        @foreach($currentRoles as $rIdx => $role)
+          <div class="kol-type reveal {{ $rIdx > 0 ? 'reveal-delay-' . $rIdx : '' }}">
+            <div class="kol-type-icon"><i class="{{ $role['icon'] }}"></i></div>
+            <div class="kol-type-text">
+              <h4>{{ $role['title'] }}</h4>
+              <p>{{ $role['desc'] }}</p>
+            </div>
           </div>
-        </div>
+        @endforeach
       </div>
 
       <div class="contact-card reveal reveal-delay-1">

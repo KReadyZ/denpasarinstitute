@@ -7,20 +7,38 @@
   if ($section->image) {
       $keunggulanPhotos[] = asset('storage/' . $section->image);
   }
-  if (!empty($divisi->background_image)) {
-      $keunggulanPhotos[] = asset('storage/' . $divisi->background_image);
-  }
-  // Tambahan foto-foto dokumentasi & kegiatan divisi
-  $extraPhotos = [
-      '/image/divisi-01-riset.png',
-      '/image/divisi-03-sdm.png',
-      '/image/divisi-05-data.png',
-      '/image/partner-hero-bg.jpg',
+
+  // Tambahan foto-foto dokumentasi & kegiatan spesifik per divisi
+  $slug = $divisi->slug ?? '';
+  $divisiImgMap = [
+      'divisi-riset-dan-inovasi' => ['/image/divisi-01-riset.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
+      'divisi-publikasi-dan-hki' => ['/image/divisi-02-publikasi.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
+      'divisi-pengembangan-sdm' => ['/image/divisi-03-sdm.png', '/image/partner-hero-bg.jpg', '/image/banner-kmd.png'],
+      'divisi-vokasi-dan-sertifikasi' => ['/image/divisi-04-vokasi.png', '/image/partner-hero-bg.jpg', '/image/banner-kmd.png'],
+      'divisi-sains-data-dan-ti' => ['/image/divisi-05-data.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
+      'divisi-bahasa-seni-dan-budaya' => ['/image/divisi-06-budaya.png', '/image/partner-hero-bg.jpg', '/image/banner-kmd.png'],
+      'divisi-kerja-sama-dan-hi' => ['/image/divisi-07-kerjasama.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
+      'divisi-konsultan' => ['/image/divisi-08-konsultan.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
+      'divisi-karir-dan-kewirausahaan' => ['/image/divisi-09-karir.png', '/image/partner-hero-bg.jpg', '/image/banner-kmd.png'],
   ];
+
+  $extraPhotos = $divisiImgMap[$slug] ?? [
+      '/image/divisi-01-riset.png',
+      '/image/partner-hero-bg.jpg',
+      '/image/banner-brin.png',
+  ];
+
   foreach ($extraPhotos as $p) {
       $pAsset = asset($p);
       if (!in_array($pAsset, $keunggulanPhotos)) {
           $keunggulanPhotos[] = $pAsset;
+      }
+  }
+
+  if (!empty($divisi->background_image)) {
+      $bgAsset = asset('storage/' . $divisi->background_image);
+      if (!in_array($bgAsset, $keunggulanPhotos)) {
+          $keunggulanPhotos[] = $bgAsset;
       }
   }
 

@@ -36,63 +36,120 @@
       </div>
 
       <div class="modal-tentang-section">
-        <h4 class="section-title"><i class="fas fa-cubes"></i> Unit Kerja &amp; Divisi Layanan</h4>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <h4 class="section-title" style="margin-bottom:0;"><i class="fas fa-cubes text-danger"></i> Unit Kerja &amp; Divisi Layanan</h4>
+          <span style="font-size:0.78rem; color:#64748b; font-weight:600;"><i class="fas fa-mouse-pointer me-1 text-danger"></i>Klik kotak divisi untuk melihat detail &amp; program</span>
+        </div>
         <div class="divisi-info-grid">
-          <div class="divisi-info-card">
+          <a href="{{ route('divisi.show', 'divisi-riset-dan-inovasi') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Riset dan Inovasi">
             <div class="divisi-info-icon"><i class="fas fa-microscope"></i></div>
             <div class="divisi-info-content">
-              <strong>Divisi Riset dan Inovasi</strong>
-              <p>Meningkatkan kapasitas riset, kolaborasi <em>Research and Development (R &amp; D)</em>, membangun jejaring ilmiah <em>(science networking)</em>, dan menjadi wadah kolaboratif bagi akademisi &amp; praktisi dalam melayani masyarakat.</p>
+              <div class="divisi-title-wrap">
+                <strong>Divisi Riset dan Inovasi</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Meningkatkan kapasitas riset, kolaborasi <em>Research and Development (R &amp; D)</em>, membangun jejaring ilmiah <em>(science networking)</em>, dan menjadi wadah kolaboratif bagi akademisi &amp; praktisi.</p>
             </div>
-          </div>
+          </a>
 
-          <div class="divisi-info-card">
+          <a href="{{ route('divisi.show', 'divisi-sains-data-dan-ti') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Sains Data & Teknologi Informasi">
             <div class="divisi-info-icon"><i class="fas fa-database"></i></div>
             <div class="divisi-info-content">
-              <strong>Divisi Sains Data &amp; Teknologi Informasi</strong>
-              <p>Berfokus pada pengembangan <em>data science</em>, program <em>coding</em> &amp; <em>data management</em>, penyelenggaraan <em>short courses &amp; statistics training</em>, layanan Plagiarism Check, Repository Development, website &amp; aplikasi digital, serta sistem informasi pendidikan (SIDIK, SIMAS).</p>
+              <div class="divisi-title-wrap">
+                <strong>Divisi Sains Data &amp; Teknologi Informasi</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Berfokus pada pengembangan <em>data science</em>, program <em>coding</em> &amp; <em>data management</em>, short courses &amp; statistics training, repository development, website &amp; aplikasi, serta SIM pendidikan.</p>
             </div>
-          </div>
+          </a>
 
-          <div class="divisi-info-card">
-            <div class="divisi-info-icon"><i class="fas fa-mobile-alt"></i></div>
-            <div class="divisi-info-content">
-              <strong>E-Learning Development System (EDS)</strong>
-              <p>Dirancang untuk kolaborasi dengan perguruan tinggi, sekolah, dan lembaga pelatihan dalam mengembangkan perangkat pembelajaran berbasis <em>mobile devices</em> sesuai <em>need analysis</em> dan karakteristik lembaga.</p>
-            </div>
-          </div>
-
-          <div class="divisi-info-card">
-            <div class="divisi-info-icon"><i class="fas fa-language"></i></div>
-            <div class="divisi-info-content">
-              <strong>Divisi Bahasa, Seni dan Budaya</strong>
-              <p>Kajian bahasa, seni, dan budaya serta pusat layanan Bahasa Jerman untuk program <em>Ausbildung</em> &amp; <em>Studienkolleg</em>, <em>English Course</em>, pelatihan Bahasa Korea &amp; Jepang, TOEIC, TOEFL, IELTS, jasa terjemahan, dan program BIPA.</p>
-            </div>
-          </div>
-
-          <div class="divisi-info-card">
+          <a href="{{ route('divisi.show', 'divisi-publikasi-dan-hki') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Publikasi dan HKI">
             <div class="divisi-info-icon"><i class="fas fa-book-open"></i></div>
             <div class="divisi-info-content">
-              <strong>Divisi Publikasi dan HKI</strong>
-              <p>Asistensi bagi para mitra untuk menerbitkan buku ber-ISBN dan artikel ilmiah pada jurnal ber-ISSN, baik jurnal nasional terakreditasi maupun jurnal internasional bereputasi, serta perlindungan HKI.</p>
+              <div class="divisi-title-wrap">
+                <strong>Divisi Publikasi dan HKI</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Asistensi bagi para mitra untuk menerbitkan buku ber-ISBN dan artikel ilmiah pada jurnal ber-ISSN nasional terakreditasi maupun jurnal internasional bereputasi, serta perlindungan HKI.</p>
             </div>
-          </div>
+          </a>
 
-          <div class="divisi-info-card">
+          <a href="{{ route('divisi.show', 'divisi-pengembangan-sdm') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Pengembangan SDM">
             <div class="divisi-info-icon"><i class="fas fa-user-graduate"></i></div>
             <div class="divisi-info-content">
-              <strong>Divisi Pengembangan SDM</strong>
-              <p>Meningkatkan produktivitas lembaga dan kompetensi pegawai, program Kolaborasi Karir Dosen untuk pengajuan jabatan akademik, serta aplikasi <em>Mobile Performance List (MPL) Apps</em> ("A Professional Diary") untuk SIM SDM, IKU PT, dan akreditasi mandiri.</p>
+              <div class="divisi-title-wrap">
+                <strong>Divisi Pengembangan SDM</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Meningkatkan produktivitas lembaga dan kompetensi pegawai, program Kolaborasi Karir Dosen untuk pengajuan jabatan akademik, serta aplikasi Mobile Performance List (MPL Apps).</p>
             </div>
-          </div>
+          </a>
 
-          <div class="divisi-info-card full-width">
+          <a href="{{ route('divisi.show', 'divisi-vokasi-dan-sertifikasi') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Vokasi dan Sertifikasi">
+            <div class="divisi-info-icon"><i class="fas fa-award"></i></div>
+            <div class="divisi-info-content">
+              <div class="divisi-title-wrap">
+                <strong>Divisi Vokasi dan Sertifikasi</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Penyelenggaraan pelatihan vokasi terstandar industri, sertifikasi kompetensi profesi nasional &amp; internasional, serta program magang kerja aplikatif.</p>
+            </div>
+          </a>
+
+          <a href="{{ route('divisi.show', 'divisi-bahasa-seni-dan-budaya') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Bahasa, Seni dan Budaya">
+            <div class="divisi-info-icon"><i class="fas fa-language"></i></div>
+            <div class="divisi-info-content">
+              <div class="divisi-title-wrap">
+                <strong>Divisi Bahasa, Seni dan Budaya</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Kajian bahasa, seni &amp; budaya serta pusat layanan Bahasa Jerman (Ausbildung &amp; Studienkolleg), English Course, pelatihan Bahasa Korea &amp; Jepang, TOEFL/IELTS, dan BIPA.</p>
+            </div>
+          </a>
+
+          <a href="{{ route('divisi.show', 'divisi-kerja-sama-dan-hi') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Kerja Sama dan HI">
+            <div class="divisi-info-icon"><i class="fas fa-handshake"></i></div>
+            <div class="divisi-info-content">
+              <div class="divisi-title-wrap">
+                <strong>Divisi Kerja Sama dan HI</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Memfasilitasi kemitraan tridharma perguruan tinggi, jejaring industri nasional dan internasional, pertukaran pengajar/mahasiswa, serta joint research lintas negara.</p>
+            </div>
+          </a>
+
+          <a href="{{ route('divisi.show', 'divisi-konsultan') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Konsultan">
+            <div class="divisi-info-icon"><i class="fas fa-user-tie"></i></div>
+            <div class="divisi-info-content">
+              <div class="divisi-title-wrap">
+                <strong>Divisi Konsultan</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Penyusunan renstra, SOP kelembagaan, analisis SROI (Social Return on Investment), penjaminan mutu SPMI, dan konsultasi bisnis strategis berbasis riset.</p>
+            </div>
+          </a>
+
+          <a href="{{ route('divisi.show', 'divisi-karir-dan-kewirausahaan') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Detail Divisi Karir dan Kewirausahaan">
+            <div class="divisi-info-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="divisi-info-content">
+              <div class="divisi-title-wrap">
+                <strong>Divisi Karir dan Kewirausahaan</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Inkubasi usaha rintisan (startup), bimbingan karir siap kerja, pelatihan kewirausahaan mandiri, dan fasilitas jejaring talenta profesional.</p>
+            </div>
+          </a>
+
+          <a href="{{ route('bursa-sdm.index') }}" class="divisi-info-card full-width" onclick="closeTentangModal()" title="Buka Platform Bursa SDM Indonesia">
             <div class="divisi-info-icon"><i class="fas fa-users-cog"></i></div>
             <div class="divisi-info-content">
-              <strong>FOKUSINDO &amp; Bursa SDM Indonesia</strong>
-              <p>Forum Komunikasi SDM Indonesia (FOKUSINDO) dan Bursa SDM Indonesia <em>(www.bursasdm.denpasarinstitute.com)</em> dibentuk untuk membangun komunikasi dan jejaring SDM di seluruh Indonesia, disediakan gratis sebagai program <em>Corporate Social Responsibility (CSR)</em>.</p>
+              <div class="divisi-title-wrap">
+                <strong>FOKUSINDO &amp; Bursa SDM Indonesia</strong>
+                <span class="divisi-card-arrow"><i class="fas fa-arrow-right"></i></span>
+              </div>
+              <p>Forum Komunikasi SDM Indonesia (FOKUSINDO) dan Bursa SDM Indonesia <em>(bursasdm.denpasarinstitute.com)</em> dibentuk untuk membangun jejaring komunikasi SDM seluruh Indonesia, disediakan gratis sebagai program <em>Corporate Social Responsibility (CSR)</em>.</p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -424,14 +481,39 @@
   align-items: flex-start;
   gap: 12px;
   transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
 }
 .divisi-info-card.full-width {
   grid-column: 1 / -1;
 }
 .divisi-info-card:hover {
   background: #fff8f8;
-  border-color: rgba(204,0,0,0.25);
+  border-color: rgba(204,0,0,0.35);
   transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(204,0,0,0.08);
+}
+.divisi-info-card:hover .divisi-info-content strong {
+  color: #CC0000;
+}
+.divisi-info-card:hover .divisi-card-arrow {
+  color: #CC0000;
+  transform: translateX(3px);
+}
+.divisi-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+  gap: 8px;
+}
+.divisi-card-arrow {
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 .divisi-info-icon {
   width: 34px;

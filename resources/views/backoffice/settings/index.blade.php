@@ -110,7 +110,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-weight-bold">Email Utama Website</label>
-                                <input type="email" name="contact_email" class="form-control" value="{{ $settings['contact_email'] ?? 'info@denpasarinstitute.id' }}">
+                                <input type="email" name="contact_email" class="form-control" value="{{ $settings['contact_email'] ?? 'partner@denpasarinstitute.com' }}">
                             </div>
 
                             <div class="col-md-6">
@@ -130,7 +130,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-weight-bold">Email Kontak Sekretariat</label>
-                                <input type="email" name="contact_email_secretary" class="form-control" value="{{ $settings['contact_email_secretary'] ?? 'info@denpasarinstitute.com' }}">
+                                <input type="email" name="contact_email_secretary" class="form-control" value="{{ $settings['contact_email_secretary'] ?? 'partner@denpasarinstitute.com' }}">
                             </div>
 
                             <div class="col-12">
@@ -554,7 +554,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-weight-bold">Email Informasi Pendaftaran</label>
-                                <input type="email" name="admission_email" class="form-control" value="{{ $settings['admission_email'] ?? 'info@denpasarinstitute.id' }}">
+                                <input type="email" name="admission_email" class="form-control" value="{{ $settings['admission_email'] ?? 'partner@denpasarinstitute.com' }}">
                             </div>
                         </div>
                     </div>

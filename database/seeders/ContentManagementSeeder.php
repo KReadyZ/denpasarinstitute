@@ -46,11 +46,11 @@ class ContentManagementSeeder extends Seeder
         $settings = [
             // Contact & Footer
             ['key' => 'contact_address', 'value' => 'Denpasar, Bali - Indonesia', 'group' => 'contact', 'label' => 'Alamat Kantor'],
-            ['key' => 'contact_email', 'value' => 'info@denpasarinstitute.id', 'group' => 'contact', 'label' => 'Email Utama'],
+            ['key' => 'contact_email', 'value' => 'partner@denpasarinstitute.com', 'group' => 'contact', 'label' => 'Email Utama'],
             ['key' => 'contact_phone_1', 'value' => '+62 821-4481-4593', 'group' => 'contact', 'label' => 'WhatsApp Sekretariat 1'],
             ['key' => 'contact_phone_2', 'value' => '+62 823-1866-6547', 'group' => 'contact', 'label' => 'WhatsApp Sekretariat 2'],
             ['key' => 'contact_wa_lead_consultant', 'value' => '+62 813-3764-4463', 'group' => 'contact', 'label' => 'WhatsApp Lead Consultant'],
-            ['key' => 'contact_email_secretary', 'value' => 'info@denpasarinstitute.com', 'group' => 'contact', 'label' => 'Email Sekretariat'],
+            ['key' => 'contact_email_secretary', 'value' => 'partner@denpasarinstitute.com', 'group' => 'contact', 'label' => 'Email Sekretariat'],
             ['key' => 'footer_copyright', 'value' => 'Denpasar Institute @2017. Hak cipta dilindungi undang-undang.', 'group' => 'footer', 'label' => 'Teks Hak Cipta Footer'],
 
             // Popup Banner Beranda

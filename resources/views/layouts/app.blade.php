@@ -966,7 +966,7 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <span class="topbar-left">Denpasar, Bali Indonesia &nbsp;|&nbsp; <a href="mailto:info@denpasarinstitute.id">info@denpasarinstitute.id</a></span>
+    <span class="topbar-left">Denpasar, Bali Indonesia &nbsp;|&nbsp; <a href="mailto:{{ \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com') }}">{{ \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com') }}</a></span>
     <div class="topbar-right">
       <a href="{{ route('backoffice.login') }}" class="topbar-portal-link"><i class="fas fa-user-lock"></i> Portal Anggota</a>
       <div class="topbar-social">
@@ -1297,7 +1297,7 @@
     <div class="footer-col">
       <h4>Kontak</h4>
       <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>{{ \App\Models\SiteSetting::get('contact_address', 'Denpasar, Bali - Indonesia') }}</span></div>
-      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>{{ \App\Models\SiteSetting::get('contact_email', 'info@denpasarinstitute.id') }}</span></div>
+      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>{{ \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com') }}</span></div>
       <div class="footer-contact-item">
         <i class="fab fa-whatsapp"></i>
         <div style="display: flex; flex-direction: column; gap: 3px;">
@@ -1330,7 +1330,7 @@
       <span class="cw-item-icon cw-wa-color"><i class="fab fa-whatsapp"></i></span>
       <span class="cw-item-label">Admin Sekretariat</span>
     </a>
-    <a href="mailto:info@denpasarinstitute.com" class="cw-item">
+    <a href="mailto:{{ \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com') }}" class="cw-item">
       <span class="cw-item-icon cw-email-color"><i class="fas fa-envelope"></i></span>
       <span class="cw-item-label">Email</span>
     </a>

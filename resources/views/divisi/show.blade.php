@@ -161,7 +161,7 @@
               <span style="white-space: nowrap;">+62 823-1866-6547</span>
             </div>
           </div>
-          <div class="cc-item"><i class="fas fa-envelope"></i><span>info@denpasarinstitute.id</span></div>
+          <div class="cc-item"><i class="fas fa-envelope"></i><span>{{ \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com') }}</span></div>
           <div class="cc-item"><i class="fas fa-map-marker-alt"></i><span>Denpasar, Bali — Indonesia</span></div>
         </div>
 

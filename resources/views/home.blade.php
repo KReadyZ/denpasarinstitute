@@ -1907,7 +1907,7 @@
               $cPhone2 = \App\Models\SiteSetting::get('contact_phone_2', '+62 823-1866-6547');
               $cPhone1Clean = preg_replace('/[^0-9]/', '', $cPhone1);
               $cPhone2Clean = preg_replace('/[^0-9]/', '', $cPhone2);
-              $cEmail = \App\Models\SiteSetting::get('contact_email', 'info@denpasarinstitute.id');
+              $cEmail = \App\Models\SiteSetting::get('contact_email', 'partner@denpasarinstitute.com');
             @endphp
             <a href="https://wa.me/{{ $cPhone1Clean }}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;white-space:nowrap;">{{ $cPhone1 }}</a>
             @if(!empty($cPhone2))

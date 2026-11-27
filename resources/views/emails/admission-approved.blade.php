@@ -120,7 +120,7 @@
                             <p style="margin: 0 0 24px; font-size: 13px; color: #64748b; line-height: 1.8;">
                                 • WhatsApp Admin: <a href="https://wa.me/6282144814593" style="color: #16a34a; text-decoration: none; font-weight: 600;">+62 821-4481-4593</a><br>
                                 • WhatsApp Layanan: <a href="https://wa.me/6282318666547" style="color: #16a34a; text-decoration: none; font-weight: 600;">+62 823-1866-6547</a><br>
-                                • Email: <a href="mailto:info@denpasarinstitute.id" style="color: #CC0000; text-decoration: none;">info@denpasarinstitute.id</a><br>
+                                • Email: <a href="mailto:partner@denpasarinstitute.com" style="color: #CC0000; text-decoration: none;">partner@denpasarinstitute.com</a><br>
                                 • Website: <a href="https://denpasarinstitute.id" style="color: #CC0000; text-decoration: none;">denpasarinstitute.id</a>
                             </p>
 

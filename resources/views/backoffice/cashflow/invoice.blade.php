@@ -395,7 +395,7 @@
         <p class="alamat">Jl. Gatot Subroto VI No. 27, Dauh Puri Kaja, Denpasar Utara, Bali &ndash; 80231</p>
         <p class="kontak">
           <span><i class="fas fa-globe"></i> www.denpasarinstitute.com</span> &bull; 
-          <span><i class="fas fa-envelope"></i> info@denpasarinstitute.com</span>
+          <span><i class="fas fa-envelope"></i> partner@denpasarinstitute.com</span>
         </p>
       </div>
     </div>

@@ -268,7 +268,7 @@
         </p>
         <p class="kop-kontak">
           <span><i class="fas fa-globe"></i> www.denpasarinstitute.com</span> &bull; 
-          <span><i class="fas fa-envelope"></i> info@denpasarinstitute.com</span>
+          <span><i class="fas fa-envelope"></i> partner@denpasarinstitute.com</span>
         </p>
       </div>
     </div>

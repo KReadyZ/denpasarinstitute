@@ -603,7 +603,7 @@
   $waService = \App\Models\SiteSetting::get('admission_wa_service', '0823-1866-6547');
   $waServiceClean = preg_replace('/[^0-9]/', '', (string)$waService);
   $waServiceLink = str_starts_with($waServiceClean, '0') ? '62' . substr($waServiceClean, 1) : $waServiceClean;
-  $admEmail = \App\Models\SiteSetting::get('admission_email', 'info@denpasarinstitute.id');
+  $admEmail = \App\Models\SiteSetting::get('admission_email', 'partner@denpasarinstitute.com');
 @endphp
 
 <div class="admission-hero">

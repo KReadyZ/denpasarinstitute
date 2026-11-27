@@ -27,6 +27,7 @@
         width: 100%;
         height: 200px;
         object-fit: cover;
+        object-position: top center;
     }
     .news-card-body { padding: 20px 20px 10px 20px; }
     .news-card-cat {

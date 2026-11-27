@@ -198,7 +198,8 @@
     max-width: 100%;
     height: auto;
     max-height: 480px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #ffffff;
     border-radius: 18px;
     display: block;
     transition: transform 0.4s ease;
@@ -429,9 +430,11 @@
   .keunggulan-slide .section-image {
     width: 100%;
     height: 380px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #ffffff;
     display: block;
     border-radius: 16px;
+    padding: 8px;
   }
   .keunggulan-slide-badge {
     position: absolute;

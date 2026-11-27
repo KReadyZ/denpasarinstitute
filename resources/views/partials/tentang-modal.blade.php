@@ -140,7 +140,7 @@
             </div>
           </a>
 
-          <a href="{{ route('bursa-sdm.index') }}" class="divisi-info-card full-width" onclick="closeTentangModal()" title="Buka Platform Bursa SDM Indonesia">
+          <a href="{{ route('bursa-sdm.index') }}" class="divisi-info-card" onclick="closeTentangModal()" title="Buka Platform Bursa SDM Indonesia">
             <div class="divisi-info-icon"><i class="fas fa-users-cog"></i></div>
             <div class="divisi-info-content">
               <div class="divisi-title-wrap">

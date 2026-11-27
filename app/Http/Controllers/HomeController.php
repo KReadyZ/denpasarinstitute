@@ -10,15 +10,25 @@ use App\Models\User;
 use App\Models\Testimonial;
 use App\Models\BursaSdm;
 use App\Models\Statistic;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $sliders = HeroSlider::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $sliderMode = SiteSetting::get('hero_slider_order_mode', 'random');
+
+        if ($sliderMode === 'ordered') {
+            $sliders = HeroSlider::where('is_active', true)
+                ->orderBy('order')
+                ->get();
+        } else {
+            // Mode Default: Acak (Random) setiap kali halaman dimuat / reload
+            $sliders = HeroSlider::where('is_active', true)
+                ->inRandomOrder()
+                ->get();
+        }
 
         $latestEvents = Event::where('is_active', true)
             ->where('status', 'approved')

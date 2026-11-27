@@ -86,7 +86,7 @@
           <input type="number" name="order"
             value="{{ old('order', $nextOrder) }}" min="0">
           <small style="color:#888;font-size:0.72rem;">
-            Angka kecil = tampil lebih dahulu
+            Angka kecil = tampil lebih dahulu (digunakan jika mode 'Sesuai Urutan' aktif di pengaturan slider).
           </small>
         </div>
         <div class="form-group">

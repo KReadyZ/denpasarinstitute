@@ -61,7 +61,7 @@ class ContentManagementSeeder extends Seeder
 
             // Sambutan & Motto Beranda
             ['key' => 'sambutan_leader_name', 'value' => 'Prof. Dr. I Nengah Laba', 'group' => 'home', 'label' => 'Nama Lead Consultant'],
-            ['key' => 'sambutan_leader_title', 'value' => 'Sambutan Lead Consultant', 'group' => 'home', 'label' => 'Label Judul Sambutan'],
+            ['key' => 'sambutan_leader_title', 'value' => 'Sambutan', 'group' => 'home', 'label' => 'Label Judul Sambutan'],
             ['key' => 'sambutan_motto', 'value' => 'Transforming Ideas into Action', 'group' => 'home', 'label' => 'Moto (Teks Berjalan)'],
             ['key' => 'sambutan_welcome_title', 'value' => 'Selamat Datang di Official Website Denpasar Institute', 'group' => 'home', 'label' => 'Judul Sambutan'],
             ['key' => 'sambutan_p1', 'value' => '<strong>Denpasar Institute</strong> merupakan Lembaga Riset & Pengembangan SDM yang berkomitmen mendorong kemajuan ilmu pengetahuan, inovasi, publikasi ilmiah, peningkatan kompetensi, dan pemberdayaan masyarakat.', 'group' => 'home', 'label' => 'Paragraf Sambutan 1'],

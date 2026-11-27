@@ -36,7 +36,8 @@ class AdmissionController extends Controller
             'nama_lengkap' => 'required|string|max:255',
             'hp_wa' => 'required|string|max:30',
             'email' => 'required|email|max:255|unique:admissions,email',
-            'program_ids' => 'nullable|array|min:1',
+            'program_name' => 'nullable|string|max:255',
+            'program_ids' => 'nullable|array',
             'program_ids.*' => 'exists:programs,id',
             'special_request' => 'nullable|string|max:5000',
             'nominal_pembayaran' => 'nullable|string',
@@ -52,8 +53,6 @@ class AdmissionController extends Controller
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar sebelumnya.',
-            'program_ids.min' => 'Pilih minimal 1 program.',
-            'program_ids.*.exists' => 'Program yang dipilih tidak valid.',
             'bukti_bayar_pendaftaran.mimes' => 'File harus berformat PDF, JPG, JPEG, atau PNG.',
             'bukti_bayar_program.mimes' => 'File harus berformat PDF, JPG, JPEG, atau PNG.',
         ]);
@@ -62,14 +61,33 @@ class AdmissionController extends Controller
         if ($request->hasFile('bukti_bayar_pendaftaran')) {
             $file = $request->file('bukti_bayar_pendaftaran');
             $filename = 'bukti_pendaftaran_' . time() . '_' . $file->getClientOriginalName();
-            $validated['bukti_bayar_pendaftaran'] = $file->storeAs('admission/bukti', $filename, 'public');
+            $path = $file->storeAs('admission/bukti', $filename, 'public');
+            $validated['bukti_bayar_pendaftaran'] = $path;
+
+            // Mirror file ke public/storage untuk menjamin aksesibilitas di server hosting / LiteSpeed
+            try {
+                $targetFile = public_path('storage/' . $path);
+                if (!file_exists(dirname($targetFile))) {
+                    @mkdir(dirname($targetFile), 0755, true);
+                }
+                @copy(storage_path('app/public/' . $path), $targetFile);
+            } catch (\Throwable $e) {}
         }
 
         // Upload bukti pembayaran program
         if ($request->hasFile('bukti_bayar_program')) {
             $file = $request->file('bukti_bayar_program');
             $filename = 'bukti_program_' . time() . '_' . $file->getClientOriginalName();
-            $validated['bukti_bayar_program'] = $file->storeAs('admission/bukti', $filename, 'public');
+            $path = $file->storeAs('admission/bukti', $filename, 'public');
+            $validated['bukti_bayar_program'] = $path;
+
+            try {
+                $targetFile = public_path('storage/' . $path);
+                if (!file_exists(dirname($targetFile))) {
+                    @mkdir(dirname($targetFile), 0755, true);
+                }
+                @copy(storage_path('app/public/' . $path), $targetFile);
+            } catch (\Throwable $e) {}
         }
 
         // Convert sumber_informasi array to collection
@@ -87,15 +105,37 @@ class AdmissionController extends Controller
         } else {
             $validated['nominal_pembayaran'] = 250000.00;
         }
-        $validated['metode_pembayaran'] = $request->metode_pembayaran ?: 'Transfer Bank';
+        $validated['metode_pembayaran'] = $request->metode_pembayaran ?: 'Transfer Bank BNI';
         $validated['status_pembayaran'] = str_contains($validated['metode_pembayaran'], 'DP') ? 'dp' : 'lunas';
+
+        // Hubungkan / cari program dari input program_name atau program_ids
+        $programIds = $validated['program_ids'] ?? [];
+        if (!empty($request->program_name)) {
+            $pName = trim($request->program_name);
+            $matched = Program::where('nama', $pName)->first()
+                ?? Program::where('nama', 'LIKE', '%' . $pName . '%')->first();
+
+            if ($matched) {
+                if (!in_array($matched->id, $programIds)) {
+                    $programIds[] = $matched->id;
+                }
+            } else {
+                $divisi = \App\Models\Divisi::first();
+                $newProg = Program::create([
+                    'nama' => $pName,
+                    'divisi_id' => $divisi ? $divisi->id : 1,
+                    'is_active' => true,
+                ]);
+                $programIds[] = $newProg->id;
+            }
+        }
 
         // Create admission record
         $admission = Admission::create($validated);
 
         // Sync programs
-        if (!empty($validated['program_ids'])) {
-            $admission->programs()->sync($validated['program_ids']);
+        if (!empty($programIds)) {
+            $admission->programs()->sync($programIds);
         }
 
         // Return success message

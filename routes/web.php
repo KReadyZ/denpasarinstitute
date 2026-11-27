@@ -201,6 +201,7 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
             ]);
 
             Route::get('slider',               [HeroSliderController::class, 'index'])->name('slider.index');
+            Route::post('slider/mode',          [HeroSliderController::class, 'updateMode'])->name('slider.mode');
             Route::get('slider/create',        [HeroSliderController::class, 'create'])->name('slider.create');
             Route::post('slider',              [HeroSliderController::class, 'store'])->name('slider.store');
             Route::get('slider/{slider}/edit', [HeroSliderController::class, 'edit'])->name('slider.edit');

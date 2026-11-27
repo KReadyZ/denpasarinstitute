@@ -721,121 +721,47 @@
         $oldProgramIds = array_values(array_filter((array) old('program_ids', [])));
       @endphp
 
+      {{-- Program yang Diikuti (Field Isian Langsung dengan Autocomplete) --}}
       <div class="form-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h3 class="form-section-title" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
-            Program yang Diikuti
-            <span class="required">*</span>
-          </h3>
-          <button type="button" class="btn-add-program js-btn-add-program">
-            <i class="fas fa-plus"></i> Tambah Program Lain
-          </button>
-        </div>
-
-        <div class="form-group @error('program_ids') error @enderror">
-          <div class="program-container js-program-container">
-            @if(count($oldProgramIds) > 0)
-              @foreach($oldProgramIds as $idx => $oldProgId)
-                @php
-                  $selectedDivId = $programToDivisiMap[$oldProgId] ?? null;
-                  $availableProgs = $selectedDivId && isset($divisiProgramMap[$selectedDivId]) ? $divisiProgramMap[$selectedDivId]['programs'] : [];
-                @endphp
-                <div class="program-item">
-                  <div class="program-field-group">
-                    <div class="field-col">
-                      <label class="field-sublabel">
-                        <i class="fas fa-sitemap text-danger"></i> 1. Pilih Divisi Lembaga
-                      </label>
-                      <select class="divisi-select-custom js-divisi-select">
-                        <option value="">-- Pilih Divisi Terlebih Dahulu --</option>
-                        @foreach($divisiList as $div)
-                          <option value="{{ $div->id }}" {{ $selectedDivId == $div->id ? 'selected' : '' }}>
-                            {{ $div->nama }} ({{ $div->programs->count() }} Program)
-                          </option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="field-col">
-                      <label class="field-sublabel">
-                        <i class="fas fa-graduation-cap text-danger"></i> 2. Pilih Program Spesifik
-                      </label>
-                      <select name="program_ids[]" class="program-select-custom js-program-select" required {{ $selectedDivId ? '' : 'disabled' }}>
-                        <option value="">-- Pilih Program --</option>
-                        @foreach($availableProgs as $pItem)
-                          <option value="{{ $pItem['id'] }}" {{ $pItem['id'] == $oldProgId ? 'selected' : '' }}>
-                            {{ $pItem['nama'] }}
-                          </option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-                  <button type="button" class="btn-remove-program js-btn-remove-program" title="Hapus Pilihan Program Ini" style="{{ count($oldProgramIds) > 1 ? 'display:flex;' : 'display:none;' }}">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </div>
-              @endforeach
-            @else
-              <div class="program-item">
-                <div class="program-field-group">
-                  <div class="field-col">
-                    <label class="field-sublabel">
-                      <i class="fas fa-sitemap text-danger"></i> 1. Pilih Divisi Lembaga
-                    </label>
-                    <select class="divisi-select-custom js-divisi-select">
-                      <option value="">-- Pilih Divisi Terlebih Dahulu --</option>
-                      @foreach($divisiList as $div)
-                        <option value="{{ $div->id }}">
-                          {{ $div->nama }} ({{ $div->programs->count() }} Program)
-                        </option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="field-col">
-                    <label class="field-sublabel">
-                      <i class="fas fa-graduation-cap text-danger"></i> 2. Pilih Program Spesifik
-                    </label>
-                    <select name="program_ids[]" class="program-select-custom js-program-select" required disabled>
-                      <option value="">-- Pilih Divisi Terlebih Dahulu --</option>
-                    </select>
-                  </div>
-                </div>
-                <button type="button" class="btn-remove-program js-btn-remove-program" title="Hapus Pilihan Program Ini" style="display: none;">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            @endif
-          </div>
-          @error('program_ids')
-            <div class="error-message"><i class="fas fa-times-circle"></i> {{ $message }}</div>
-          @enderror
-          <div class="form-text mt-2 text-muted d-flex align-items-center gap-1" style="font-size: 0.82rem;">
-            <i class="fas fa-info-circle text-danger me-1"></i>
-            <span>Pilih <strong>Divisi Lembaga</strong> terlebih dahulu, lalu pilih <strong>Program Spesifik</strong> yang tersedia di divisi tersebut. Klik <strong>+ Tambah Program Lain</strong> jika ingin mendaftar lebih dari satu.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="form-section-title">Informasi Tambahan</h3>
+        <h3 class="form-section-title">
+          Program yang Diikuti
+          <span class="required">*</span>
+        </h3>
 
         <div class="form-row full">
-          <div class="form-group @error('special_request') error @enderror">
-            <label>Catatan atau Permintaan Khusus</label>
-            <textarea
-              class="js-summernote"
-              name="special_request"
-              placeholder="Tuliskan pertanyaan atau permintaan khusus Anda (opsional)"
-            >{{ old('special_request') }}</textarea>
-            @error('special_request')
+          <div class="form-group @error('program_name') error @enderror @error('program_ids') error @enderror">
+            <label for="program_input">Nama Program / Kursus yang Diikuti <span class="required">*</span></label>
+            <input
+              type="text"
+              name="program_name"
+              id="program_input"
+              list="programListSuggestions"
+              class="form-control"
+              placeholder="Ketik atau pilih nama program yang ingin diikuti (contoh: Kursus Bahasa Jepang, Digital Marketing, dll)..."
+              value="{{ old('program_name', (isset($programs) && count(old('program_ids', [])) > 0 ? optional($programs->firstWhere('id', old('program_ids')[0]))->nama : '')) }}"
+              required
+              autocomplete="off"
+            >
+            <datalist id="programListSuggestions">
+              @if(isset($programs))
+                @foreach($programs as $prog)
+                  <option value="{{ $prog->nama }}">{{ $prog->divisi->nama ?? 'Denpasar Institute' }}</option>
+                @endforeach
+              @endif
+            </datalist>
+            @error('program_name')
               <div class="error-message"><i class="fas fa-times-circle"></i> {{ $message }}</div>
             @enderror
-            <small>Maks. 5000 karakter</small>
+            @error('program_ids')
+              <div class="error-message"><i class="fas fa-times-circle"></i> {{ $message }}</div>
+            @enderror
+            <small>Ketik nama program yang ingin Anda ikuti atau pilih rekomendasi dari daftar yang muncul secara otomatis.</small>
           </div>
         </div>
       </div>
 
       <div class="form-section">
-        <h3 class="form-section-title">Rincian &amp; Bukti Pembayaran (Opsional)</h3>
+        <h3 class="form-section-title">Transfer Bank &amp; Bukti Pembayaran (Opsional)</h3>
 
         <div class="form-row">
           <div class="form-group @error('nominal_pembayaran') error @enderror">
@@ -858,85 +784,46 @@
             <label>Metode Pembayaran</label>
             <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
               <optgroup label="-- Pembayaran Penuh (Lunas) --">
-                <option value="Transfer Bank (BCA / Mandiri / BNI / BRI)" {{ old('metode_pembayaran') === 'Transfer Bank (BCA / Mandiri / BNI / BRI)' ? 'selected' : '' }}>Transfer Bank (BCA / Mandiri / BNI / BRI)</option>
+                <option value="Transfer Bank BNI (Rekening Resmi)" {{ old('metode_pembayaran') === 'Transfer Bank BNI (Rekening Resmi)' || !old('metode_pembayaran') ? 'selected' : '' }}>Transfer Bank BNI (Rekening Resmi)</option>
                 <option value="QRIS / E-Wallet" {{ old('metode_pembayaran') === 'QRIS / E-Wallet' ? 'selected' : '' }}>QRIS / E-Wallet</option>
                 <option value="Tunai (Cash)" {{ old('metode_pembayaran') === 'Tunai (Cash)' ? 'selected' : '' }}>Tunai di Kampus Denpasar Institute</option>
               </optgroup>
               <optgroup label="-- Pembayaran DP (Down Payment / Uang Muka) --">
-                <option value="DP (Uang Muka) - Transfer Bank" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Transfer Bank' ? 'selected' : '' }}>DP (Uang Muka) - Transfer Bank</option>
+                <option value="DP (Uang Muka) - Transfer Bank BNI" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Transfer Bank BNI' ? 'selected' : '' }}>DP (Uang Muka) - Transfer Bank BNI</option>
                 <option value="DP (Uang Muka) - QRIS / E-Wallet" {{ old('metode_pembayaran') === 'DP (Uang Muka) - QRIS / E-Wallet' ? 'selected' : '' }}>DP (Uang Muka) - QRIS / E-Wallet</option>
                 <option value="DP (Uang Muka) - Tunai di Kampus" {{ old('metode_pembayaran') === 'DP (Uang Muka) - Tunai di Kampus' ? 'selected' : '' }}>DP (Uang Muka) - Tunai di Kampus</option>
               </optgroup>
             </select>
-            <small id="metode_subtext">Pilih metode yang digunakan untuk membayar (tersedia opsi Lunas atau DP)</small>
+            <small id="metode_subtext">Pilih metode transfer Bank BNI resmi atau opsi alternatif.</small>
           </div>
         </div>
 
-        {{-- Card Informasi Tujuan Transfer Resmi --}}
+        {{-- Card Informasi Rekening Tujuan Transfer Resmi Bank BNI --}}
         <div class="tujuan-transfer-wrap my-3" id="box_tujuan_transfer">
           <div class="card border-0 rounded-3 shadow-sm overflow-hidden" style="background: #f8fafc; border: 1px solid #e2e8f0 !important;">
             <div class="card-header border-bottom py-2.5 px-3 bg-white d-flex align-items-center justify-content-between">
               <span class="small fw-bold text-dark d-flex align-items-center">
-                <i class="fas fa-building-columns text-danger me-2"></i> Rekening Tujuan Transfer Resmi
+                <i class="fas fa-building-columns text-danger me-2"></i> Rekening Resmi Tujuan Transfer
               </span>
-              <span class="badge rounded-pill" style="font-size: 0.7rem; background: #fee2e2; color: #b91c1c;">
-                a.n. Denpasar Institute
+              <span class="badge rounded-pill" style="font-size: 0.72rem; background: #fee2e2; color: #b91c1c;">
+                Rekening Resmi Terverifikasi
               </span>
             </div>
             <div class="card-body p-3">
-              <div class="row g-2" id="list_rekening_bank">
-                {{-- Bank BCA --}}
-                <div class="col-12 col-md-6">
-                  <div class="p-2.5 rounded-2 bg-white border d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold small text-primary mb-0">Bank BCA</div>
-                      <div class="font-monospace fw-bold fs-6 text-dark" id="rek_bca">{{ $rekBca }}</div>
-                      <div class="text-muted" style="font-size: 0.72rem;">a.n. {{ $holderBca }}</div>
+              {{-- Rekening Utama: Bank BNI Saja --}}
+              <div id="list_rekening_bank">
+                <div class="p-3 rounded-2 bg-white border border-danger-subtle d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-left: 4px solid #dc2626 !important;">
+                  <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                      <span class="badge bg-danger text-white px-2 py-0.5" style="font-size: 0.75rem; font-weight: 700;">BANK BNI</span>
+                      <span class="small text-muted fw-semibold">Rekening Penerimaan Resmi Denpasar Institute</span>
                     </div>
-                    <button type="button" class="btn btn-sm btn-light border py-1 px-2.5 small btn-copy-rek" data-target="{{ $rekBca }}" title="Salin nomor rekening">
-                      <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
-                    </button>
+                    <div class="font-monospace fw-bold fs-5 text-dark" id="rek_bni" style="letter-spacing: 0.5px;">{{ $rekBni }}</div>
+                    <div class="text-secondary small mt-0.5"><i class="fas fa-user-check text-success me-1"></i> a.n. <strong>{{ $holderBni }}</strong></div>
                   </div>
-                </div>
-
-                {{-- Bank BNI --}}
-                <div class="col-12 col-md-6">
-                  <div class="p-2.5 rounded-2 bg-white border d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold small text-danger mb-0">Bank BNI</div>
-                      <div class="font-monospace fw-bold fs-6 text-dark" id="rek_bni">{{ $rekBni }}</div>
-                      <div class="text-muted" style="font-size: 0.72rem;">a.n. {{ $holderBni }}</div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-light border py-1 px-2.5 small btn-copy-rek" data-target="{{ $rekBni }}" title="Salin nomor rekening">
-                      <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
-                    </button>
-                  </div>
-                </div>
-
-                {{-- Bank Mandiri --}}
-                <div class="col-12 col-md-6">
-                  <div class="p-2.5 rounded-2 bg-white border d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold small mb-0" style="color: #b45309 !important;">Bank Mandiri</div>
-                      <div class="font-monospace fw-bold fs-6 text-dark" id="rek_mandiri">{{ $rekMandiri }}</div>
-                      <div class="text-muted" style="font-size: 0.72rem;">a.n. {{ $holderMandiri }}</div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-light border py-1 px-2.5 small btn-copy-rek" data-target="{{ $rekMandiri }}" title="Salin nomor rekening">
-                      <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
-                    </button>
-                  </div>
-                </div>
-
-                {{-- Bank BRI --}}
-                <div class="col-12 col-md-6">
-                  <div class="p-2.5 rounded-2 bg-white border d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold small mb-0" style="color: #0284c7 !important;">Bank BRI</div>
-                      <div class="font-monospace fw-bold fs-6 text-dark" id="rek_bri">{{ $rekBri }}</div>
-                      <div class="text-muted" style="font-size: 0.72rem;">a.n. {{ $holderBri }}</div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-light border py-1 px-2.5 small btn-copy-rek" data-target="{{ $rekBri }}" title="Salin nomor rekening">
-                      <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin</span>
+                  <div>
+                    <button type="button" class="btn btn-outline-danger btn-sm py-1.5 px-3 fw-semibold btn-copy-rek" data-target="{{ $rekBni }}" title="Salin nomor rekening BNI">
+                      <i class="far fa-copy me-1"></i> <span class="btn-copy-text">Salin No. Rekening</span>
                     </button>
                   </div>
                 </div>
@@ -998,35 +885,39 @@
           </div>
         </div>
 
-        {{-- Input Summernote Compact untuk Deskripsi / Catatan Rincian Pembayaran --}}
+        {{-- Deskripsi / Catatan Pembayaran --}}
         <div class="form-row full">
           <div class="form-group @error('deskripsi_pembayaran') error @enderror">
-            <label>Deskripsi / Catatan Rincian Pembayaran (Tujuan Transfer)</label>
+            <label for="deskripsi_pembayaran">Deskripsi / Catatan Pembayaran</label>
             <textarea
-              class="js-summernote-compact"
               name="deskripsi_pembayaran"
               id="deskripsi_pembayaran"
-              placeholder="Tuliskan keterangan transfer, nama bank &amp; nama pemilik rekening pengirim, atau catatan pembayaran..."
+              rows="3"
+              class="form-control"
+              placeholder="Contoh: Transfer via m-Banking BNI a.n. Pengirim / Berita: Pendaftaran Kursus..."
+              style="resize: vertical; min-height: 85px;"
             >{{ old('deskripsi_pembayaran') }}</textarea>
             @error('deskripsi_pembayaran')
               <div class="error-message"><i class="fas fa-times-circle"></i> {{ $message }}</div>
             @enderror
-            <small>Catatan rincian transfer atau informasi rekening pengirim (opsional).</small>
+            <small>Ketik keterangan tambahan transfer, nama pemilik rekening pengirim, atau catatan pembayaran (opsional).</small>
           </div>
         </div>
 
+        {{-- Unggah Bukti Transfer --}}
         <div class="form-row full">
           <div class="form-group @error('bukti_bayar_pendaftaran') error @enderror">
-            <label>Unggah Bukti Pembayaran / Transfer</label>
+            <label>Unggah Bukti Transfer / Pembayaran</label>
             <input
               type="file"
               name="bukti_bayar_pendaftaran"
+              id="bukti_bayar_pendaftaran"
               accept="image/jpeg,image/jpg,image/png,application/pdf"
             >
             @error('bukti_bayar_pendaftaran')
               <div class="error-message"><i class="fas fa-times-circle"></i> {{ $message }}</div>
             @enderror
-            <small>Unggah foto struk transfer, tangkapan layar (screenshot) m-Banking, atau resi pembayaran pendaftaran (Maks. 2MB). Format: JPG, JPEG, PNG, PDF.</small>
+            <small>Unggah foto resi/struk transfer BNI, bukti m-Banking, atau tangkapan layar pembayaran pendaftaran (Maks. 2MB). Format: JPG, JPEG, PNG, PDF.</small>
           </div>
         </div>
       </div>
@@ -1143,102 +1034,23 @@
       });
     });
 
-    var $container = $form.find('.js-program-container');
-    var divisiPrograms = {!! json_encode($divisiProgramMap, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!};
-
-    function updateRemoveButtons() {
-      var $items = $container.find('.program-item');
-      $items.each(function () {
-        $(this).find('.js-btn-remove-program').css('display', $items.length > 1 ? 'flex' : 'none');
-      });
-    }
-
-    function handleDivisiChange($divSelect) {
-      var divId = $divSelect.val();
-      var $row = $divSelect.closest('.program-item');
-      var $progSelect = $row.find('.js-program-select');
-
-      $progSelect.empty();
-
-      if (divId && divisiPrograms[divId] && divisiPrograms[divId].programs && divisiPrograms[divId].programs.length > 0) {
-        var d = divisiPrograms[divId];
-        $progSelect.append('<option value="">-- Pilih Program di ' + d.nama + ' (' + d.programs.length + ' Pilihan) --</option>');
-        $.each(d.programs, function(idx, p) {
-          $progSelect.append('<option value="' + p.id + '">' + p.nama + '</option>');
-        });
-        $progSelect.prop('disabled', false);
-        $progSelect.focus();
-      } else {
-        $progSelect.append('<option value="">-- Pilih Divisi Terlebih Dahulu --</option>');
-        $progSelect.prop('disabled', true);
-      }
-    }
-
-    $container.on('change', '.js-divisi-select', function () {
-      handleDivisiChange($(this));
-    });
-
-    $container.on('change', '.js-program-select', function () {
-      if ($(this).val()) {
-        $container.closest('.form-group').removeClass('error');
-      }
-    });
-
-    function createProgramItem() {
-      var $div = $('<div class="program-item"></div>');
-      var $fieldGroup = $('<div class="program-field-group"></div>');
-
-      var $divCol = $('<div class="field-col"></div>');
-      $divCol.append('<label class="field-sublabel"><i class="fas fa-sitemap text-danger"></i> 1. Pilih Divisi Lembaga</label>');
-      var $divSelect = $('<select class="divisi-select-custom js-divisi-select"><option value="">-- Pilih Divisi Terlebih Dahulu --</option></select>');
-      $.each(divisiPrograms, function(id, d) {
-        $divSelect.append('<option value="' + d.id + '">' + d.nama + ' (' + d.programs.length + ' Program)</option>');
-      });
-      $divCol.append($divSelect);
-
-      var $progCol = $('<div class="field-col"></div>');
-      $progCol.append('<label class="field-sublabel"><i class="fas fa-graduation-cap text-danger"></i> 2. Pilih Program Spesifik</label>');
-      var $progSelect = $('<select name="program_ids[]" class="program-select-custom js-program-select" required disabled><option value="">-- Pilih Divisi Terlebih Dahulu --</option></select>');
-      $progCol.append($progSelect);
-
-      $fieldGroup.append($divCol).append($progCol);
-
-      var $btn = $('<button type="button" class="btn-remove-program js-btn-remove-program" title="Hapus Pilihan Program Ini"><i class="fas fa-trash-alt"></i></button>');
-
-      $div.append($fieldGroup).append($btn);
-      return $div;
-    }
-
-    $form.off('click.admissionAddProgram').on('click.admissionAddProgram', '.js-btn-add-program', function (e) {
-      e.preventDefault();
-      $container.append(createProgramItem());
-      updateRemoveButtons();
-    });
-
-    $form.off('click.admissionRemoveProgram').on('click.admissionRemoveProgram', '.js-btn-remove-program', function (e) {
-      e.preventDefault();
-      $(this).closest('.program-item').remove();
-      updateRemoveButtons();
-    });
-
-    updateRemoveButtons();
-
     $form.off('submit.admissionValidate').on('submit.admissionValidate', function (e) {
-      var hasSelection = false;
-      $container.find('.js-program-select').each(function () {
-        if ($(this).val()) {
-          hasSelection = true;
-        }
-      });
-
-      if (!hasSelection) {
+      var programVal = $.trim($('#program_input').val() || '');
+      if (!programVal) {
         e.preventDefault();
-        alert('Silakan pilih Divisi dan Program yang ingin diikuti terlebih dahulu!');
-        $container.closest('.form-group').addClass('error');
+        alert('Silakan isi atau pilih nama program yang ingin Anda ikuti!');
+        $('#program_input').closest('.form-group').addClass('error');
         $('html, body').animate({
-          scrollTop: $container.offset().top - 120
+          scrollTop: $('#program_input').offset().top - 120
         }, 300);
+        $('#program_input').focus();
         return false;
+      }
+    });
+
+    $('#program_input').on('input change', function() {
+      if ($.trim($(this).val())) {
+        $(this).closest('.form-group').removeClass('error');
       }
     });
 
@@ -1279,10 +1091,10 @@
       if (navigator.clipboard) {
         navigator.clipboard.writeText(target).then(function () {
           $btn.find('.btn-copy-text').text('Tersalin!');
-          $btn.addClass('btn-success text-white').removeClass('btn-light');
+          $btn.addClass('btn-success text-white').removeClass('btn-outline-danger');
           setTimeout(function () {
-            $btn.find('.btn-copy-text').text('Salin');
-            $btn.removeClass('btn-success text-white').addClass('btn-light');
+            $btn.find('.btn-copy-text').text('Salin No. Rekening');
+            $btn.removeClass('btn-success text-white').addClass('btn-outline-danger');
           }, 2000);
         });
       }
@@ -1290,14 +1102,7 @@
 
     $form.off('click.admissionReset').on('click.admissionReset', 'button[type="reset"]', function (e) {
       e.preventDefault();
-      $form.find('.js-summernote').summernote('code', '');
-      $form.find('.js-summernote-compact').summernote('code', '');
       $form[0].reset();
-      $container.find('.program-item').not(':first').remove();
-      var $firstItem = $container.find('.program-item').first();
-      $firstItem.find('.js-divisi-select').prop('selectedIndex', 0);
-      $firstItem.find('.js-program-select').empty().append('<option value="">-- Pilih Divisi Terlebih Dahulu --</option>').prop('disabled', true);
-      updateRemoveButtons();
       updateMetodePembayaranUI();
     });
   }

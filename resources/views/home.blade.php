@@ -1084,7 +1084,7 @@
       @if($slide->type === 'banner')
         <div class="slider-slide"
              @if($slide->background_image)
-               style="background-image:url('{{ asset('storage/' . $slide->background_image) }}');"
+               style="background-image:url('{{ $slide->background_image_url }}');"
              @endif>
           <div class="div-hero-banner hero">
             <div class="particles" id="particlesContainer"></div>
@@ -1104,7 +1104,7 @@
       @else
         <div class="slider-slide"
              @if($slide->background_image)
-               style="background-image:url('{{ asset('storage/' . $slide->background_image) }}');"
+               style="background-image:url('{{ $slide->background_image_url }}');"
              @endif>
           <div class="hero">
             <div class="hero-content horizontal">
@@ -1129,7 +1129,7 @@
                   @if($slide->logo_image)
                     <div class="divisi-logo">
                       <a href="{{ $slide->button_url ?? '#divisi-detail' }}" class="logo-img-container">
-                        <img src="{{ asset('storage/' . $slide->logo_image) }}" alt="{{ $slide->divisi_name ?? $slide->title }}">
+                        <img src="{{ $slide->logo_image_url }}" alt="{{ $slide->divisi_name ?? $slide->title }}">
                       </a>
                     </div>
                   @endif
@@ -1163,7 +1163,7 @@
   <div class="hero-grid">
     <div class="hero-sambutan-card">
       <div style="margin-bottom: 2px;">
-        <span class="label-tentang">{{ \App\Models\SiteSetting::get('sambutan_leader_title', 'Sambutan Lead Consultant') }}</span>
+        <span class="label-tentang">{{ \App\Models\SiteSetting::get('sambutan_leader_title', 'Sambutan') }}</span>
       </div>
 
       <div class="sambutan-box">

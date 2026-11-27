@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,33 @@ class HeroSliderController extends Controller
     public function index()
     {
         $sliders = HeroSlider::orderBy('order')->get();
-        return view('backoffice.slider.index', compact('sliders'));
+        $sliderMode = SiteSetting::get('hero_slider_order_mode', 'random');
+        return view('backoffice.slider.index', compact('sliders', 'sliderMode'));
+    }
+
+    public function updateMode(Request $request)
+    {
+        $mode = $request->input('mode', 'random');
+        if (!in_array($mode, ['random', 'ordered'])) {
+            $mode = 'random';
+        }
+
+        SiteSetting::set('hero_slider_order_mode', $mode, 'home', 'Mode Urutan Hero Slider di Beranda');
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'mode' => $mode,
+                'message' => $mode === 'random' 
+                    ? 'Mode slider diubah menjadi Acak (Random) setiap reload!' 
+                    : 'Mode slider diubah menjadi Tetap Berurutan!'
+            ]);
+        }
+
+        return redirect()->route('backoffice.slider.index')
+            ->with('success', $mode === 'random' 
+                ? 'Mode slider diubah menjadi Acak (Random) setiap reload!' 
+                : 'Mode slider diubah menjadi Tetap Berurutan!');
     }
 
     public function create()

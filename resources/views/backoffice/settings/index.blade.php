@@ -238,7 +238,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-weight-bold">Label Tag Sambutan</label>
-                                <input type="text" name="sambutan_leader_title" class="form-control" value="{{ $settings['sambutan_leader_title'] ?? 'Sambutan Lead Consultant' }}">
+                                <input type="text" name="sambutan_leader_title" class="form-control" value="{{ $settings['sambutan_leader_title'] ?? 'Sambutan' }}" placeholder="Contoh: Sambutan">
                             </div>
 
                             <div class="col-md-12">
@@ -357,14 +357,42 @@
 
                 {{-- Card 2: Rekening Bank Resmi Tujuan Transfer --}}
                 <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-white py-3">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 font-weight-bold"><i class="fas fa-building-columns text-danger"></i> Rekening Tujuan Transfer Resmi</h5>
+                        <span class="badge badge-success px-2 py-1"><i class="fas fa-check-circle mr-1"></i> BNI Tampil di Form Pendaftaran</span>
                     </div>
                     <div class="card-body p-4">
+                        <div class="alert alert-info py-2 px-3 small mb-3">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            <strong>Catatan:</strong> Saat ini form pendaftaran publik dikhususkan menampilkan <strong>Bank BNI</strong> sebagai rekening resmi transfer. Anda dapat mengubah nomor rekening dan atas nama BNI di bawah ini kapan saja. Rekening lainnya (BCA, Mandiri, BRI) tetap tersimpan sebagai data rekening alternatif lembaga.
+                        </div>
+
                         <div class="row g-3">
+                            {{-- Bank BNI (Utama / Tampil di Form) --}}
+                            <div class="col-12 mb-2">
+                                <div class="p-3 rounded border border-danger bg-light">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label font-weight-bold text-danger mb-0 fs-6">
+                                            <i class="fas fa-star text-warning mr-1"></i> Bank BNI (Rekening Utama Form Pendaftaran)
+                                        </label>
+                                        <span class="badge badge-danger">Aktif di Publik</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="small text-muted font-weight-bold">Nomor Rekening Bank BNI</label>
+                                            <input type="text" name="bank_bni_rek" class="form-control font-monospace font-weight-bold" value="{{ $settings['bank_bni_rek'] ?? '0819192837' }}" placeholder="Contoh: 0819192837">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="small text-muted font-weight-bold">Atas Nama Bank BNI</label>
+                                            <input type="text" name="bank_bni_holder" class="form-control font-weight-bold" value="{{ $settings['bank_bni_holder'] ?? 'Yayasan Denpasar Institute' }}" placeholder="Contoh: Yayasan Denpasar Institute">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {{-- Bank BCA --}}
                             <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-primary">Nomor Rekening Bank BCA</label>
+                                <label class="form-label font-weight-bold text-primary">Nomor Rekening Bank BCA <small class="text-muted">(Alternatif)</small></label>
                                 <input type="text" name="bank_bca_rek" class="form-control font-monospace" value="{{ $settings['bank_bca_rek'] ?? '7720918899' }}">
                             </div>
                             <div class="col-md-6">
@@ -372,19 +400,9 @@
                                 <input type="text" name="bank_bca_holder" class="form-control" value="{{ $settings['bank_bca_holder'] ?? 'Denpasar Institute' }}">
                             </div>
 
-                            {{-- Bank BNI --}}
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-danger">Nomor Rekening Bank BNI</label>
-                                <input type="text" name="bank_bni_rek" class="form-control font-monospace" value="{{ $settings['bank_bni_rek'] ?? '0819192837' }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-danger">Atas Nama Bank BNI</label>
-                                <input type="text" name="bank_bni_holder" class="form-control" value="{{ $settings['bank_bni_holder'] ?? 'Yayasan Denpasar Institute' }}">
-                            </div>
-
                             {{-- Bank Mandiri --}}
                             <div class="col-md-6">
-                                <label class="form-label font-weight-bold" style="color:#b45309;">Nomor Rekening Bank Mandiri</label>
+                                <label class="form-label font-weight-bold" style="color:#b45309;">Nomor Rekening Bank Mandiri <small class="text-muted">(Alternatif)</small></label>
                                 <input type="text" name="bank_mandiri_rek" class="form-control font-monospace" value="{{ $settings['bank_mandiri_rek'] ?? '1450018293812' }}">
                             </div>
                             <div class="col-md-6">
@@ -394,7 +412,7 @@
 
                             {{-- Bank BRI --}}
                             <div class="col-md-6">
-                                <label class="form-label font-weight-bold text-info">Nomor Rekening Bank BRI</label>
+                                <label class="form-label font-weight-bold text-info">Nomor Rekening Bank BRI <small class="text-muted">(Alternatif)</small></label>
                                 <input type="text" name="bank_bri_rek" class="form-control font-monospace" value="{{ $settings['bank_bri_rek'] ?? '001701002891534' }}">
                             </div>
                             <div class="col-md-6">
@@ -402,7 +420,7 @@
                                 <input type="text" name="bank_bri_holder" class="form-control" value="{{ $settings['bank_bri_holder'] ?? 'Denpasar Institute' }}">
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-12 mt-2">
                                 <label class="form-label font-weight-bold">Teks Catatan Keamanan Transfer</label>
                                 <input type="text" name="transfer_security_notice" class="form-control" value="{{ $settings['transfer_security_notice'] ?? 'Pastikan transfer ditujukan ke rekening resmi atas nama Denpasar Institute. Simpan bukti transfer Anda.' }}">
                             </div>

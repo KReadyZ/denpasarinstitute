@@ -1216,32 +1216,28 @@
             </p>
           </div>
 
-          <div class="sambutan-toggle-wrap">
-            <a href="javascript:void(0)" onclick="toggleSambutanText(event)" class="sambutan-selengkapnya-btn" id="btnSambutanToggle" aria-expanded="false">
+          <div class="sambutan-toggle-wrap" id="wrapSambutanToggle">
+            <a href="javascript:void(0)" onclick="expandSambutanText(event)" class="sambutan-selengkapnya-btn" id="btnSambutanToggle" aria-expanded="false">
               Read More &raquo;
             </a>
           </div>
           <script>
-            function toggleSambutanText(e) {
+            function expandSambutanText(e) {
               if (e) {
                 if (typeof e.preventDefault === 'function') e.preventDefault();
                 if (typeof e.stopPropagation === 'function') e.stopPropagation();
               }
               var moreContent = document.getElementById('sambutanMore');
-              var btn = document.getElementById('btnSambutanToggle');
-              if (!moreContent) return;
-              var isExpanded = moreContent.classList.toggle('is-expanded');
-              if (btn) {
-                if (isExpanded) {
-                  btn.innerHTML = '&laquo; Hide';
-                  btn.setAttribute('aria-expanded', 'true');
-                } else {
-                  btn.innerHTML = 'Read More &raquo;';
-                  btn.setAttribute('aria-expanded', 'false');
-                }
+              var wrap = document.getElementById('wrapSambutanToggle');
+              if (moreContent) {
+                moreContent.classList.add('is-expanded');
+              }
+              if (wrap) {
+                wrap.style.display = 'none';
               }
             }
-            window.toggleSambutanText = toggleSambutanText;
+            window.toggleSambutanText = expandSambutanText;
+            window.expandSambutanText = expandSambutanText;
           </script>
         </div>
       </div>

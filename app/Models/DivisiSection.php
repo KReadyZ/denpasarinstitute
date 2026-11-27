@@ -11,6 +11,7 @@ class DivisiSection extends Model
         'section_name',
         'content',
         'image',
+        'slider_images',
         'urutan',
         'design_style',
         'position_after',
@@ -19,6 +20,7 @@ class DivisiSection extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'slider_images' => 'array',
     ];
 
     public function divisi()

@@ -234,6 +234,7 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
                 Route::get('/{section}/edit', [DivisiSectionController::class, 'edit'])->name('edit');
                 Route::put('/{section}',      [DivisiSectionController::class, 'update'])->name('update');
                 Route::delete('/{section}',   [DivisiSectionController::class, 'destroy'])->name('destroy');
+                Route::delete('/{section}/slider-image', [DivisiSectionController::class, 'deleteSliderImage'])->name('delete-slider-image');
             });
 
             Route::prefix('statistic')->name('statistic.')->group(function () {

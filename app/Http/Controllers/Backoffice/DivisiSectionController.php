@@ -47,7 +47,8 @@ class DivisiSectionController extends Controller
             'content' => 'required|string',
             'design_style' => 'required|in:light,dark,accent',
             'position_after' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'slider_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'urutan' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
@@ -66,6 +67,16 @@ class DivisiSectionController extends Controller
             $path = $request->file('image')->store("divisi_{$divisi->id}_sections", 'public');
             $data['image'] = $path;
         }
+
+        $sliderImages = [];
+        if ($request->hasFile('slider_images')) {
+            foreach ($request->file('slider_images') as $file) {
+                if ($file && $file->isValid()) {
+                    $sliderImages[] = $file->store("divisi_{$divisi->id}_sections", 'public');
+                }
+            }
+        }
+        $data['slider_images'] = $sliderImages;
 
         DivisiSection::create($data);
 
@@ -102,7 +113,8 @@ class DivisiSectionController extends Controller
             'content' => 'required|string',
             'design_style' => 'required|in:light,dark,accent',
             'position_after' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'slider_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'urutan' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
@@ -124,6 +136,31 @@ class DivisiSectionController extends Controller
             $data['image'] = $path;
         }
 
+        // Manage slider images
+        $existingSlider = is_array($section->slider_images) ? $section->slider_images : [];
+
+        // Check if user requested to remove any existing slider images
+        if ($request->has('remove_slider_images')) {
+            $toRemove = (array) $request->input('remove_slider_images');
+            foreach ($toRemove as $imgPath) {
+                if (in_array($imgPath, $existingSlider)) {
+                    Storage::disk('public')->delete($imgPath);
+                    $existingSlider = array_values(array_diff($existingSlider, [$imgPath]));
+                }
+            }
+        }
+
+        // Upload additional slider images
+        if ($request->hasFile('slider_images')) {
+            foreach ($request->file('slider_images') as $file) {
+                if ($file && $file->isValid()) {
+                    $existingSlider[] = $file->store("divisi_{$divisi->id}_sections", 'public');
+                }
+            }
+        }
+
+        $data['slider_images'] = $existingSlider;
+
         $section->update($data);
 
         return redirect()
@@ -141,11 +178,35 @@ class DivisiSectionController extends Controller
             Storage::disk('public')->delete($section->image);
         }
 
+        if (is_array($section->slider_images)) {
+            foreach ($section->slider_images as $imgPath) {
+                Storage::disk('public')->delete($imgPath);
+            }
+        }
+
         $section->delete();
 
         return redirect()
                 ->route('backoffice.sections.index', $divisi->id)
                 ->with('success', 'Section berhasil dihapus!');
+    }
+
+    public function deleteSliderImage(Request $request, $divisiId, $sectionId)
+    {
+        $divisi = Divisi::findOrFail($divisiId);
+        $section = DivisiSection::where('divisi_id', $divisi->id)->findOrFail($sectionId);
+
+        $imagePath = $request->input('image_path');
+        $existing = is_array($section->slider_images) ? $section->slider_images : [];
+
+        if (in_array($imagePath, $existing)) {
+            Storage::disk('public')->delete($imagePath);
+            $existing = array_values(array_diff($existing, [$imagePath]));
+            $section->update(['slider_images' => $existing]);
+            return response()->json(['success' => true, 'message' => 'Foto berhasil dihapus dari slider']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Foto tidak ditemukan'], 404);
     }
 
     private function buildPositionOptions($divisi)

@@ -40,7 +40,10 @@
                             <td>
                                 <strong>{{ $section->section_name }}</strong>
                                 @if($section->image)
-                                    <br><small style="color: #666;">📷 Ada gambar</small>
+                                    <br><small style="color: #666;">📷 Foto utama</small>
+                                @endif
+                                @if(!empty($section->slider_images) && is_array($section->slider_images) && count($section->slider_images) > 0)
+                                    <br><small style="color: #CC0000; font-weight: 600;"><i class="fas fa-images"></i> {{ count($section->slider_images) }} foto slider</small>
                                 @endif
                             </td>
                             <td>

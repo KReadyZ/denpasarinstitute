@@ -59,10 +59,28 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Gambar Section (Opsional)</label>
+                    <label for="image">Foto Utama Section (Opsional)</label>
                     <input type="file" name="image" id="image" class="form-control" accept="image/*">
-                    <small style="display:block; color:#666; margin-top: 6px;">Maks: 2MB (JPG, PNG, GIF)</small>
+                    <small style="display:block; color:#666; margin-top: 6px;">Maks: 10MB (JPG, PNG, WEBP, GIF)</small>
                     @error('image') <small style="color:red;">{{ $message }}</small> @enderror
+                </div>
+            </div>
+
+            {{-- MULTI-IMAGE UPLOAD KHUSUS SLIDER (BANYAK FOTO) --}}
+            <div class="card mt-2 mb-4" style="background: #fff8f8; border: 1.5px dashed #CC0000; border-radius: 8px; box-shadow: none;">
+                <div class="card-body" style="padding: 18px;">
+                    <h4 style="margin: 0 0 6px; color: #CC0000; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-images"></i> Galeri Foto Slider Keunggulan (Bisa Masukkan Banyak Foto)
+                    </h4>
+                    <p style="font-size: 0.86rem; color: #555; margin-bottom: 12px;">
+                        Jika section ini adalah <strong>Keunggulan Divisi</strong>, Anda dapat memilih banyak foto sekaligus untuk diputar otomatis di slider.
+                    </p>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="file" name="slider_images[]" id="slider_images" class="form-control" accept="image/*" multiple style="background: #fff;">
+                        <small style="color: #666; display: block; margin-top: 6px;">
+                            <i class="fas fa-keyboard"></i> Tips: Tekan & tahan tombol <strong>Ctrl</strong> (atau <strong>Cmd</strong> di Mac) saat memilih file untuk mengunggah banyak foto sekaligus.
+                        </small>
+                    </div>
                 </div>
             </div>
 

@@ -57,16 +57,68 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Gambar Section (Opsional)</label>
+                    <label for="image">Foto Utama Section</label>
                     @if($section->image)
                         <div style="margin-bottom: 8px;">
-                            <img src="{{ asset('storage/' . $section->image) }}" style="width: 150px; height: auto; border-radius: 4px;">
-                            <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">Gambar saat ini</p>
+                            <img src="{{ asset('storage/' . $section->image) }}" style="width: 150px; height: auto; border-radius: 4px; border: 1px solid #ddd;">
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">Foto utama saat ini</p>
                         </div>
                     @endif
                     <input type="file" name="image" id="image" class="form-control" accept="image/*">
-                    <small style="display:block; color:#666; margin-top: 6px;">Maks: 2MB (JPG, PNG, GIF)</small>
+                    <small style="display:block; color:#666; margin-top: 6px;">Maks: 10MB (JPG, PNG, WEBP, GIF)</small>
                     @error('image') <small style="color:red;">{{ $message }}</small> @enderror
+                </div>
+            </div>
+
+            {{-- MULTI-IMAGE UPLOAD KHUSUS SLIDER (BANYAK FOTO) --}}
+            <div class="card mt-3 mb-4" style="background: #fff8f8; border: 1.5px dashed #CC0000; border-radius: 8px; box-shadow: none;">
+                <div class="card-body" style="padding: 20px;">
+                    <h4 style="margin: 0 0 6px; color: #CC0000; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-images"></i> Galeri Foto Slider Keunggulan (Bisa Masukkan Banyak Foto)
+                    </h4>
+                    <p style="font-size: 0.86rem; color: #555; margin-bottom: 14px;">
+                        Foto-foto ini akan berputar otomatis secara bergantian pada slider Keunggulan Divisi di website. Anda dapat mengunggah banyak foto sekaligus.
+                    </p>
+
+                    @php
+                        $sliderPhotos = is_array($section->slider_images) ? $section->slider_images : [];
+                    @endphp
+
+                    @if(count($sliderPhotos) > 0)
+                        <label style="font-weight: 600; font-size: 0.88rem; margin-bottom: 8px; display: block; color: #333;">
+                            Foto Slider Tersimpan ({{ count($sliderPhotos) }} foto):
+                        </label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                            @foreach($sliderPhotos as $sImg)
+                                <div class="slider-img-item" id="slide-box-{{ md5($sImg) }}" style="position: relative; width: 130px; height: 95px; border-radius: 6px; overflow: hidden; border: 1.5px solid #e2e8f0; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                    <img src="{{ asset('storage/' . $sImg) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <button type="button" 
+                                            onclick="deleteSliderPhoto('{{ $divisi->id }}', '{{ $section->id }}', '{{ $sImg }}', 'slide-box-{{ md5($sImg) }}')"
+                                            style="position: absolute; top: 4px; right: 4px; background: rgba(220,53,69,0.95); color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.72rem; transition: transform 0.15s;" 
+                                            onmouseover="this.style.transform='scale(1.15)'"
+                                            onmouseout="this.style.transform='scale(1)'"
+                                            title="Hapus foto ini dari slider">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div style="font-size: 0.85rem; color: #777; margin-bottom: 14px; font-style: italic; background: #fff; padding: 10px 14px; border-radius: 6px; border: 1px solid #eee;">
+                            <i class="fas fa-info-circle text-info"></i> Belum ada foto galeri tambahan yang diunggah. Saat ini slider menampilkan foto utama, background divisi, dan banner pilar. Silakan unggah foto kegiatan/dokumentasi divisi di bawah ini.
+                        </div>
+                    @endif
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="slider_images" style="font-weight: 600; font-size: 0.9rem; color: #111;">
+                            <i class="fas fa-plus-circle text-danger"></i> Tambah Foto Slider Baru (Bisa Pilih Banyak Foto Sekaligus)
+                        </label>
+                        <input type="file" name="slider_images[]" id="slider_images" class="form-control" accept="image/*" multiple style="background: #fff;">
+                        <small style="color: #666; display: block; margin-top: 6px; line-height: 1.5;">
+                            <i class="fas fa-keyboard"></i> Tips: Tekan & tahan tombol <strong>Ctrl</strong> (atau <strong>Cmd</strong> di Mac) saat memilih file untuk memilih lebih dari 1 foto sekaligus. Format: JPG, PNG, WEBP (Maks: 10MB per foto).
+                        </small>
+                        @error('slider_images.*') <small style="color:red; display:block;">{{ $message }}</small> @enderror
+                    </div>
                 </div>
             </div>
 
@@ -127,6 +179,35 @@ $(document).ready(function() {
         }
     });
 });
+
+function deleteSliderPhoto(divisiId, sectionId, imagePath, elementId) {
+    if (!confirm('Hapus foto ini dari galeri slider?')) return;
+
+    fetch(`/backoffice/divisi/${divisiId}/sections/${sectionId}/slider-image`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ image_path: imagePath })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 250);
+            }
+        } else {
+            alert(data.message || 'Gagal menghapus foto.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan saat menghapus foto slider.');
+    });
+}
 </script>
 @endpush
 

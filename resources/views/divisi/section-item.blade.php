@@ -4,11 +4,26 @@
 
   // Siapkan foto-foto banyak untuk slider keunggulan divisi
   $keunggulanPhotos = [];
-  if ($section->image) {
-      $keunggulanPhotos[] = asset('storage/' . $section->image);
+
+  // 1. Ambil foto-foto galeri yang diunggah dari Backoffice (slider_images)
+  if (!empty($section->slider_images) && is_array($section->slider_images)) {
+      foreach ($section->slider_images as $sImg) {
+          $sAsset = asset('storage/' . $sImg);
+          if (!in_array($sAsset, $keunggulanPhotos)) {
+              $keunggulanPhotos[] = $sAsset;
+          }
+      }
   }
 
-  // Tambahan foto-foto dokumentasi & kegiatan spesifik per divisi
+  // 2. Foto utama section jika ada
+  if ($section->image) {
+      $mainAsset = asset('storage/' . $section->image);
+      if (!in_array($mainAsset, $keunggulanPhotos)) {
+          array_unshift($keunggulanPhotos, $mainAsset);
+      }
+  }
+
+  // 3. Tambahan foto-foto dokumentasi & kegiatan spesifik per divisi
   $slug = $divisi->slug ?? '';
   $divisiImgMap = [
       'divisi-riset-dan-inovasi' => ['/image/divisi-01-riset.png', '/image/partner-hero-bg.jpg', '/image/banner-brin.png'],
@@ -28,10 +43,13 @@
       '/image/banner-brin.png',
   ];
 
-  foreach ($extraPhotos as $p) {
-      $pAsset = asset($p);
-      if (!in_array($pAsset, $keunggulanPhotos)) {
-          $keunggulanPhotos[] = $pAsset;
+  // Jika admin belum mengunggah banyak foto di Backoffice (kurang dari 2 foto), lengkapi dengan foto dokumentasi pilar
+  if (count($keunggulanPhotos) < 3) {
+      foreach ($extraPhotos as $p) {
+          $pAsset = asset($p);
+          if (!in_array($pAsset, $keunggulanPhotos)) {
+              $keunggulanPhotos[] = $pAsset;
+          }
       }
   }
 

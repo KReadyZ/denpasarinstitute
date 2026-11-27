@@ -51,7 +51,13 @@ class ContentManagementSeeder extends Seeder
             ['key' => 'contact_phone_2', 'value' => '+62 823-1866-6547', 'group' => 'contact', 'label' => 'WhatsApp Sekretariat 2'],
             ['key' => 'contact_wa_lead_consultant', 'value' => '+62 813-3764-4463', 'group' => 'contact', 'label' => 'WhatsApp Lead Consultant'],
             ['key' => 'contact_email_secretary', 'value' => 'info@denpasarinstitute.com', 'group' => 'contact', 'label' => 'Email Sekretariat'],
-            ['key' => 'footer_copyright', 'value' => 'Denpasar Institute. Hak cipta dilindungi undang-undang.', 'group' => 'footer', 'label' => 'Teks Hak Cipta Footer'],
+            ['key' => 'footer_copyright', 'value' => 'Denpasar Institute @2017. Hak cipta dilindungi undang-undang.', 'group' => 'footer', 'label' => 'Teks Hak Cipta Footer'],
+
+            // Popup Banner Beranda
+            ['key' => 'popup_banner_active', 'value' => '1', 'group' => 'home', 'label' => 'Status Popup Banner'],
+            ['key' => 'popup_banner_title', 'value' => 'Pendaftaran & Kolaborasi Denpasar Institute', 'group' => 'home', 'label' => 'Judul Popup Banner'],
+            ['key' => 'popup_banner_url', 'value' => '/admission', 'group' => 'home', 'label' => 'Link Tujuan Popup Banner'],
+            ['key' => 'popup_banner_delay', 'value' => '2', 'group' => 'home', 'label' => 'Jeda Muncul Popup Banner (Detik)'],
 
             // Social Media
             ['key' => 'social_facebook', 'value' => '#', 'group' => 'social', 'label' => 'URL Facebook'],

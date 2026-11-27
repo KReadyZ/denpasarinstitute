@@ -77,11 +77,34 @@ class SiteSettingController extends Controller
             SiteSetting::set('sambutan_leader_photo', null, 'home', 'Foto Lead Consultant');
         }
 
+        // Handle upload Popup Banner
+        if ($request->hasFile('popup_banner_image')) {
+            $request->validate([
+                'popup_banner_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            ]);
+            $file = $request->file('popup_banner_image');
+            $filename = 'banner_popup_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('settings', $filename, 'public');
+
+            $oldPath = SiteSetting::get('popup_banner_image');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('popup_banner_image', $path, 'home', 'Gambar Popup Banner');
+        } elseif ($request->filled('remove_popup_banner_image')) {
+            $oldPath = SiteSetting::get('popup_banner_image');
+            if ($oldPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set('popup_banner_image', null, 'home', 'Gambar Popup Banner');
+        }
+
         $data = $request->except([
             '_token', '_method',
             'qris_image', 'remove_qris_image',
             'site_logo', 'remove_site_logo',
             'sambutan_leader_photo', 'remove_sambutan_leader_photo',
+            'popup_banner_image', 'remove_popup_banner_image',
             'current_tab'
         ]);
 

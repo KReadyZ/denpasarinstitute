@@ -43,8 +43,9 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
+        // Divisi di-randomkan urutannya setiap kali reload halaman
         $divisis = Divisi::where('is_active', true)
-            ->orderBy('urutan', 'asc')
+            ->inRandomOrder()
             ->get();
 
         $konsultans = User::where('role', 'konsultan')

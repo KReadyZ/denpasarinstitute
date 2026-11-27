@@ -1218,7 +1218,7 @@
 
           <div class="sambutan-toggle-wrap">
             <a href="javascript:void(0)" onclick="toggleSambutanText(event)" class="sambutan-selengkapnya-btn" id="btnSambutanToggle" aria-expanded="false">
-              Selengkapnya &raquo;
+              Read More &raquo;
             </a>
           </div>
           <script>
@@ -1233,10 +1233,10 @@
               var isExpanded = moreContent.classList.toggle('is-expanded');
               if (btn) {
                 if (isExpanded) {
-                  btn.innerHTML = '&laquo; Sembunyikan';
+                  btn.innerHTML = '&laquo; Hide';
                   btn.setAttribute('aria-expanded', 'true');
                 } else {
-                  btn.innerHTML = 'Selengkapnya &raquo;';
+                  btn.innerHTML = 'Read More &raquo;';
                   btn.setAttribute('aria-expanded', 'false');
                 }
               }
@@ -1367,6 +1367,7 @@
 </section>
 
 <section id="divisi-detail" style="background: var(--gray); padding: 60px 0;">
+  <span id="our-divisions" style="display:block; position:relative; top:-80px; visibility:hidden;"></span>
   <div class="container">
     <div class="section-header"><span class="section-tag">Divisi</span><h2>Our Divisions</h2><div class="section-line"></div></div>
     <div class="carousel" id="divisionCarousel">
@@ -1374,84 +1375,63 @@
         @php
             $divisiChunks = ($divisis ?? collect())->chunk(4);
             $divisiTotalSlides = max(1, $divisiChunks->count());
-            $divisiNames = ['Riset dan Inovasi', 'Publikasi & HKI', 'Pengembangan SDM', 'Vokasi & Sertifikasi', 'Sains Data & Teknologi', 'Bahasa, Seni & Budaya', 'Kerja Sama & Hub. Int.', 'Konsultan', 'Karir & Kewirausahaan'];
-            $divisiImages = ['/image/divisi-01-riset.png', '/image/divisi-02-publikasi.png', '/image/divisi-03-sdm.png', '/image/divisi-04-vokasi.png', '/image/divisi-05-data.png', '/image/divisi-06-budaya.png', '/image/divisi-07-kerjasama.png', '/image/divisi-08-konsultan.png', '/image/divisi-09-karir.png'];
-            $divisiBadges = ['Penelitian', 'Publikasi', 'Pelatihan', 'Sertifikasi', 'Teknologi', 'Budaya', 'Internasional', 'Konsultasi', 'Karir'];
-            $divisiDescs = [
-                'Mendorong penelitian berkualitas tinggi dan inovasi berbasis bukti.',
-                'Mengelola penerbitan jurnal, buku, layanan HKI dan paten.',
-                'Pelatihan, workshop, seminar untuk meningkatkan kompetensi.',
-                'Pendidikan vokasi dan program sertifikasi nasional & internasional.',
-                'Solusi big data, AI, transformasi digital institusi.',
-                'Pelestarian bahasa, riset budaya, digitalisasi warisan.',
-                'Kemitraan global, pertukaran ilmu, beasiswa, kolaborasi riset.',
-                'Konsultasi manajemen, kebijakan publik, riset terapan.',
-                'Inkubasi bisnis, program wirausaha, pendampingan startup.'
+
+            // Mapping aset & deskripsi berdasarkan slug agar saat divisi di-random tetap akurat
+            $divisiMetaMap = [
+                'riset-dan-inovasi' => ['img' => '/image/divisi-01-riset.png', 'badge' => 'Penelitian', 'desc' => 'Mendorong penelitian berkualitas tinggi dan inovasi berbasis bukti.'],
+                'publikasi-hki' => ['img' => '/image/divisi-02-publikasi.png', 'badge' => 'Publikasi', 'desc' => 'Mengelola penerbitan jurnal, buku, layanan HKI dan paten.'],
+                'pengembangan-sdm' => ['img' => '/image/divisi-03-sdm.png', 'badge' => 'Pelatihan', 'desc' => 'Pelatihan, workshop, seminar untuk meningkatkan kompetensi.'],
+                'vokasi-sertifikasi' => ['img' => '/image/divisi-04-vokasi.png', 'badge' => 'Sertifikasi', 'desc' => 'Pendidikan vokasi dan program sertifikasi nasional & internasional.'],
+                'sains-data-teknologi' => ['img' => '/image/divisi-05-data.png', 'badge' => 'Teknologi', 'desc' => 'Solusi big data, AI, transformasi digital institusi.'],
+                'bahasa-seni-budaya' => ['img' => '/image/divisi-06-budaya.png', 'badge' => 'Budaya', 'desc' => 'Pelestarian bahasa, riset budaya, digitalisasi warisan.'],
+                'kerjasama-hub-int' => ['img' => '/image/divisi-07-kerjasama.png', 'badge' => 'Internasional', 'desc' => 'Kemitraan global, pertukaran ilmu, beasiswa, kolaborasi riset.'],
+                'konsultan' => ['img' => '/image/divisi-08-konsultan.png', 'badge' => 'Konsultasi', 'desc' => 'Konsultasi manajemen, kebijakan publik, riset terapan.'],
+                'karir-kewirausahaan' => ['img' => '/image/divisi-09-karir.png', 'badge' => 'Karir', 'desc' => 'Inkubasi bisnis, program wirausaha, pendampingan startup.']
             ];
-            $divisiSlugs = ['riset-dan-inovasi', 'publikasi-hki', 'pengembangan-sdm', 'vokasi-sertifikasi', 'sains-data-teknologi', 'bahasa-seni-budaya', 'kerjasama-hub-int', 'konsultan', 'karir-kewirausahaan'];
+            $defaultMeta = ['img' => '/image/divisi-01-riset.png', 'badge' => 'Divisi', 'desc' => 'Layanan dan program unggulan dari Denpasar Institute.'];
         @endphp
 
         @forelse($divisiChunks as $chunkIndex => $chunk)
           <div class="carousel-slide"><div class="div-grid-2x2">
             @foreach($chunk as $divisi)
-              <a href="{{ route('divisi.show', $divisi->slug ?? $divisiSlugs[$loop->parent->index * 4 + $loop->index] ?? '#') }}" class="div-card-h" style="text-decoration: none; cursor: pointer; display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 16px; background: var(--red); border-radius: 14px; transition: transform 0.25s ease, box-shadow 0.25s ease;">
+              @php
+                $meta = $divisiMetaMap[$divisi->slug] ?? $defaultMeta;
+                $cardImg = $divisi->logo_image ? asset('storage/' . $divisi->logo_image) : asset($meta['img']);
+                $cardDesc = $divisi->deskripsi ? \Illuminate\Support\Str::limit(strip_tags($divisi->deskripsi), 95) : $meta['desc'];
+                $cardBadge = $meta['badge'];
+              @endphp
+              <a href="{{ route('divisi.show', $divisi->slug ?? '#') }}" class="div-card-h" style="text-decoration: none; cursor: pointer; display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 16px; background: var(--red); border-radius: 14px; transition: transform 0.25s ease, box-shadow 0.25s ease;">
                 <div class="div-card-h-left">
                   <div class="div-avatar">
-                    @if($divisi->logo_image)
-                      <img src="{{ asset('storage/' . $divisi->logo_image) }}" alt="{{ $divisi->nama }}">
-                    @else
-                      <img src="{{ $divisiImages[$loop->parent->index * 4 + $loop->index] ?? '/image/divisi-01-riset.png' }}" alt="{{ $divisi->nama ?? $divisiNames[$loop->parent->index * 4 + $loop->index] }}">
-                    @endif
+                    <img src="{{ $cardImg }}" alt="{{ $divisi->nama }}" onerror="this.src='/image/divisi-01-riset.png';">
                   </div>
                   <div style="flex: 1; min-width: 0;">
-                    <p class="div-card-name">{{ $divisi->nama ?? $divisiNames[$loop->parent->index * 4 + $loop->index] }}</p>
+                    <p class="div-card-name">{{ $divisi->nama }}</p>
                   </div>
                 </div>
-                <p class="div-card-desc">{{ $divisi->deskripsi ? \Illuminate\Support\Str::limit(strip_tags($divisi->deskripsi), 100) : ($divisiDescs[$loop->parent->index * 4 + $loop->index] ?? '') }}</p>
-                <div class="div-card-footer">
-                  <div class="div-socials">
-                    <span style="color: rgba(255,255,255,0.7); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; transition: 0.2s;">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                  </div>
-                  <span class="div-badge">{{ $divisiBadges[$loop->parent->index * 4 + $loop->index] ?? 'Divisi' }}</span>
+                <p class="div-card-desc">{{ $cardDesc }}</p>
+                <div class="div-card-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px;">
+                  <span class="div-badge" style="background: rgba(255,255,255,0.2); color: #fff; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">{{ $cardBadge }}</span>
+                  <span class="div-readmore-pill" style="color: var(--yellow); font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; transition: transform 0.2s;">
+                    Read More <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+                  </span>
                 </div>
               </a>
             @endforeach
           </div></div>
         @empty
-          @php
-            $fallbackChunks = array_chunk(range(0, 8), 4);
-          @endphp
-          @foreach($fallbackChunks as $chunk)
-            <div class="carousel-slide"><div class="div-grid-2x2">
-              @foreach($chunk as $i)
-                <a href="{{ route('divisi.show', $divisiSlugs[$i] ?? '#') }}" class="div-card-h" style="text-decoration: none; cursor: pointer; display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 16px; background: var(--red); border-radius: 14px; transition: transform 0.25s ease, box-shadow 0.25s ease;">
-                  <div class="div-card-h-left">
-                    <div class="div-avatar">
-                      <img src="{{ $divisiImages[$i] }}" alt="{{ $divisiNames[$i] }}">
-                    </div>
-                    <div style="flex: 1; min-width: 0;">
-                      <p class="div-card-name">{{ $divisiNames[$i] }}</p>
-                    </div>
-                  </div>
-                  <p class="div-card-desc">{{ $divisiDescs[$i] }}</p>
-                  <div class="div-card-footer">
-                    <div class="div-socials">
-                      <span style="color: rgba(255,255,255,0.7); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; transition: 0.2s;">
-                        <i class="fas fa-arrow-right"></i>
-                      </span>
-                    </div>
-                    <span class="div-badge">{{ $divisiBadges[$i] }}</span>
-                  </div>
-                </a>
-              @endforeach
-            </div></div>
-          @endforeach
+          <div class="carousel-slide">
+            <p class="text-center text-muted py-4">Belum ada divisi yang aktif.</p>
+          </div>
         @endforelse
       </div>
       <div class="carousel-controls-row"><button id="divPrevBtn"><i class="fas fa-chevron-left"></i></button><button id="divNextBtn"><i class="fas fa-chevron-right"></i></button></div>
       <div class="carousel-dots" id="divisionDots"></div>
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="{{ route('home') }}#divisi-detail" class="btn-more" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 24px; border-radius: 25px; background: var(--red); color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(204,0,0,0.25);">
+          <i class="fas fa-th-large"></i> Read More Semua Divisi
+        </a>
+      </div>
     </div>
   </div>
 </section>

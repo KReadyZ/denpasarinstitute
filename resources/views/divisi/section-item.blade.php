@@ -1,16 +1,64 @@
 @php
+  $isKeunggulan = stripos($section->section_name, 'keunggulan') !== false || stripos($section->section_name, 'unggulan') !== false;
+  $isTentang = stripos($section->section_name, 'tentang') !== false;
+
+  // Siapkan foto-foto banyak untuk slider keunggulan divisi
+  $keunggulanPhotos = [];
+  if ($section->image) {
+      $keunggulanPhotos[] = asset('storage/' . $section->image);
+  }
+  if (!empty($divisi->background_image)) {
+      $keunggulanPhotos[] = asset('storage/' . $divisi->background_image);
+  }
+  // Tambahan foto-foto dokumentasi & kegiatan divisi
+  $extraPhotos = [
+      '/image/divisi-01-riset.png',
+      '/image/divisi-03-sdm.png',
+      '/image/divisi-05-data.png',
+      '/image/partner-hero-bg.jpg',
+  ];
+  foreach ($extraPhotos as $p) {
+      $pAsset = asset($p);
+      if (!in_array($pAsset, $keunggulanPhotos)) {
+          $keunggulanPhotos[] = $pAsset;
+      }
+  }
+
+  $hasImage = $isKeunggulan || !empty($section->image);
+
   // Tentukan order image/text berdasarkan design
-  // light, accent (red) → image kanan (order-2)
-  // dark (grey) → image kiri (order-1)
   $imagePosition = in_array($section->design_class, ['section-light', 'section-accent']) 
     ? 'order-image-right' 
     : 'order-image-left';
 @endphp
 
 <section class="custom-section {{ $section->design_class }}" id="section-{{ $section->id }}">
-  <div class="section-wrap @if($section->image) has-image {{ $imagePosition }} @else no-image @endif">
+  <div class="section-wrap @if($hasImage) has-image {{ $imagePosition }} @else no-image @endif">
     
-    @if($section->image)
+    @if($isKeunggulan)
+      {{-- Slider Foto Otomatis Keunggulan Divisi (Slide Sendiri & Banyak Foto) --}}
+      <div class="section-image-wrap reveal keunggulan-slider-wrap" id="slider-sec-{{ $section->id }}">
+        <div class="keunggulan-slider-track">
+          @foreach($keunggulanPhotos as $idx => $photoUrl)
+            <div class="keunggulan-slide {{ $idx === 0 ? 'is-active' : '' }}">
+              <img src="{{ $photoUrl }}" alt="{{ $section->section_name }} - Foto {{ $idx + 1 }}" class="section-image" loading="lazy">
+              <span class="keunggulan-slide-badge">
+                <i class="fas fa-camera mr-1"></i> Keunggulan Divisi ({{ $idx + 1 }}/{{ count($keunggulanPhotos) }})
+              </span>
+            </div>
+          @endforeach
+        </div>
+        <div class="keunggulan-slider-nav">
+          <button type="button" class="ks-prev" aria-label="Foto Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+          <div class="ks-dots">
+            @foreach($keunggulanPhotos as $idx => $photoUrl)
+              <span class="ks-dot {{ $idx === 0 ? 'is-active' : '' }}"></span>
+            @endforeach
+          </div>
+          <button type="button" class="ks-next" aria-label="Foto Berikutnya"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    @elseif($section->image)
       <div class="section-image-wrap reveal">
         <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->section_name }}" class="section-image" loading="lazy">
       </div>
@@ -21,6 +69,17 @@
       <div class="section-body">
         {!! $section->content !!}
       </div>
+
+      @if($isTentang || $isKeunggulan)
+        <div class="section-readmore-bar mt-4 pt-3 border-top" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+          <a href="{{ route('home') }}#divisi-detail" class="btn-sec-all-divisi" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: var(--red); color: #fff; padding: 9px 20px; border-radius: 6px; text-decoration: none; box-shadow: 0 4px 12px rgba(204,0,0,0.2); transition: transform 0.2s, background 0.2s;">
+            <i class="fas fa-th-large"></i> Read More Semua Divisi
+          </a>
+          <a href="#program" class="btn-sec-program" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: #f8fafc; color: #1e293b; padding: 9px 20px; border-radius: 6px; text-decoration: none; border: 1px solid #cbd5e1; transition: background 0.2s;">
+            <i class="fas fa-graduation-cap text-danger"></i> Program Pilihan Divisi
+          </a>
+        </div>
+      @endif
     </div>
 
   </div>
@@ -318,6 +377,171 @@
       max-height: 340px;
     }
   }
+
+  /* ================= SLIDER FOTO OTOMATIS KEUNGGULAN DIVISI ================= */
+  .keunggulan-slider-wrap {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+    background: #0f172a;
+  }
+  .keunggulan-slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+  }
+  .keunggulan-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.65s ease-in-out, visibility 0.65s ease-in-out;
+  }
+  .keunggulan-slide.is-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+  }
+  .keunggulan-slide .section-image {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+  }
+  .keunggulan-slide-badge {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 2;
+  }
+  .keunggulan-slider-nav {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 3;
+  }
+  .keunggulan-slider-nav button {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .keunggulan-slider-nav button:hover {
+    color: var(--yellow);
+    transform: scale(1.15);
+  }
+  .ks-dots {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ks-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .ks-dot.is-active {
+    width: 18px;
+    border-radius: 10px;
+    background: var(--yellow);
+  }
+  .btn-sec-all-divisi:hover {
+    background: #b30000 !important;
+    transform: translateY(-2px);
+  }
+  .btn-sec-program:hover {
+    background: #e2e8f0 !important;
+  }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+(function() {
+  function initKeunggulanSliders() {
+    var sliders = document.querySelectorAll('.keunggulan-slider-wrap');
+    sliders.forEach(function(slider) {
+      var slides = slider.querySelectorAll('.keunggulan-slide');
+      var dots = slider.querySelectorAll('.ks-dot');
+      if (slides.length <= 1) return;
+      var cur = 0;
+      var timer = null;
+
+      function show(idx) {
+        cur = (idx + slides.length) % slides.length;
+        slides.forEach(function(s, i) {
+          s.classList.toggle('is-active', i === cur);
+        });
+        dots.forEach(function(d, i) {
+          d.classList.toggle('is-active', i === cur);
+        });
+      }
+
+      function next() { show(cur + 1); }
+      function prev() { show(cur - 1); }
+
+      function start() {
+        if (!timer) timer = setInterval(next, 3500);
+      }
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+
+      slider.addEventListener('mouseenter', stop);
+      slider.addEventListener('mouseleave', start);
+
+      var prevBtn = slider.querySelector('.ks-prev');
+      var nextBtn = slider.querySelector('.ks-next');
+      if (prevBtn) prevBtn.addEventListener('click', function(e) { e.preventDefault(); prev(); });
+      if (nextBtn) nextBtn.addEventListener('click', function(e) { e.preventDefault(); next(); });
+
+      dots.forEach(function(dot, i) {
+        dot.addEventListener('click', function(e) { e.preventDefault(); show(i); });
+      });
+
+      start();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initKeunggulanSliders);
+  } else {
+    initKeunggulanSliders();
+  }
+})();
+</script>
 @endpush
 @endonce

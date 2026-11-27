@@ -78,6 +78,16 @@ class ProgramController extends Controller
                          ->with('success', 'Program berhasil dihapus!');
     }
 
+    public function toggleStatus(Divisi $divisi, Program $program)
+    {
+        $program->is_active = !$program->is_active;
+        $program->save();
+
+        $statusText = $program->is_active ? 'ditampilkan kembali (Aktif)' : 'disembunyikan (Hide / Tidak Aktif)';
+        return redirect()->route('backoffice.program.index', $divisi->id)
+                         ->with('success', "Program '{$program->nama}' berhasil {$statusText}!");
+    }
+
     // ============================================
     // PERBAIKAN UTAMA: API DENGAN DUAL FORMAT
     // ============================================

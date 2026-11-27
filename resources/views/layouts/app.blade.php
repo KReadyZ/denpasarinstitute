@@ -1019,6 +1019,7 @@
       (object)['title' => 'GRCS Club', 'url' => '/grcs-club', 'target' => '_self'],
       (object)['title' => 'Konsultan', 'url' => '/konsultan', 'target' => '_self'],
       (object)['title' => 'Bursa SDM', 'url' => '/bursa-sdm', 'target' => '_self'],
+      (object)['title' => 'E-Journal', 'url' => 'https://ejournal.denpasarinstitute.com', 'target' => '_blank'],
       (object)['title' => 'Partnership', 'url' => '/partner-with-di', 'target' => '_self'],
       (object)['title' => 'Event', 'url' => '/event', 'target' => '_self'],
       (object)['title' => 'News', 'url' => '/berita', 'target' => '_self'],
@@ -1315,7 +1316,7 @@
     </div>
   </div>
   <div class="footer-bottom-bar">
-    <p>{{ \App\Models\SiteSetting::get('footer_copyright', '© ' . date('Y') . ' Denpasar Institute. Hak cipta dilindungi undang-undang.') }}</p>
+    <p>{{ \App\Models\SiteSetting::get('footer_copyright', 'Denpasar Institute @2017. Hak cipta dilindungi undang-undang.') }}</p>
     <div style="display:flex;gap:16px;">
       <a href="#">Kebijakan Privasi</a>
       <a href="#">Syarat &amp; Ketentuan</a>
@@ -1899,6 +1900,7 @@ if (btt) {
 </script>
 
 @include('partials.tentang-modal')
+@include('partials.popup-banner')
 
 @stack('scripts')
 </body>

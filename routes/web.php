@@ -223,6 +223,7 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
                 Route::post('/',              [ProgramController::class, 'store'])->name('store');
                 Route::get('/{program}/edit', [ProgramController::class, 'edit'])->name('edit');
                 Route::put('/{program}',      [ProgramController::class, 'update'])->name('update');
+                Route::patch('/{program}/toggle', [ProgramController::class, 'toggleStatus'])->name('toggle');
                 Route::delete('/{program}',   [ProgramController::class, 'destroy'])->name('destroy');
             });
 

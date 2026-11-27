@@ -105,14 +105,6 @@
       <div class="section-body">
         {!! $section->content !!}
       </div>
-
-      @if($isTentang || $isKeunggulan)
-        <div class="section-readmore-bar mt-4 pt-3 border-top" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-          <a href="#program" class="btn-sec-program" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: #f8fafc; color: #1e293b; padding: 9px 20px; border-radius: 6px; text-decoration: none; border: 1px solid #cbd5e1; transition: background 0.2s;">
-            <i class="fas fa-graduation-cap text-danger"></i> Program Pilihan Divisi
-          </a>
-        </div>
-      @endif
     </div>
 
   </div>
@@ -513,13 +505,6 @@
     width: 18px;
     border-radius: 10px;
     background: var(--yellow);
-  }
-  .btn-sec-all-divisi:hover {
-    background: #b30000 !important;
-    transform: translateY(-2px);
-  }
-  .btn-sec-program:hover {
-    background: #e2e8f0 !important;
   }
 </style>
 @endpush

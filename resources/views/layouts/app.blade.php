@@ -177,7 +177,7 @@
     .nav-left .dropdown-menu,
     .nav-right .dropdown-menu {
       position: absolute !important;
-      top: calc(100% + 4px) !important;
+      top: 100% !important;
       left: 0 !important;
       background: #ffffff !important;
       border: 1px solid var(--border) !important;
@@ -188,27 +188,56 @@
       opacity: 0 !important;
       visibility: hidden !important;
       display: block !important;
-      transform: translateY(6px) !important;
+      transform: translateY(4px) !important;
       transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease !important;
+      transition-delay: 0.15s !important;
       z-index: 2000 !important;
       padding: 6px 0 !important;
       list-style: none !important;
       margin: 0 !important;
       pointer-events: none !important;
     }
+
+    /* Invisible hover bridge: eliminates gap between navbar link and dropdown */
+    header .dropdown-menu::before,
+    .nav-left .dropdown-menu::before,
+    .nav-right .dropdown-menu::before {
+      content: "" !important;
+      position: absolute !important;
+      top: -22px !important;
+      left: -20px !important;
+      right: -20px !important;
+      height: 24px !important;
+      background: transparent !important;
+      display: block !important;
+      pointer-events: auto !important;
+    }
+
+    /* Extended hover hitbox on parent li */
+    .nav-left li.has-dropdown,
+    .nav-right li.has-dropdown {
+      padding-top: 4px;
+      padding-bottom: 12px;
+      margin-top: -4px;
+      margin-bottom: -12px;
+    }
+
     header .nav-right .has-dropdown .dropdown-menu,
     .nav-right .has-dropdown .dropdown-menu {
       left: auto !important;
       right: 0 !important;
     }
     header .has-dropdown:hover .dropdown-menu,
+    header .has-dropdown.is-open .dropdown-menu,
     header .has-dropdown:focus-within .dropdown-menu,
     .nav-left .has-dropdown:hover .dropdown-menu,
+    .nav-left .has-dropdown.is-open .dropdown-menu,
     .nav-left .has-dropdown:focus-within .dropdown-menu {
       opacity: 1 !important;
       visibility: visible !important;
       transform: translateY(0) !important;
       pointer-events: auto !important;
+      transition-delay: 0s !important;
     }
     header .dropdown-menu li,
     .nav-left .dropdown-menu li,
@@ -1768,6 +1797,32 @@ document.addEventListener('DOMContentLoaded', function() {
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
+// Desktop Dropdown hover persistence (prevents menu disappearing when moving mouse across to submenu items)
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('header .has-dropdown').forEach(function(item) {
+    var closeTimer;
+    function openMenu() {
+      clearTimeout(closeTimer);
+      item.classList.add('is-open');
+    }
+    function closeMenuWithGrace() {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(function() {
+        item.classList.remove('is-open');
+      }, 280);
+    }
+
+    item.addEventListener('mouseenter', openMenu);
+    item.addEventListener('mouseleave', closeMenuWithGrace);
+
+    var menu = item.querySelector('.dropdown-menu');
+    if (menu) {
+      menu.addEventListener('mouseenter', openMenu);
+      menu.addEventListener('mouseleave', closeMenuWithGrace);
+    }
+  });
+});
+
 // Mobile menu toggle
 document.addEventListener('click', function(e) {
   var hamburgerBtn = e.target.closest('.hamburger-btn');

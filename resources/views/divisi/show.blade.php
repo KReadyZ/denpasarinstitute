@@ -236,7 +236,7 @@
       </div>
 
       <div class="divisi-nav-center">
-        <a href="javascript:void(0)" onclick="openTentangModal('divisi')">
+        <a href="{{ route('home') }}#our-divisions">
           <i class="fas fa-th-large"></i> Semua Divisi
         </a>
       </div>

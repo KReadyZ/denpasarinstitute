@@ -100,11 +100,13 @@
   padding: 18px;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .popup-banner-overlay.is-active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 .popup-banner-card {
   position: relative;

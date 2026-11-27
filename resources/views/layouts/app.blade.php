@@ -173,27 +173,85 @@
       content: '\f078'; font-family: 'Font Awesome 6 Free';
       font-weight: 900; font-size: 0.58rem; margin-left: 2px;
     }
-    .dropdown-menu {
-      position: absolute; top: calc(100% + 4px); left: 0;
-      background: #fff; border: 1px solid var(--border);
-      border-top: 3px solid var(--red); border-radius: 6px;
-      min-width: 220px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      opacity: 0; visibility: hidden; transform: translateY(6px);
-      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-      z-index: 2000; padding: 4px 0; list-style: none;
+    header .dropdown-menu,
+    .nav-left .dropdown-menu,
+    .nav-right .dropdown-menu {
+      position: absolute !important;
+      top: calc(100% + 4px) !important;
+      left: 0 !important;
+      background: #ffffff !important;
+      border: 1px solid var(--border) !important;
+      border-top: 3px solid var(--red) !important;
+      border-radius: 6px !important;
+      min-width: 250px !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14) !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      display: block !important;
+      transform: translateY(6px) !important;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease !important;
+      z-index: 2000 !important;
+      padding: 6px 0 !important;
+      list-style: none !important;
+      margin: 0 !important;
+      pointer-events: none !important;
     }
-    .nav-right .has-dropdown .dropdown-menu { left: auto; right: 0; }
-    .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-menu li { list-style: none; }
-    .dropdown-menu a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 16px; font-size: 0.88rem; color: var(--dark);
-      font-weight: 500; border-radius: 0;
-      transition: background 0.15s, color 0.15s;
+    header .nav-right .has-dropdown .dropdown-menu,
+    .nav-right .has-dropdown .dropdown-menu {
+      left: auto !important;
+      right: 0 !important;
     }
-    .dropdown-menu a:hover { background: #fff5f5; color: var(--red); }
-    .dropdown-menu a::after { display: none !important; }
-    .dropdown-menu a i { width: 16px; text-align: center; color: var(--red); font-size: 0.78rem; flex-shrink: 0; }
+    header .has-dropdown:hover .dropdown-menu,
+    header .has-dropdown:focus-within .dropdown-menu,
+    .nav-left .has-dropdown:hover .dropdown-menu,
+    .nav-left .has-dropdown:focus-within .dropdown-menu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) !important;
+      pointer-events: auto !important;
+    }
+    header .dropdown-menu li,
+    .nav-left .dropdown-menu li,
+    .nav-right .dropdown-menu li {
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    header .dropdown-menu a,
+    .nav-left .dropdown-menu a,
+    .nav-right .dropdown-menu a {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      padding: 9px 18px !important;
+      font-size: 0.88rem !important;
+      color: var(--dark) !important;
+      font-weight: 500 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      transition: background 0.15s, color 0.15s !important;
+      text-decoration: none !important;
+      white-space: normal !important;
+      line-height: 1.35 !important;
+    }
+    header .dropdown-menu a:hover,
+    .nav-left .dropdown-menu a:hover,
+    .nav-right .dropdown-menu a:hover {
+      background: #fff5f5 !important;
+      color: var(--red) !important;
+    }
+    header .dropdown-menu a::after,
+    .nav-left .dropdown-menu a::after {
+      display: none !important;
+    }
+    header .dropdown-menu a i,
+    .nav-left .dropdown-menu a i {
+      width: 16px;
+      text-align: center;
+      color: var(--red);
+      font-size: 0.78rem;
+      flex-shrink: 0;
+    }
     .dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
     
     .lang-select {
@@ -989,7 +1047,7 @@
   if ($navLeft->isEmpty()) {
     $navLeft = collect([
       (object)['title' => 'Home', 'url' => '/', 'target' => '_self'],
-      (object)['title' => 'Divisi', 'url' => '#divisi-detail', 'target' => '_self'],
+      (object)['title' => 'Divisi', 'url' => '/#divisi-detail', 'target' => '_self'],
       (object)['title' => 'Konsultan', 'url' => '/konsultan', 'target' => '_self'],
       (object)['title' => 'GRCS Club', 'url' => '/grcs-club', 'target' => '_self'],
     ]);
@@ -1094,24 +1152,28 @@
 
     <ul class="nav-left">
       @foreach($navLeft as $item)
+        @php
+          $itemRawUrl = $item->url ?? '/';
+          $itemResolvedUrl = str_starts_with($itemRawUrl, '#') ? url('/' . $itemRawUrl) : $itemRawUrl;
+        @endphp
         @if(str_contains(strtolower($item->title), 'divisi'))
           <li class="has-dropdown">
-            <a href="{{ $item->url }}"
+            <a href="{{ $itemResolvedUrl }}"
                class="{{ request()->routeIs('divisi.*') ? 'active' : '' }}">
               {{ $item->title }}
             </a>
             <ul class="dropdown-menu">
               @foreach($allDivisi as $d)
                 <li>
-                  <a href="/divisi/{{ $d->slug }}">{{ $d->nama }}</a>
+                  <a href="{{ url('/divisi/' . $d->slug) }}">{{ $d->nama }}</a>
                 </li>
               @endforeach
             </ul>
           </li>
         @else
           <li>
-            <a href="{{ $item->url }}" target="{{ $item->target }}"
-               class="{{ (request()->is(ltrim($item->url, '//')) || (request()->routeIs('home') && ($item->url === '/' || $item->url === ''))) ? 'active' : '' }}">
+            <a href="{{ $itemResolvedUrl }}" target="{{ $item->target ?? '_self' }}"
+               class="{{ (request()->is(ltrim($itemRawUrl, '//')) || (request()->routeIs('home') && ($itemRawUrl === '/' || $itemRawUrl === ''))) ? 'active' : '' }}">
               {{ $item->title }}
             </a>
           </li>
@@ -1126,9 +1188,13 @@
 
     <ul class="nav-right">
       @foreach($navRight as $item)
+        @php
+          $itemRawRight = $item->url ?? '/';
+          $itemResolvedRight = str_starts_with($itemRawRight, '#') ? url('/' . $itemRawRight) : $itemRawRight;
+        @endphp
         <li>
-          <a href="{{ $item->url }}" target="{{ $item->target }}"
-             class="{{ (request()->is(ltrim($item->url, '/\/')) || request()->is(ltrim($item->url, '/\/') . '/*')) ? 'active' : '' }}">
+          <a href="{{ $itemResolvedRight }}" target="{{ $item->target ?? '_self' }}"
+             class="{{ (request()->is(ltrim($itemRawRight, '/\/')) || request()->is(ltrim($itemRawRight, '/\/') . '/*')) ? 'active' : '' }}">
             {{ $item->title }}
           </a>
         </li>
@@ -1200,28 +1266,36 @@
 <div class="mobile-menu" id="mobileMenu">
   <ul class="mobile-nav">
     @foreach($navLeft as $item)
+      @php
+        $rawMobUrl = $item->url ?? '/';
+        $resolvedMobUrl = str_starts_with($rawMobUrl, '#') ? url('/' . $rawMobUrl) : $rawMobUrl;
+      @endphp
       @if(str_contains(strtolower($item->title), 'divisi'))
         <li>
-          <a href="{{ $item->url }}" class="{{ request()->routeIs('divisi.*') ? 'active' : '' }}">
+          <a href="{{ $resolvedMobUrl }}" class="{{ request()->routeIs('divisi.*') ? 'active' : '' }}">
             {{ $item->title }}
           </a>
         </li>
         <ul class="mobile-nav-sub">
           @foreach($allDivisi as $d)
-            <li><a href="/divisi/{{ $d->slug }}">{{ $d->nama }}</a></li>
+            <li><a href="{{ url('/divisi/' . $d->slug) }}">{{ $d->nama }}</a></li>
           @endforeach
         </ul>
       @else
         <li>
-          <a href="{{ $item->url }}" target="{{ $item->target }}" class="{{ (request()->is(ltrim($item->url, '/\/')) || (request()->routeIs('home') && ($item->url === '/' || $item->url === ''))) ? 'active' : '' }}">
+          <a href="{{ $resolvedMobUrl }}" target="{{ $item->target ?? '_self' }}" class="{{ (request()->is(ltrim($rawMobUrl, '/\/')) || (request()->routeIs('home') && ($rawMobUrl === '/' || $rawMobUrl === ''))) ? 'active' : '' }}">
             {{ $item->title }}
           </a>
         </li>
       @endif
     @endforeach
     @foreach($navRight as $item)
+      @php
+        $rawMobRight = $item->url ?? '/';
+        $resolvedMobRight = str_starts_with($rawMobRight, '#') ? url('/' . $rawMobRight) : $rawMobRight;
+      @endphp
       <li>
-        <a href="{{ $item->url }}" target="{{ $item->target }}" class="{{ (request()->is(ltrim($item->url, '/\/')) || request()->is(ltrim($item->url, '/\/') . '/*')) ? 'active' : '' }}">
+        <a href="{{ $resolvedMobRight }}" target="{{ $item->target ?? '_self' }}" class="{{ (request()->is(ltrim($rawMobRight, '/\/')) || request()->is(ltrim($rawMobRight, '/\/') . '/*')) ? 'active' : '' }}">
           {{ $item->title }}
         </a>
       </li>

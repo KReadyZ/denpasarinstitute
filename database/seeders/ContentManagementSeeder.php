@@ -15,7 +15,7 @@ class ContentManagementSeeder extends Seeder
         $navItems = [
             // Navbar Left
             ['title' => 'Home', 'url' => '/', 'location' => 'navbar_left', 'order' => 1, 'target' => '_self', 'is_active' => true],
-            ['title' => 'Divisi', 'url' => '#divisi-detail', 'location' => 'navbar_left', 'order' => 2, 'target' => '_self', 'is_active' => true],
+            ['title' => 'Divisi', 'url' => '/#divisi-detail', 'location' => 'navbar_left', 'order' => 2, 'target' => '_self', 'is_active' => true],
             ['title' => 'Konsultan', 'url' => '/konsultan', 'location' => 'navbar_left', 'order' => 3, 'target' => '_self', 'is_active' => true],
             ['title' => 'GRCS Club', 'url' => '/grcs-club', 'location' => 'navbar_left', 'order' => 4, 'target' => '_self', 'is_active' => true],
 

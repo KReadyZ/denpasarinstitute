@@ -18,7 +18,7 @@
       @endif
 
       @if($bannerImage)
-        <img src="{{ asset('storage/' . $bannerImage) }}" alt="{{ $bannerTitle }}" class="popup-banner-img">
+        <img src="{{ asset('storage/' . $bannerImage) }}" alt="{{ $bannerTitle }}" class="popup-banner-img" onerror="this.onerror=null;this.src='/image/partner-hero-bg.jpg';">
       @else
         <div class="popup-banner-default">
           <div class="popup-banner-header-default">
@@ -197,16 +197,11 @@
     var modal = document.getElementById('diPopupBannerModal');
     if (!modal) return;
 
-    // Cek sessionStorage agar tidak muncul berulang kali di sesi yang sama jika sudah ditutup
-    if (sessionStorage.getItem('di_banner_dismissed') === '1') {
-      return;
-    }
-
     var delaySec = {{ $bannerDelay }};
     setTimeout(function() {
       modal.classList.add('is-active');
       document.body.style.overflow = 'hidden';
-    }, Math.max(500, delaySec * 1000));
+    }, Math.max(400, delaySec * 1000));
   }
 
   window.closePopupBanner = function() {
@@ -214,7 +209,7 @@
     if (modal) {
       modal.classList.remove('is-active');
       document.body.style.overflow = '';
-      sessionStorage.setItem('di_banner_dismissed', '1');
+      try { sessionStorage.removeItem('di_banner_dismissed'); } catch(e) {}
     }
   };
 
@@ -222,6 +217,13 @@
   if (document.readyState === 'interactive' || document.readyState === 'complete') {
     checkAndShowPopupBanner();
   }
+
+  // Tutup dengan tombol Escape di keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      window.closePopupBanner();
+    }
+  });
 
   // Klik di luar card untuk menutup
   var modalEl = document.getElementById('diPopupBannerModal');

@@ -78,12 +78,12 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>Nama Lengkap</label>
-          <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $admission->nama_lengkap) }}" required>
+          <label>Nama Lengkap <span style="color:#dc2626;">*</span></label>
+          <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $admission->nama_lengkap) }}" placeholder="Nama lengkap peserta" required>
         </div>
         <div class="form-group">
-          <label>HP/WA</label>
-          <input type="text" name="hp_wa" value="{{ old('hp_wa', $admission->hp_wa) }}" required>
+          <label><i class="fab fa-whatsapp text-success me-1"></i> No. HP / WhatsApp <span style="color:#dc2626;">*</span></label>
+          <input type="text" name="hp_wa" value="{{ old('hp_wa', $admission->hp_wa) }}" placeholder="Contoh: 081234567890" required>
         </div>
       </div>
 

@@ -27,7 +27,8 @@
     <table>
       <thead>
         <tr>
-          <th>Nama &amp; Kontak</th>
+          <th>Nama Peserta</th>
+          <th><i class="fab fa-whatsapp text-success me-1"></i> No. WA / HP</th>
           <th>Program Pilihan</th>
           <th>Pembayaran &amp; Bukti</th>
           <th>Status &amp; Kas</th>
@@ -70,16 +71,22 @@
         @endphp
         <tr>
           <td>
-            <strong>{{ $admission->nama_lengkap }}</strong><br>
-            <div class="d-flex align-items-center gap-1 mt-1">
-              <small class="text-muted"><i class="fas fa-phone-alt me-1"></i>{{ $admission->hp_wa }}</small>
-              @if($admission->hp_wa)
-                <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" class="badge" style="background:#25D366; color:#fff; text-decoration:none; font-size:0.7rem; padding: 2px 6px;" title="Chat WhatsApp Calon Peserta">
-                  <i class="fab fa-whatsapp me-1"></i>Chat WA
-                </a>
-              @endif
-            </div>
+            <div style="font-weight:700; color:#1e293b; font-size:0.95rem;">{{ $admission->nama_lengkap }}</div>
             <small class="text-muted"><i class="fas fa-envelope me-1"></i>{{ $admission->email }}</small>
+          </td>
+          <td>
+            @if($admission->hp_wa)
+              <div style="font-weight:700; color:#1e293b; font-size:0.92rem; white-space:nowrap;">
+                <i class="fab fa-whatsapp text-success me-1" style="font-size:1rem;"></i>{{ $admission->hp_wa }}
+              </div>
+              <div class="mt-1 d-flex gap-1 align-items-center">
+                <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" class="badge" style="background:#25D366; color:#fff; text-decoration:none; font-size:0.72rem; padding: 3px 8px; font-weight:600; display:inline-flex; align-items:center; gap:4px;" title="Chat WhatsApp Calon Peserta">
+                  <i class="fab fa-whatsapp"></i> Chat WA
+                </a>
+              </div>
+            @else
+              <span class="text-muted">-</span>
+            @endif
           </td>
           <td>
             @forelse($admission->programs as $program)
@@ -305,7 +312,7 @@
 
         @empty
         <tr>
-          <td colspan="6">
+          <td colspan="7">
             <div class="empty-state">
               <i class="fas fa-inbox"></i>
               <h3>Belum ada data</h3>

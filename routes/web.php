@@ -498,13 +498,26 @@ Route::get('/partners-and-clients', fn() => redirect()->route('mitra-dan-klien')
 
 // Fallback Route untuk Akses Media Storage (Memastikan file upload seperti foto berita selalu tampil di cPanel/Hostinger)
 Route::get('/storage/{path}', function ($path) {
-    $storageAppPath = storage_path('app/public/' . $path);
-    if (file_exists($storageAppPath)) {
-        return response()->file($storageAppPath);
+    $candidatePaths = [
+        storage_path('app/public/' . $path),
+        public_path('storage/' . $path),
+        public_path($path),
+        storage_path('app/' . $path),
+        base_path('../public_html/storage/' . $path),
+        base_path('public_html/storage/' . $path),
+        base_path('../public_html/' . $path),
+    ];
+
+    foreach ($candidatePaths as $candidate) {
+        if (file_exists($candidate) && is_file($candidate)) {
+            $mime = mime_content_type($candidate) ?: 'image/jpeg';
+            return response()->file($candidate, [
+                'Content-Type' => $mime,
+                'Cache-Control' => 'public, max-age=86400',
+            ]);
+        }
     }
-    $pubStoragePath = public_path('storage/' . $path);
-    if (file_exists($pubStoragePath)) {
-        return response()->file($pubStoragePath);
-    }
-    abort(404);
+
+    // Jika file fisik tidak ditemukan di server, redirect ke placeholder gambar resmi agar tidak tampil broken image di browser
+    return redirect('https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&auto=format&fit=crop');
 })->where('path', '.*')->name('storage.fallback');

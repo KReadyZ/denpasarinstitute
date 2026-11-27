@@ -44,7 +44,7 @@ class BeritaController extends Controller
             'content'       => 'required|string',
             'published_at'  => 'nullable|date',
             'views'         => 'nullable|integer|min:0',
-            'image'         => 'nullable|image|max:2048',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
             'image_caption' => 'nullable|string|max:255',
         ]);
 
@@ -76,15 +76,7 @@ class BeritaController extends Controller
             $path = $request->file('image')
                 ->store('berita/image', 'public');
             $data['image'] = $path;
-
-            // Mirror file ke public/storage untuk menjamin aksesibilitas di server hosting / LiteSpeed
-            try {
-                $targetFile = public_path('storage/' . $path);
-                if (!file_exists(dirname($targetFile))) {
-                    @mkdir(dirname($targetFile), 0755, true);
-                }
-                @copy(storage_path('app/public/' . $path), $targetFile);
-            } catch (\Throwable $e) {}
+            $this->mirrorStorageFile($path);
         }
 
         Berita::create($data);
@@ -118,7 +110,7 @@ class BeritaController extends Controller
             'content'       => 'required|string',
             'published_at'  => 'nullable|date',
             'views'         => 'nullable|integer|min:0',
-            'image'         => 'nullable|image|max:2048',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
             'image_caption' => 'nullable|string|max:255',
         ]);
 
@@ -147,19 +139,12 @@ class BeritaController extends Controller
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
                 @unlink(public_path('storage/' . $berita->image));
+                @unlink(base_path('../public_html/storage/' . $berita->image));
             }
             $path = $request->file('image')
                 ->store('berita/image', 'public');
             $data['image'] = $path;
-
-            // Mirror file ke public/storage untuk menjamin aksesibilitas di server hosting / LiteSpeed
-            try {
-                $targetFile = public_path('storage/' . $path);
-                if (!file_exists(dirname($targetFile))) {
-                    @mkdir(dirname($targetFile), 0755, true);
-                }
-                @copy(storage_path('app/public/' . $path), $targetFile);
-            } catch (\Throwable $e) {}
+            $this->mirrorStorageFile($path);
         }
 
         $berita->update($data);
@@ -262,6 +247,33 @@ class BeritaController extends Controller
     {
         if (!in_array(Auth::user()->role, ['superadmin', 'admin'])) {
             abort(403, 'Hanya admin yang bisa mengakses halaman ini.');
+        }
+    }
+
+    private function mirrorStorageFile(string $relativePath): void
+    {
+        $source = storage_path('app/public/' . $relativePath);
+        if (!file_exists($source)) {
+            return;
+        }
+
+        $destinations = [
+            public_path('storage/' . $relativePath),
+            public_path($relativePath),
+            base_path('../public_html/storage/' . $relativePath),
+            base_path('public_html/storage/' . $relativePath),
+            base_path('../public_html/' . $relativePath),
+        ];
+
+        foreach ($destinations as $dest) {
+            try {
+                $dir = dirname($dest);
+                if (!file_exists($dir)) {
+                    @mkdir($dir, 0755, true);
+                }
+                @copy($source, $dest);
+                @chmod($dest, 0644);
+            } catch (\Throwable $e) {}
         }
     }
 }

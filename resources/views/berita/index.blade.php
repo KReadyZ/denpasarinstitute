@@ -493,7 +493,7 @@
       @forelse($beritas as $item)
         <div class="news-card">
           <a href="{{ route('berita.show', $item->id) }}" style="color:inherit;text-decoration:none;display:block;">
-            <img src="{{ $item->gambar_url }}" alt="{{ $item->title }}">
+            <img src="{{ $item->gambar_url }}" alt="{{ $item->title }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&auto=format&fit=crop';">
             <div class="news-card-body">
               <span class="news-card-cat">{{ $item->kategori }}</span>
               <h3 class="news-card-title">{{ $item->title }}</h3>

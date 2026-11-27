@@ -304,7 +304,7 @@
 
             @if($berita->image)
             <div class="article-image-wrap">
-                <img src="{{ $berita->gambar_url }}" alt="{{ $berita->title }}">
+                <img src="{{ $berita->gambar_url }}" alt="{{ $berita->title }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&auto=format&fit=crop';">
             </div>
             @if($berita->image_caption)
             <div class="article-image-caption">

@@ -733,7 +733,7 @@
 
         <div class="form-row full">
           <div class="form-group @error('program_name') error @enderror @error('program_ids') error @enderror">
-            <label for="program_input">Nama Program / Kursus yang Diikuti <span class="required">*</span></label>
+            <label for="program_input">Daftar Program <span class="required">*</span></label>
             <input
               type="text"
               name="program_name"

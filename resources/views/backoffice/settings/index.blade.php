@@ -47,6 +47,11 @@
                     <i class="fas fa-file-pen text-danger"></i> Editor Form Pendaftaran (Admission)
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {{ $currentTab === 'popup' ? 'active' : '' }} font-weight-bold" id="popup-tab" data-bs-toggle="tab" data-bs-target="#popup-pane" type="button" role="tab">
+                    <i class="fas fa-bullhorn text-danger"></i> Pop Up Banner Beranda
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="settingsTabContent">
@@ -270,60 +275,6 @@
                             <div class="col-12">
                                 <label class="form-label font-weight-bold">Paragraf Sambutan 4 (Bagian "Read More")</label>
                                 <textarea name="sambutan_p4" class="form-control summernote" rows="3">{{ $settings['sambutan_p4'] ?? 'Kami berharap website ini menjadi sumber informasi dan ruang kolaborasi untuk bersama-sama mewujudkan masa depan yang lebih baik.' }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Card: Popup Banner Pengumuman / Promosi Sewaktu-waktu --}}
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-bullhorn text-danger"></i> Popup Banner Pengumuman / Promosi Beranda</h5>
-                        <span class="badge badge-primary px-2 py-1">Banner Sewaktu-waktu</span>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="alert alert-light border py-2 px-3 small mb-3 text-secondary">
-                            <i class="fas fa-info-circle text-primary mr-1"></i>
-                            Banner popup ini akan muncul otomatis saat pengunjung membuka website untuk menyampaikan informasi penting atau promosi program.
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <label class="form-label font-weight-bold">Status Popup Banner</label>
-                                <select name="popup_banner_active" class="form-control">
-                                    <option value="1" {{ ($settings['popup_banner_active'] ?? '1') == '1' ? 'selected' : '' }}>Aktif (Tampilkan Pop Up)</option>
-                                    <option value="0" {{ ($settings['popup_banner_active'] ?? '1') == '0' ? 'selected' : '' }}>Nonaktif (Sembunyikan)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold">Judul Banner Pengumuman</label>
-                                <input type="text" name="popup_banner_title" class="form-control" value="{{ $settings['popup_banner_title'] ?? 'Pendaftaran & Kolaborasi Denpasar Institute' }}" placeholder="Judul banner...">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label font-weight-bold">Jeda Muncul (Detik)</label>
-                                <input type="number" name="popup_banner_delay" class="form-control" value="{{ $settings['popup_banner_delay'] ?? '2' }}" min="0" max="60">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold">Link Tujuan Klik Banner</label>
-                                <input type="text" name="popup_banner_url" class="form-control" value="{{ $settings['popup_banner_url'] ?? '/admission' }}" placeholder="Contoh: /admission atau https://...">
-                                <small class="text-muted">Halaman yang terbuka saat pengunjung mengklik gambar banner.</small>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label font-weight-bold">Upload Foto / Gambar Banner</label>
-                                @if(!empty($settings['popup_banner_image']))
-                                    <div class="mb-2 p-2 border rounded bg-light d-flex align-items-center gap-3">
-                                        <img src="{{ asset('storage/' . $settings['popup_banner_image']) }}" alt="Banner" style="max-height: 70px; border-radius: 6px;">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remove_popup_banner_image" value="1" id="removePopupBanner">
-                                            <label class="form-check-label text-danger small font-weight-bold" for="removePopupBanner">
-                                                <i class="fas fa-trash-alt me-1"></i> Hapus Gambar Banner
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endif
-                                <input type="file" name="popup_banner_image" class="form-control" accept="image/jpeg,image/png,image/jpg,image/webp">
-                                <small class="text-muted">Format: JPG, PNG, WEBP (maks. 3MB). Disarankan rasio landscape atau banner promosi.</small>
                             </div>
                         </div>
                     </div>
@@ -604,6 +555,65 @@
                             <div class="col-md-4">
                                 <label class="form-label font-weight-bold">Email Informasi Pendaftaran</label>
                                 <input type="email" name="admission_email" class="form-control" value="{{ $settings['admission_email'] ?? 'info@denpasarinstitute.id' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- TAB 6: POPUP BANNER BERANDA --}}
+            <div class="tab-pane fade {{ $currentTab === 'popup' ? 'show active' : '' }}" id="popup-pane" role="tabpanel">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-bullhorn text-danger"></i> Popup Banner Pengumuman / Promosi Beranda</h5>
+                        <span class="badge bg-danger text-white px-3 py-2">Banner Sewaktu-waktu</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-primary border py-3 px-3 mb-4 d-flex align-items-center gap-2">
+                            <i class="fas fa-info-circle fa-lg text-primary"></i>
+                            <div>
+                                <strong>Fitur Pop Up Banner Beranda:</strong> Banner ini akan muncul otomatis di halaman depan website ketika pengunjung membuka beranda setelah jeda waktu detik yang ditentukan. Pengunjung dapat menutupnya (tombol X) atau mengkliknya untuk menuju link yang Anda tetapkan.
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label font-weight-bold">Status Popup Banner</label>
+                                <select name="popup_banner_active" class="form-control form-select">
+                                    <option value="1" {{ ($settings['popup_banner_active'] ?? '1') == '1' ? 'selected' : '' }}>Aktif (Tampilkan Pop Up)</option>
+                                    <option value="0" {{ ($settings['popup_banner_active'] ?? '1') == '0' ? 'selected' : '' }}>Nonaktif (Sembunyikan)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label font-weight-bold">Judul Banner Pengumuman</label>
+                                <input type="text" name="popup_banner_title" class="form-control" value="{{ $settings['popup_banner_title'] ?? 'Pendaftaran & Kolaborasi Denpasar Institute' }}" placeholder="Judul banner...">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label font-weight-bold">Jeda Muncul (Detik)</label>
+                                <input type="number" name="popup_banner_delay" class="form-control" value="{{ $settings['popup_banner_delay'] ?? '2' }}" min="0" max="60">
+                                <small class="text-muted">Waktu tunggu sebelum pop up muncul.</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label font-weight-bold">Link Tujuan Klik Banner</label>
+                                <input type="text" name="popup_banner_url" class="form-control" value="{{ $settings['popup_banner_url'] ?? '/admission' }}" placeholder="Contoh: /admission atau https://...">
+                                <small class="text-muted">Halaman yang terbuka saat pengunjung mengklik foto/gambar banner.</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label font-weight-bold">Upload Foto / Gambar Banner</label>
+                                @if(!empty($settings['popup_banner_image']))
+                                    <div class="mb-2 p-2 border rounded bg-light d-flex align-items-center gap-3">
+                                        <img src="{{ asset('storage/' . $settings['popup_banner_image']) }}" alt="Banner" style="max-height: 70px; border-radius: 6px;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="remove_popup_banner_image" value="1" id="removePopupBanner">
+                                            <label class="form-check-label text-danger small font-weight-bold" for="removePopupBanner">
+                                                <i class="fas fa-trash-alt me-1"></i> Hapus Gambar Banner
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endif
+                                <input type="file" name="popup_banner_image" class="form-control" accept="image/jpeg,image/png,image/jpg,image/webp">
+                                <small class="text-muted">Format: JPG, PNG, WEBP (maks. 3MB). Disarankan rasio banner / poster.</small>
                             </div>
                         </div>
                     </div>

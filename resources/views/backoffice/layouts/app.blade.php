@@ -792,8 +792,11 @@
         <span class="badge bg-warning text-dark ms-auto" style="font-size:0.7rem;font-weight:700;">{{ $pendingPartnerCount }} Baru</span>
       @endif
     </a>
-    <a href="{{ route('backoffice.settings.index') }}" class="{{ request()->routeIs('backoffice.settings.*') ? 'active' : '' }}">
+    <a href="{{ route('backoffice.settings.index') }}" class="{{ (request()->routeIs('backoffice.settings.*') && request('tab') !== 'admission' && request('tab') !== 'popup') ? 'active' : '' }}">
       <i class="fas fa-sliders-h"></i> Konten, Kontak &amp; Footer
+    </a>
+    <a href="{{ route('backoffice.settings.index', ['tab' => 'popup']) }}" class="{{ (request()->routeIs('backoffice.settings.*') && request('tab') === 'popup') ? 'active' : '' }}">
+      <i class="fas fa-bullhorn text-danger"></i> Popup Banner Beranda
     </a>
     <a href="{{ route('backoffice.divisi.index') }}" class="{{ request()->routeIs('backoffice.divisi.*') ? 'active' : '' }}">
       <i class="fas fa-sitemap"></i> Manajemen Divisi

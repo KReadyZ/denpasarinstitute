@@ -459,13 +459,89 @@
     {{-- 6 Pillar Cards Grid --}}
     <div class="partner-grid">
       @php
-        $pillars = \App\Models\PartnershipPillar::active()->get()->shuffle();
+        try {
+            $pillars = \App\Models\PartnershipPillar::active()->orderBy('order', 'asc')->get();
+        } catch (\Throwable $e) {
+            $pillars = collect();
+        }
+
+        // Fallback otomatis jika database di hosting belum di-migrate atau belum di-seed
+        if ($pillars->isEmpty()) {
+            $pillars = collect([
+                (object)[
+                    'number' => '01',
+                    'title' => 'Riset dan Inovasi',
+                    'tag' => 'Riset & Inovasi',
+                    'icon' => 'fa-microscope',
+                    'description' => 'Menyediakan layanan penelitian, konsultasi, dan pengembangan inovasi untuk menghasilkan solusi yang bermanfaat bagi masyarakat, lembaga, dan dunia usaha.',
+                    'image' => 'image/partners/riset-inovasi.png',
+                    'link_url' => '/partner-with-di/research-and-innovation',
+                    'link_text' => 'Learn more',
+                ],
+                (object)[
+                    'number' => '02',
+                    'title' => 'Kemitraan Industri',
+                    'tag' => 'Kemitraan Industri',
+                    'icon' => 'fa-industry',
+                    'description' => 'Membangun kerja sama strategis dengan dunia usaha, industri, pemerintah, dan institusi pendidikan untuk mendukung pengembangan program, peningkatan kompetensi, dan peluang kolaborasi.',
+                    'image' => 'image/partners/kemitraan-industri.png',
+                    'link_url' => '/partner-with-di/industry-partnership',
+                    'link_text' => 'Learn more',
+                ],
+                (object)[
+                    'number' => '03',
+                    'title' => 'Pengembangan Profesional',
+                    'tag' => 'Pengembangan Profesional',
+                    'icon' => 'fa-chalkboard-teacher',
+                    'description' => 'Menyelenggarakan berbagai program pelatihan, pendampingan, dan pengembangan kompetensi untuk meningkatkan keterampilan, profesionalisme, serta kualitas sumber daya manusia.',
+                    'image' => 'image/partners/pengembangan-profesional.png',
+                    'link_url' => '/partner-with-di/professional-development',
+                    'link_text' => 'Learn more',
+                ],
+                (object)[
+                    'number' => '04',
+                    'title' => 'Pemberdayaan Masyarakat',
+                    'tag' => 'Pemberdayaan Masyarakat',
+                    'icon' => 'fa-hands-helping',
+                    'description' => 'Mengembangkan program pemberdayaan dan pengabdian masyarakat melalui pendidikan, pelatihan, pendampingan, serta pengembangan potensi lokal secara berkelanjutan.',
+                    'image' => 'image/partners/pemberdayaan-masyarakat.png',
+                    'link_url' => '/partner-with-di/community-empowerment',
+                    'link_text' => 'Learn more',
+                ],
+                (object)[
+                    'number' => '05',
+                    'title' => 'Kemitraan Global',
+                    'tag' => 'Kemitraan Global',
+                    'icon' => 'fa-globe-asia',
+                    'description' => 'Memfasilitasi kerja sama internasional dalam bidang pendidikan, penelitian, pertukaran akademik, pengembangan SDM, dan kegiatan kolaboratif lintas negara.',
+                    'image' => 'image/partners/kemitraan-global.png',
+                    'link_url' => '/partner-with-di/global-partnership',
+                    'link_text' => 'Learn more',
+                ],
+                (object)[
+                    'number' => '06',
+                    'title' => 'Publikasi & HKI',
+                    'tag' => 'Publikasi & HKI',
+                    'icon' => 'fa-book-open',
+                    'description' => 'Menyediakan layanan penerbitan buku, pendampingan publikasi ilmiah, pengelolaan jurnal, serta fasilitasi perlindungan dan pengembangan kekayaan intelektual.',
+                    'image' => 'image/partners/publikasi-hki.jpg',
+                    'link_url' => '/partner-with-di/publication-and-ipr',
+                    'link_text' => 'Learn more',
+                ],
+            ]);
+        }
       @endphp
-      @forelse($pillars as $p)
+      @foreach($pillars as $p)
+        @php
+          $rawImg = $p->image ?? 'image/partner-hero-bg.jpg';
+          $imgUrl = (str_starts_with($rawImg, 'http') || str_starts_with($rawImg, '//')) 
+                      ? $rawImg 
+                      : (str_starts_with($rawImg, 'storage/') ? asset($rawImg) : asset(ltrim($rawImg, '/')));
+        @endphp
         <article class="partner-card">
           <div class="partner-card-media">
             <a href="{{ $p->link_url ?? '#' }}" style="display:block;width:100%;height:100%;" {{ (str_starts_with($p->link_url ?? '', 'http') || str_starts_with($p->link_url ?? '', '//')) ? 'target="_blank" rel="noopener noreferrer"' : '' }}>
-              <img src="{{ asset($p->image) }}" alt="{{ $p->title }}" loading="lazy">
+              <img src="{{ $imgUrl }}" alt="{{ $p->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('image/partner-hero-bg.jpg') }}';">
             </a>
             <div class="partner-card-tag">
               <i class="fas {{ $p->icon ?? 'fa-handshake' }}"></i> {{ $p->tag }}
@@ -488,9 +564,7 @@
             </a>
           </div>
         </article>
-      @empty
-        <div class="col-12 text-center text-muted py-5">Belum ada pilar kemitraan.</div>
-      @endforelse
+      @endforeach
     </div>
 
       </div>

@@ -245,9 +245,9 @@
                                 Jumlah Pembaca Awal (Views)
                             </label>
                             <input type="number" name="views" id="views" class="form-control" 
-                                   value="{{ old('views', 0) }}" min="0" max="500" placeholder="0">
+                                   value="{{ old('views', 0) }}" min="0" placeholder="0">
                             <small class="text-muted d-block mt-1" style="font-size: 0.74rem;">
-                                Angka awal pembaca artikel (maksimal 500).
+                                Angka awal pembaca artikel (unlimited views).
                             </small>
                             @error('views')
                                 <small class="text-danger">{{ $message }}</small>

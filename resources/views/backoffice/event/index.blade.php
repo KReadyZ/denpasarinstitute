@@ -107,7 +107,7 @@
                         <td>{{ $event->kontributor }}</td>
                         <td>
                             <span style="background-color: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-weight: bold;">
-                                {{ $event->views }} / 500
+                                <i class="far fa-eye text-primary me-1"></i> {{ number_format($event->views) }} views
                             </span>
                         </td>
                         <td>

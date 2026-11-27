@@ -485,6 +485,10 @@ Route::get('/partners-and-collaboration', function () {
     return view('partner');
 })->name('partners-and-collaboration');
 
+Route::get('/partner-and-collab', fn() => redirect()->route('partners-and-community'));
+Route::get('/partners-and-collab', fn() => redirect()->route('partners-and-community'));
+Route::get('/partnership', fn() => redirect()->route('partners-and-community'));
+
 // Halaman Publik Mitra & Klien (Baru)
 Route::get('/mitra-dan-klien', [MitraKlienController::class, 'index'])->name('mitra-dan-klien');
 Route::get('/mitra-klien', fn() => redirect()->route('mitra-dan-klien'));

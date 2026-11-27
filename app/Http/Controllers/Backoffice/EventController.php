@@ -43,7 +43,7 @@ class EventController extends Controller
             'title'        => 'required|string|max:255',
             'content'      => 'required|string',
             'published_at' => 'nullable|date',
-            'views'        => 'nullable|integer|min:0|max:500',
+            'views'        => 'nullable|integer|min:0',
             'image'        => 'nullable|image|max:2048',
         ]);
 
@@ -102,7 +102,7 @@ class EventController extends Controller
             'title'        => 'required|string|max:255',
             'content'      => 'required|string',
             'published_at' => 'nullable|date',
-            'views'        => 'nullable|integer|min:0|max:500',
+            'views'        => 'nullable|integer|min:0',
             'image'        => 'nullable|image|max:2048',
         ]);
 

@@ -66,7 +66,7 @@
                         <td>{{ $berita->kontributor }}</td>
                         <td>
                             <span style="background-color: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-weight: bold;">
-                                {{ $berita->views }} / 500
+                                <i class="far fa-eye text-primary me-1"></i> {{ number_format($berita->views) }} views
                             </span>
                         </td>
                         <td>

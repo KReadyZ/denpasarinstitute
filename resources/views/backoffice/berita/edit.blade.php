@@ -256,9 +256,9 @@
                                 Jumlah Pembaca (Views)
                             </label>
                             <input type="number" name="views" id="views" class="form-control" 
-                                   value="{{ old('views', $berita->views) }}" min="0" max="500">
+                                   value="{{ old('views', $berita->views) }}" min="0">
                             <small class="text-muted d-block mt-1" style="font-size: 0.74rem;">
-                                Maksimal 500 pembaca terhitung.
+                                Jumlah pembaca artikel (unlimited views).
                             </small>
                             @error('views')
                                 <small class="text-danger">{{ $message }}</small>

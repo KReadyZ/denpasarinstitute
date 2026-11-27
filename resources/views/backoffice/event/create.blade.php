@@ -71,9 +71,9 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="views">Jumlah Pengunjung (Views) - Maksimal 500</label>
-                    <input type="number" name="views" id="views" class="form-control" value="{{ old('views', 0) }}" min="0" max="500" placeholder="0">
-                    <small style="display:block; color:#666;">Jumlah klik/pengunjung event. Maksimal 500.</small>
+                    <label for="views">Jumlah Pengunjung (Views)</label>
+                    <input type="number" name="views" id="views" class="form-control" value="{{ old('views', 0) }}" min="0" placeholder="0">
+                    <small style="display:block; color:#666;">Jumlah klik/pengunjung event (unlimited).</small>
                     @error('views') <small style="color:red;">{{ $message }}</small> @enderror
                 </div>
                 <div class="form-group" style="display: flex; align-items: center; padding-top: 24px;">

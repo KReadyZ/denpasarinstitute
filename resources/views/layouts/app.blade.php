@@ -999,6 +999,17 @@
       (object)['title' => 'Bursa SDM', 'url' => '/bursa-sdm', 'target' => '_self'],
       (object)['title' => 'Event', 'url' => '/event', 'target' => '_self'],
       (object)['title' => 'News', 'url' => '/berita', 'target' => '_self'],
+      (object)['title' => 'Partner & Collab', 'url' => '/partner-with-di', 'target' => '_self'],
+    ]);
+  }
+
+  // Pastikan menu Partner & Collab selalu hadir di navbar hosting jika belum terdaftar di database
+  if (!$navRight->contains(fn($item) => str_contains(strtolower($item->url ?? ''), 'partner') || str_contains(strtolower($item->title ?? ''), 'partner'))) {
+    $navRight->push((object)[
+      'title' => 'Partner & Collab',
+      'url' => '/partner-with-di',
+      'target' => '_self',
+      'is_active' => true,
     ]);
   }
   if ($allDivisi->isEmpty()) {

@@ -43,7 +43,7 @@ class BeritaController extends Controller
             'title'         => 'required|string|max:255',
             'content'       => 'required|string',
             'published_at'  => 'nullable|date',
-            'views'         => 'nullable|integer|min:0|max:500',
+            'views'         => 'nullable|integer|min:0',
             'image'         => 'nullable|image|max:2048',
             'image_caption' => 'nullable|string|max:255',
         ]);
@@ -117,7 +117,7 @@ class BeritaController extends Controller
             'title'         => 'required|string|max:255',
             'content'       => 'required|string',
             'published_at'  => 'nullable|date',
-            'views'         => 'nullable|integer|min:0|max:500',
+            'views'         => 'nullable|integer|min:0',
             'image'         => 'nullable|image|max:2048',
             'image_caption' => 'nullable|string|max:255',
         ]);

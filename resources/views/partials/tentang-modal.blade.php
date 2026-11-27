@@ -108,7 +108,7 @@
           </div>
           <div class="legal-badge-item">
             <span class="legal-badge-label">NPWP</span>
-            <span class="legal-badge-val">86.729.551.1-903.000 (2018)</span>
+            <span class="legal-badge-val">86.729.551.1-903.000</span>
           </div>
           <div class="legal-badge-item">
             <span class="legal-badge-label">NPSN</span>
@@ -194,9 +194,39 @@
         </div>
       </div>
 
-      <div class="modal-tentang-address">
-        <i class="fas fa-map-marker-alt"></i>
-        <span><strong>Alamat:</strong> Jln. Ganetri IV No. 1 / No. 4 Denpasar 80237 Bali &bull; <strong>Telp:</strong> (0361) 2727369 &bull; <strong>WhatsApp:</strong> 0878-6530-9966 / 0813-3764-4463 &bull; <strong>Email:</strong> info@denpasarinstitute.com</span>
+      <div class="modal-tentang-contact-bar">
+        <div class="modal-tentang-contact-item">
+          <i class="fas fa-envelope text-danger"></i>
+          <span><strong>Email:</strong> <a href="mailto:partner@denpasarinstitute.com">partner@denpasarinstitute.com</a></span>
+        </div>
+        <div class="modal-tentang-contact-divider">&bull;</div>
+        <div class="modal-tentang-contact-item">
+          <i class="fab fa-whatsapp text-success"></i>
+          <span><strong>WhatsApp:</strong> <a href="https://wa.me/6287865309966" target="_blank" rel="noopener">0878-6530-9966</a> / <a href="https://wa.me/6281337644463" target="_blank" rel="noopener">0813-3764-4463</a></span>
+        </div>
+        <div class="modal-tentang-contact-divider">&bull;</div>
+        <div class="modal-tentang-contact-item">
+          <i class="fas fa-phone text-primary"></i>
+          <span><strong>Telp:</strong> (0361) 2727369</span>
+        </div>
+        <div class="modal-tentang-contact-divider">&bull;</div>
+        <div class="modal-tentang-sosmed-wrap">
+          <span class="sosmed-label"><strong>Sosmed:</strong></span>
+          <div class="modal-tentang-sosmed-icons">
+            <a href="{{ \App\Models\SiteSetting::get('social_instagram', '#') }}" target="_blank" rel="noopener noreferrer" class="sosmed-btn instagram" title="Instagram Denpasar Institute">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="{{ \App\Models\SiteSetting::get('social_facebook', '#') }}" target="_blank" rel="noopener noreferrer" class="sosmed-btn facebook" title="Facebook Denpasar Institute">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="{{ \App\Models\SiteSetting::get('social_youtube', '#') }}" target="_blank" rel="noopener noreferrer" class="sosmed-btn youtube" title="YouTube Denpasar Institute">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="{{ \App\Models\SiteSetting::get('social_linkedin', '#') }}" target="_blank" rel="noopener noreferrer" class="sosmed-btn linkedin" title="LinkedIn Denpasar Institute">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -432,31 +462,33 @@
 
 .legalitas-badges {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1.35fr 1.15fr 0.75fr 0.85fr;
   gap: 10px;
 }
 .legal-badge-item {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 8px;
   text-align: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
 }
 .legal-badge-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: var(--red);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 .legal-badge-val {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 700;
   color: #1e293b;
-  word-break: break-word;
+  white-space: nowrap;
 }
 
 .modal-tentang-partnership {
@@ -608,23 +640,77 @@
   text-align: left;
 }
 
-.modal-tentang-address {
+.modal-tentang-contact-bar {
   margin-top: 16px;
-  padding: 11px 14px;
+  padding: 12px 16px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
   color: #475569;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 10px 14px;
   line-height: 1.5;
 }
-.modal-tentang-address i {
+.modal-tentang-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.modal-tentang-contact-item a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.modal-tentang-contact-item a:hover {
   color: var(--red);
-  font-size: 1rem;
-  flex-shrink: 0;
+  text-decoration: underline;
+}
+.modal-tentang-contact-divider {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+.modal-tentang-sosmed-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-tentang-sosmed-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sosmed-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff !important;
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.sosmed-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+.sosmed-btn.instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+.sosmed-btn.facebook {
+  background: #1877f2;
+}
+.sosmed-btn.youtube {
+  background: #ff0000;
+}
+.sosmed-btn.linkedin {
+  background: #0a66c2;
 }
 
 .modal-tentang-footer {
@@ -716,11 +802,15 @@
   .legalitas-badges {
     grid-template-columns: 1fr;
   }
-  .modal-tentang-address {
-    font-size: 0.72rem;
+  .modal-tentang-contact-bar {
+    font-size: 0.78rem;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .modal-tentang-contact-divider {
+    display: none;
   }
 }
 </style>

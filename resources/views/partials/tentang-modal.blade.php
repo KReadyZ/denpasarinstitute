@@ -35,7 +35,7 @@
         </p>
       </div>
 
-      <div class="modal-tentang-section">
+      <div class="modal-tentang-section" id="modalSectionDivisi">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
           <h4 class="section-title" style="margin-bottom:0;"><i class="fas fa-cubes text-danger"></i> Unit Kerja &amp; Divisi Layanan</h4>
           <span style="font-size:0.78rem; color:#64748b; font-weight:600;"><i class="fas fa-mouse-pointer me-1 text-danger"></i>Klik kotak divisi untuk melihat detail &amp; program</span>
@@ -898,13 +898,22 @@
 </style>
 
 <script>
-function openTentangModal() {
+function openTentangModal(targetSection) {
   var modal = document.getElementById('tentangDiModal');
   if (modal) {
     modal.classList.add('is-active');
     document.body.style.overflow = 'hidden';
+    if (targetSection === 'divisi') {
+      setTimeout(function() {
+        var el = document.getElementById('modalSectionDivisi');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+    }
   }
 }
+window.openTentangModal = openTentangModal;
 
 function closeTentangModal() {
   var modal = document.getElementById('tentangDiModal');
@@ -913,6 +922,7 @@ function closeTentangModal() {
     document.body.style.overflow = '';
   }
 }
+window.closeTentangModal = closeTentangModal;
 
 function handleTentangBackdropClick(event) {
   if (event.target && event.target.id === 'tentangDiModal') {
@@ -926,10 +936,14 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Otomatis buka jika ada hash #tentang-di atau query ?open_about=1 di URL
+// Otomatis buka jika ada hash #tentang-di, #divisi-modal atau query ?open_about=1 / ?open_divisi=1 di URL
 (function() {
-  if (window.location.hash === '#tentang-di' || window.location.search.indexOf('open_about=1') !== -1) {
-    setTimeout(openTentangModal, 300);
+  var hash = window.location.hash;
+  var search = window.location.search;
+  if (hash === '#tentang-di' || search.indexOf('open_about=1') !== -1) {
+    setTimeout(function() { openTentangModal(); }, 300);
+  } else if (hash === '#divisi-modal' || hash === '#all-divisions' || search.indexOf('open_divisi=1') !== -1) {
+    setTimeout(function() { openTentangModal('divisi'); }, 300);
   }
 })();
 </script>

@@ -1424,9 +1424,9 @@
       <div class="carousel-controls-row"><button id="divPrevBtn"><i class="fas fa-chevron-left"></i></button><button id="divNextBtn"><i class="fas fa-chevron-right"></i></button></div>
       <div class="carousel-dots" id="divisionDots"></div>
       <div style="text-align: center; margin-top: 24px;">
-        <a href="{{ route('home') }}#divisi-detail" class="btn-more" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 24px; border-radius: 25px; background: var(--red); color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(204,0,0,0.25);">
+        <button type="button" class="btn-more" onclick="openTentangModal('divisi')" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 24px; border-radius: 25px; background: var(--red); color: #fff; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(204,0,0,0.25); transition: transform 0.2s, background 0.2s;">
           <i class="fas fa-th-large"></i> Read More Semua Divisi
-        </a>
+        </button>
       </div>
     </div>
   </div>

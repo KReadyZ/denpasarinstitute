@@ -108,9 +108,9 @@
 
       @if($isTentang || $isKeunggulan)
         <div class="section-readmore-bar mt-4 pt-3 border-top" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-          <a href="{{ route('home') }}#divisi-detail" class="btn-sec-all-divisi" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: var(--red); color: #fff; padding: 9px 20px; border-radius: 6px; text-decoration: none; box-shadow: 0 4px 12px rgba(204,0,0,0.2); transition: transform 0.2s, background 0.2s;">
+          <button type="button" class="btn-sec-all-divisi" onclick="openTentangModal('divisi')" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: var(--red); color: #fff; padding: 9px 20px; border-radius: 6px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(204,0,0,0.2); transition: transform 0.2s, background 0.2s;">
             <i class="fas fa-th-large"></i> Read More Semua Divisi
-          </a>
+          </button>
           <a href="#program" class="btn-sec-program" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; background: #f8fafc; color: #1e293b; padding: 9px 20px; border-radius: 6px; text-decoration: none; border: 1px solid #cbd5e1; transition: background 0.2s;">
             <i class="fas fa-graduation-cap text-danger"></i> Program Pilihan Divisi
           </a>
